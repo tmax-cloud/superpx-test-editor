@@ -16,3 +16,25 @@ body,
   overflow: hidden;
   width: 100%;
 }
+
+.editor-area {
+  height: 100%;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 90%;
+}
+
+.sidebar {
+  background-color: #ffffff;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  transition: 0.4s ease;
+  color: #202020;
+  height: 100%;
+  z-index: 99;
+  width: 10%;
+}

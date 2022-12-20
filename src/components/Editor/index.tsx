@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as monaco from "monaco-editor";
+import { setRequest } from "../../utils/service-utils";
 // import parseAndGetASTRoot from "../../language-service/parser";
 
 // function validate(model) {
@@ -37,29 +38,25 @@ import * as monaco from "monaco-editor";
 //   monaco.editor.setModelMarkers(model, "owner", markers);
 // }
 
-const wsUrl = "ws://192.168.9.74:8080";
 interface IEditorProps {
+  fileText?: string;
+  setFileText?: Function;
   language: string;
 }
 
 const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
+  const { fileText } = props;
   const [token, setToken] = React.useState([]);
   const [text, setText] = React.useState("");
   const [position, setPosition] = React.useState(new monaco.Position(0, 0));
   const [keyPosition, setKeyPosition] = React.useState(
     new monaco.Position(0, 0)
   );
-  const [srcId, setSrcId] = React.useState(4);
   let divNode;
   const assignRef = React.useCallback((node) => {
     // On mount get the ref of the div and assign it the divNode
     divNode = node;
   }, []);
-  const testCode = `class Simple{
-  public static void main(String args[]){
-    System.out.println("Hello Java");
-  }
-}`;
 
   React.useEffect(() => {
     if (divNode) {
@@ -71,7 +68,7 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
         theme: "vs-dark",
         mouseWheelZoom: true,
         fontSize: 25,
-        value: testCode,
+        value: fileText,
         // model,
       });
       // validate(model);
@@ -98,52 +95,13 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
     console.log(tempToken);
     setToken(tempToken);
   }, [text]);
-
-  const setRequest = (targetServiceName: string) => {
-    return {
-      header: {
-        targetServiceName,
-        messageType: "REQUEST",
-        contentType: "TEXT",
-      },
-      body: {
-        srcId: srcId,
-      },
-    };
-  };
-
-  const onGetButtonClick = async () => {
+  React.useEffect(() => {
     const model = monaco.editor.getEditors()[0].getModel();
-
-    const exampleSocket = new WebSocket(wsUrl);
-    const request = setRequest("com.tmax.service.sourceCode.DetailSrcService");
-    model.setValue("Request srcId " + srcId);
-    exampleSocket.onopen = (event) => {
-      exampleSocket.send(JSON.stringify(request));
-    };
-
-    exampleSocket.onmessage = (event) => {
-      console.log(event.data);
-      const wsdata = JSON.parse(event.data);
-      const lineData = [];
-      wsdata.body.data.forEach((d) => {
-        lineData.push(d.content);
-      });
-      model.setValue(lineData.join(""));
-    };
-  };
-  const onChangeSrcId = (event) => {
-    setSrcId(event.target.value);
-  };
+    model.setValue(fileText);
+  }, [fileText]);
 
   return (
-    <div style={{ height: 500 }}>
-      <input
-        onChange={onChangeSrcId}
-        placeholder="Enter SrcId (Default 4)"
-        type="Number"
-      ></input>
-      <button onClick={onGetButtonClick}>Get Source</button>
+    <div style={{ height: 750 }}>
       <div ref={assignRef} className="editor-container"></div>
       <div>Content Change Position</div>
       <div>LineNumber : {position.lineNumber}</div>
