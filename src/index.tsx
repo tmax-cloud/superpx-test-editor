@@ -15,7 +15,7 @@ const testCode = `class Simple{
 // const wsUrl = "ws://192.168.9.74:8080";
 setupLanguage();
 const App = () => {
-  const [wsUrl, setWsUrl] = React.useState("ws://localhost:8001");
+  const [wsUrl, setWsUrl] = React.useState("ws://172.22.11.6:8080");
   const [fileText, setFileText] = React.useState(testCode);
   return (
     <div>
