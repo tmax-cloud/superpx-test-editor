@@ -2,16 +2,18 @@ import * as React from "react";
 import { setRequest } from "../../utils/service-utils";
 import { ProjectLink } from "./ProjectLink";
 import { RefernceLink } from "./ReferenceLink";
-import { FileLink } from "./FileLink";
+import { SourceCodeLink } from "./SourceCodeLink";
 
 export const SideBar: React.FC<SideBarProps> = ({
   wsUrl,
-  setWsUrl,
-  setFileText,
+  setEditorText,
 }) => {
-  const [fileList, setFileList] = React.useState([]);
   const [projectList, setProjectList] = React.useState([]);
+  const [showProjectList, setShowProjectList] = React.useState(true);  
   const [referenceList, setReferenceList] = React.useState([]);
+  const [showReferenceList, setShowReferenceList] = React.useState(false);
+  const [sourceCodeList, setSourceCodeList] = React.useState([]);
+  const [showOpenSouceCodeList, setShowOpenSouceCodeList] = React.useState(false);
   React.useEffect(() => {
     const exampleSocket = new WebSocket(wsUrl);
     const request = setRequest("com.tmax.service.project.ListService", {});
@@ -30,7 +32,7 @@ export const SideBar: React.FC<SideBarProps> = ({
       });
 
       setProjectList(tempProjectList);
-      setFileText(`Get Project List from ${wsUrl}.`);
+      setEditorText(`Get Project List from ${wsUrl}.`);
     };
   }, []);
 
@@ -38,37 +40,40 @@ export const SideBar: React.FC<SideBarProps> = ({
     <div className="sidebar">
       <div>
         <h3>ProjectList</h3>
-        {projectList.map((projectdata) => {
+        <button onClick={()=>{setShowProjectList(!showProjectList)}}>{showProjectList ? '접기' : '열기'}</button>
+        {showProjectList && projectList.map((projectdata) => {
           return (
             <ProjectLink
               wsUrl={wsUrl}
-              projectdata={projectdata}
+              projectData={projectdata}
               setReferenceList={setReferenceList}
-              setFileList={setFileList}
+              setSourceCodeList={setSourceCodeList}
             />
           );
         })}
       </div>
       <div>
         <h3>ReferenceList</h3>
-        {referenceList.map((filedata) => {
+        <button onClick={()=>{setShowReferenceList(!showReferenceList)}}>{showReferenceList ? '접기' : '열기'}</button>
+        {showReferenceList && referenceList.map((filedata) => {
           return (
             <RefernceLink
               wsUrl={wsUrl}
-              referencedata={filedata}
-              setFileList={setFileList}
+              referenceData={filedata}
+              setSourceCodeList={setSourceCodeList}
             />
           );
         })}
       </div>
       <div>
-        <h3>FileList</h3>
-        {fileList.map((filedata) => {
+        <h3>SourceCodeList</h3>
+        <button onClick={()=>{setShowOpenSouceCodeList(!showOpenSouceCodeList)}}>{showOpenSouceCodeList ? '접기' : '열기'}</button>
+        {showOpenSouceCodeList && sourceCodeList.map((filedata) => {
           return (
-            <FileLink
+            <SourceCodeLink
               wsUrl={wsUrl}
-              filedata={filedata}
-              setFileText={setFileText}
+              sourceCodeData={filedata}
+              setEditorText={setEditorText}
             />
           );
         })}
@@ -79,6 +84,5 @@ export const SideBar: React.FC<SideBarProps> = ({
 
 type SideBarProps = {
   wsUrl?: string;
-  setWsUrl?: Function;
-  setFileText?: Function;
+  setEditorText?: Function;
 };

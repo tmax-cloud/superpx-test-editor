@@ -3,33 +3,33 @@ import { setRequest } from "../../utils/service-utils";
 
 export const RefernceLink: React.FC<ReferenceLinkProps> = ({
   wsUrl,
-  referencedata,
-  setFileList,
+  referenceData,
+  setSourceCodeList,
 }) => {
   const onFileLinkClick = async () => {
     const exampleSocket = new WebSocket(wsUrl);
     const request = setRequest("com.tmax.service.reference.ListService", {
-      proj_id: referencedata.projId,
+      proj_id: referenceData.projId,
     });
     exampleSocket.onopen = (event) => {
       exampleSocket.send(JSON.stringify(request));
     };
 
     exampleSocket.onmessage = (event) => {
-      setFileList(JSON.parse(event.data).body.data);
+        setSourceCodeList(JSON.parse(event.data).body.data);
     };
   };
 
-  return <p onClick={onFileLinkClick}>{referencedata.name}</p>;
+  return <p onClick={onFileLinkClick}>{referenceData.name}</p>;
 };
 
 type ReferenceLinkProps = {
   wsUrl: string;
-  referencedata?: {
+  referenceData?: {
     refId: number;
     projId: number;
     name: string;
     type: number;
   };
-  setFileList?: Function;
+  setSourceCodeList?: Function;
 };

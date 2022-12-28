@@ -1,15 +1,15 @@
 import * as React from "react";
 import { setRequest } from "../../utils/service-utils";
 
-export const FileLink: React.FC<FileLinkProps> = ({
+export const SourceCodeLink: React.FC<SourceCodeLinkProps> = ({
   wsUrl,
-  filedata,
-  setFileText,
+  sourceCodeData,
+  setEditorText,
 }) => {
   const onFileLinkClick = async () => {
     const exampleSocket = new WebSocket(wsUrl);
     const request = setRequest("com.tmax.service.sourceCode.DetailSrcService", {
-      srcId: filedata.id,
+      srcId: sourceCodeData.id,
     });
     exampleSocket.onopen = (event) => {
       exampleSocket.send(JSON.stringify(request));
@@ -22,19 +22,19 @@ export const FileLink: React.FC<FileLinkProps> = ({
       wsdata.body.data.forEach((d) => {
         lineData.push(d.content);
       });
-      setFileText(lineData.join(""));
+      setEditorText(lineData.join(""));
     };
   };
 
-  return <p onClick={onFileLinkClick}>{filedata.path}</p>;
+  return <p onClick={onFileLinkClick}>{sourceCodeData.path}</p>;
 };
 
-type FileLinkProps = {
+type SourceCodeLinkProps = {
   wsUrl: string;
-  filedata?: {
+  sourceCodeData?: {
     id: number;
     path: string;
     projectId: number;
   };
-  setFileText?: Function;
+  setEditorText?: Function;
 };

@@ -12,20 +12,19 @@ const testCode = `class Simple{
     System.out.println("Hello Java");
   }
 }`;
-// const wsUrl = "ws://192.168.9.74:8080";
+const wsUrl = "ws://172.22.11.2:38080";
 setupLanguage();
 const App = () => {
-  const [wsUrl, setWsUrl] = React.useState("ws://172.22.11.6:8080");
-  const [fileText, setFileText] = React.useState(testCode);
+  const [editorText, setEditorText] = React.useState(testCode);
   return (
     <div>
-      <SideBar wsUrl={wsUrl} setWsUrl={setWsUrl} setFileText={setFileText} />
+      <SideBar wsUrl={wsUrl} setEditorText={setEditorText} />
       <div className="editor-area">
         <div className="title">Java Editor</div>
         <Editor
           language={"java"}
-          fileText={fileText}
-          setFileText={setFileText}
+          fileText={editorText}
+          setFileText={setEditorText}
         ></Editor>
       </div>
     </div>
