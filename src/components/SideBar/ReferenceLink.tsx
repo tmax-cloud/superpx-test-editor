@@ -1,5 +1,6 @@
 import * as React from "react";
 import { setRequest } from "../../utils/service-utils";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export const RefernceLink: React.FC<ReferenceLinkProps> = ({
   wsUrl,
@@ -16,11 +17,16 @@ export const RefernceLink: React.FC<ReferenceLinkProps> = ({
     };
 
     exampleSocket.onmessage = (event) => {
-        setSourceCodeList(JSON.parse(event.data).body.data);
+      setSourceCodeList(JSON.parse(event.data).body.data);
     };
   };
 
-  return <p onClick={onFileLinkClick}>{referenceData.name}</p>;
+  return (
+    <div>
+      <p onClick={onFileLinkClick}>{referenceData.name}</p>
+      <DeleteIcon className="inline" />
+    </div>
+  );
 };
 
 type ReferenceLinkProps = {

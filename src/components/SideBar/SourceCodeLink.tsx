@@ -1,5 +1,6 @@
 import * as React from "react";
 import { setRequest } from "../../utils/service-utils";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export const SourceCodeLink: React.FC<SourceCodeLinkProps> = ({
   wsUrl,
@@ -26,7 +27,12 @@ export const SourceCodeLink: React.FC<SourceCodeLinkProps> = ({
     };
   };
 
-  return <p onClick={onFileLinkClick}>{sourceCodeData.path}</p>;
+  return (
+    <div>
+      <p onClick={onFileLinkClick}>{sourceCodeData.path}</p>;
+      <DeleteIcon className="inline" />
+    </div>
+  );
 };
 
 type SourceCodeLinkProps = {

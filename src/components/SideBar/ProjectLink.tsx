@@ -1,5 +1,6 @@
 import * as React from "react";
 import { setRequest } from "../../utils/service-utils";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export const ProjectLink: React.FC<ProjectLinkProps> = ({
   wsUrl,
@@ -39,7 +40,12 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
     // };
   };
 
-  return <p onClick={onFileLinkClick}>{projectData.name}</p>;
+  return (
+    <div>
+      <p onClick={onFileLinkClick}>{projectData.name}</p>;
+      <DeleteIcon className="inline" />
+    </div>
+  );
 };
 
 type ProjectLinkProps = {
