@@ -4,7 +4,7 @@ import { Editor } from "./components/Editor";
 import "./style.css";
 import { setupLanguage } from "./java/setup";
 import { languageID } from "./java/config";
-import { SideBar } from "./components/SideBar/Sidebar";
+import { LNB } from "./components/LNB/LNB";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
@@ -22,14 +22,17 @@ setupLanguage();
 const App = () => {
   return (
     <div>
-      <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Main />}></Route>
-          {/* <Route path="/project/*" element={<Project />}></Route> */}
-          <Route path="*" element={<NotFound />}></Route>
-        </Routes>
-      </BrowserRouter>
+      <GNB />
+      <Routes>
+        <Route path="/" element={<Main />}></Route>
+        {/* <Route path="/project/*" element={<Project />}></Route> */}
+        {(["explorer", "search", "scm", "debug", "extension"] as const).map(
+          (lnb) => (
+            <Route path={`/${lnb}`} element={<LNB wsUrl={wsUrl} />}></Route>
+          )
+        )}
+        <Route path="*" element={<NotFound />}></Route>
+      </Routes>
     </div>
   );
 };
@@ -38,7 +41,7 @@ const Main = () => {
   const [editorText, setEditorText] = React.useState(testCode);
   return (
     <>
-      <SideBar wsUrl={wsUrl} setEditorText={setEditorText} />
+      <LNB wsUrl={wsUrl} setEditorText={setEditorText} />
       <div className="editor-area">
         <div className="title">Java Editor</div>
         <Editor
@@ -51,7 +54,7 @@ const Main = () => {
   );
 };
 
-const Header = () => {
+const GNB = () => {
   const menus = [
     "file",
     "edit",
@@ -76,7 +79,7 @@ const Header = () => {
   const [openMenu, setOpenMenu] = React.useState({});
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setOpenMenu({[event.currentTarget.value]:true});
+    setOpenMenu({ [event.currentTarget.value]: true });
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -110,7 +113,9 @@ const Header = () => {
                 "aria-labelledby": "basic-button",
               }}
             >
-              {menusAction[menu].map(action => {return <MenuItem onClick={handleClose}>{action}</MenuItem>})}              
+              {menusAction[menu].map((action) => {
+                return <MenuItem onClick={handleClose}>{action}</MenuItem>;
+              })}
             </Menu>
           </>
         );
@@ -122,4 +127,9 @@ const NotFound = () => {
   return <div>404 Error</div>;
 };
 
-ReactDOM.render(<App />, document.getElementById("container"));
+ReactDOM.render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
+  document.getElementById("container")
+);
