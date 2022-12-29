@@ -1,12 +1,13 @@
 import * as React from "react";
 
 export const SourceCodeLink: React.FC<SourceCodeLinkProps> = ({
-  wsUrl,
   sourceCodeData,
   setEditorText,
+  setEditorFilePath,
 }) => {
   const onSourceCodeLinkClick = () => {
     setEditorText(sourceCodeData.content);
+    setEditorFilePath(sourceCodeData.srcPath);
   };
 
   return (
@@ -17,7 +18,6 @@ export const SourceCodeLink: React.FC<SourceCodeLinkProps> = ({
 };
 
 type SourceCodeLinkProps = {
-  wsUrl: string;
   sourceCodeData?: {
     commitId: number;
     content: string;
@@ -27,4 +27,5 @@ type SourceCodeLinkProps = {
     srcPath: string;
   };
   setEditorText?: Function;
+  setEditorFilePath?: Function;
 };

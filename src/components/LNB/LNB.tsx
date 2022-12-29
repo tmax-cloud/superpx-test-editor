@@ -13,21 +13,21 @@ import Divider from "@mui/material/Divider";
 import { CreateProjectForm } from "../Form/CreateProjectForm";
 import { CreateReferenceForm } from "../Form/CreateReferenceForm";
 
-export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
+export const LNB: React.FC<LNBProps> = ({
+  wsUrl,
+  setEditorText,
+  setEditorFilePath,
+  selectedReference,
+  setSelectedReference,
+  sourceCodeList,
+  setSourceCodeList,
+}) => {
   const [projectList, setProjectList] = React.useState([]);
   const [referenceList, setReferenceList] = React.useState([]);
   const [commitList, setCommitList] = React.useState([]);
-
-  const [sourceCodeList, setSourceCodeList] = React.useState([]);
   const [selectedProject, setSelectedProject] = React.useState({
     name: "",
     projId: 0,
-  });
-  const [selectedReference, setSelectedReference] = React.useState({
-    name: "",
-    refId: 0,
-    projId: 0,
-    type: 0,
   });
   const [selectedCommit, setSelectedCommit] = React.useState({
     commitId: 0,
@@ -209,9 +209,9 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
           {sourceCodeList.map((sourceCodeData) => {
             return (
               <SourceCodeLink
-                wsUrl={wsUrl}
                 sourceCodeData={sourceCodeData}
                 setEditorText={setEditorText}
+                setEditorFilePath={setEditorFilePath}
               />
             );
           })}
@@ -224,4 +224,14 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
 type LNBProps = {
   wsUrl?: string;
   setEditorText?: Function;
+  setEditorFilePath?: Function;
+  selectedReference?: {
+    name: string;
+    refId: number;
+    projId: number;
+    type: number;
+  };
+  setSelectedReference?: Function;
+  sourceCodeList?: any[];
+  setSourceCodeList?: Function;
 };

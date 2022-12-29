@@ -1,5 +1,8 @@
 import * as React from "react";
 import * as monaco from "monaco-editor";
+import Button from "@mui/material/Button";
+import AddIcon from "@mui/icons-material/Add";
+import TextField from "@mui/material/TextField";
 import { setRequest } from "../../utils/service-utils";
 // import parseAndGetASTRoot from "../../language-service/parser";
 
@@ -42,10 +45,20 @@ interface IEditorProps {
   fileText?: string;
   setFileText?: Function;
   language: string;
+  editorFilePath?: string;
+  wsUrl?: string;
+  selectedReference?: {
+    name: string;
+    refId: number;
+    projId: number;
+    type: number;
+  };
+  sourceCodeList?: any[];
 }
 
 const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
-  const { fileText } = props;
+  const { fileText, editorFilePath, wsUrl, selectedReference, sourceCodeList } =
+    props;
   const [token, setToken] = React.useState([]);
   const [text, setText] = React.useState("");
   const [position, setPosition] = React.useState(new monaco.Position(0, 0));
@@ -100,10 +113,60 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
     model.setValue(fileText);
   }, [fileText]);
 
+  const [commitMessage, setCommitMessage] = React.useState(
+    "Enter Commit Message"
+  );
+  const [result, setResult] = React.useState("");
+  const onReferenceNameChange = (event) => {
+    setCommitMessage(event.target.value);
+  };
+  const onCommitClick = () => {
+    const commitSocket = new WebSocket(wsUrl);
+    const modifiedSrc = [{ src_path: editorFilePath, content: text }];
+    const nonModifiedSrc = [];
+    sourceCodeList.map((s) => {
+      if (s.srcPath != editorFilePath) {
+        nonModifiedSrc.push({ src_path: s.srcPath, content: s.content });
+      }
+    });
+    const request = setRequest("com.tmax.service.commit.InsertService", {
+      proj_id: selectedReference.projId,
+      ref_id: selectedReference.refId,
+      commit: { message: commitMessage, is_commit: true },
+      modified_src: modifiedSrc,
+      non_modified_src: nonModifiedSrc,
+    });
+    commitSocket.onopen = (event) => {
+      commitSocket.send(JSON.stringify(request));
+    };
+
+    commitSocket.onmessage = (event) => {
+      console.log(event.data);
+      const wsdata = JSON.parse(event.data).body.data;
+      setResult(`${wsdata.message}(${wsdata.commitId}) is complite`);
+    };
+  };
+
   return (
     <div style={{ height: 750 }}>
+      <div className="title">{editorFilePath}</div>
+      <TextField
+        autoFocus
+        margin="dense"
+        id="name"
+        label="Commit Message"
+        type="text"
+        fullWidth
+        variant="standard"
+        onChange={onReferenceNameChange}
+      />
+      <Button variant="outlined" onClick={onCommitClick}>
+        Commit
+        <AddIcon />
+      </Button>
+      {result}
       <div ref={assignRef} className="editor-container"></div>
-      <div>Content Change Position</div>
+      {/* <div>Content Change Position</div>
       <div>LineNumber : {position.lineNumber}</div>
       <div>Column : {position.column}</div>
       <div>Key Down Position</div>
@@ -119,7 +182,7 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
             })}
           </div>
         );
-      })}
+      })} */}
     </div>
   );
 };

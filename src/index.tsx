@@ -39,15 +39,36 @@ const App = () => {
 
 const Main = () => {
   const [editorText, setEditorText] = React.useState(testCode);
+  const [editorFilePath, setEditorFilePath] = React.useState("");
+  const [selectedReference, setSelectedReference] = React.useState({
+    name: "",
+    refId: 0,
+    projId: 0,
+    type: 0,
+  });
+  const [sourceCodeList, setSourceCodeList] = React.useState([]);
+
   return (
     <>
-      <LNB wsUrl={wsUrl} setEditorText={setEditorText} />
+      <LNB
+        wsUrl={wsUrl}
+        setEditorText={setEditorText}
+        setEditorFilePath={setEditorFilePath}
+        selectedReference={selectedReference}
+        setSelectedReference={setSelectedReference}
+        sourceCodeList={sourceCodeList}
+        setSourceCodeList={setSourceCodeList}
+      />
       <div className="editor-area">
         <div className="title">Java Editor</div>
         <Editor
           language={"java"}
+          wsUrl={wsUrl}
+          selectedReference={selectedReference}
           fileText={editorText}
           setFileText={setEditorText}
+          editorFilePath={editorFilePath}
+          sourceCodeList={sourceCodeList}
         ></Editor>
       </div>
     </>
