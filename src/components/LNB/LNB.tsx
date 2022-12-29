@@ -16,13 +16,13 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
     React.useState(true);
 
   React.useEffect(() => {
-    const exampleSocket = new WebSocket(wsUrl);
+    const projectSocket = new WebSocket(wsUrl);
     const request = setRequest("com.tmax.service.project.ListService", {});
-    exampleSocket.onopen = (event) => {
-      exampleSocket.send(JSON.stringify(request));
+    projectSocket.onopen = (event) => {
+      projectSocket.send(JSON.stringify(request));
     };
 
-    exampleSocket.onmessage = (event) => {
+    projectSocket.onmessage = (event) => {
       console.log(event.data);
       const wsdata = JSON.parse(event.data).body.data;
 
