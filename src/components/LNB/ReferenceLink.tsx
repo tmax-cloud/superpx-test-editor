@@ -24,7 +24,7 @@ export const RefernceLink: React.FC<ReferenceLinkProps> = ({
   return (
     <div>
       <span onClick={onFileLinkClick}>{referenceData.name}</span>
-      <DeleteIcon className="inline" />
+      <DeleteIcon />
     </div>
   );
 };

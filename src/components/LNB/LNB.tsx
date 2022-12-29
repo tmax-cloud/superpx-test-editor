@@ -12,16 +12,21 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Divider from "@mui/material/Divider";
 import { CreateProjectForm } from "../Form/CreateProjectForm";
+import { CreateReferenceForm } from "../Form/CreateReferenceForm";
 
 export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
   const [projectList, setProjectList] = React.useState([]);
   const [referenceList, setReferenceList] = React.useState([]);
-  const [showReferenceList, setShowReferenceList] = React.useState(true);
+  const [selectedProject, setSelectedProject] = React.useState({
+    name: "",
+    projId: 0,
+  });
   const [sourceCodeList, setSourceCodeList] = React.useState([]);
   const [showOpenSouceCodeList, setShowOpenSouceCodeList] =
     React.useState(true);
-
   const [openCreateProjectForm, setOpenCreateProjectForm] =
+    React.useState(false);
+  const [openCreateReferenceForm, setOpenCreateReferenceForm] =
     React.useState(false);
 
   React.useEffect(() => {
@@ -49,6 +54,11 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
     const tempProjectList = projectList;
     tempProjectList.push(project);
     setProjectList(tempProjectList);
+  };
+  const updateReferenceList = (reference) => {
+    const tempReferenceList = referenceList;
+    tempReferenceList.push(reference);
+    setProjectList(tempReferenceList);
   };
   const deleteProjectList = (projId) => {
     setProjectList(projectList.filter((p) => p.projId != projId));
@@ -82,7 +92,6 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
               wsUrl={wsUrl}
               open={openCreateProjectForm}
               setOpen={setOpenCreateProjectForm}
-              projectList={projectList}
               updateProjectList={updateProjectList}
               setEditorText={setEditorText}
             />
@@ -96,6 +105,7 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
                   setReferenceList={setReferenceList}
                   setSourceCodeList={setSourceCodeList}
                   deleteProjectList={deleteProjectList}
+                  setSelectedProject={setSelectedProject}
                 />
               </AccordionDetails>
             );
@@ -103,16 +113,31 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
         </Accordion>
       </div>
       <div>
+        <Divider />
         <h3>ReferenceList</h3>
-        <button
-          onClick={() => {
-            setShowReferenceList(!showReferenceList);
-          }}
-        >
-          {showReferenceList ? "접기" : "열기"}
-        </button>
-        {showReferenceList &&
-          referenceList.map((filedata) => {
+        <Accordion defaultExpanded={true}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography>
+              {selectedProject.name
+                ? selectedProject.name
+                : "Select Project, please"}
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <CreateReferenceForm
+              wsUrl={wsUrl}
+              open={openCreateReferenceForm}
+              selectedProjectId={selectedProject.projId}
+              setOpen={setOpenCreateReferenceForm}
+              updateReferenceList={updateReferenceList}
+              setEditorText={setEditorText}
+            />
+          </AccordionDetails>
+          {referenceList.map((filedata) => {
             return (
               <RefernceLink
                 wsUrl={wsUrl}
@@ -121,6 +146,7 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
               />
             );
           })}
+        </Accordion>
       </div>
       <div>
         <h3>SourceCodeList</h3>

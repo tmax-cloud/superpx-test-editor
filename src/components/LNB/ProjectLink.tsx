@@ -8,8 +8,10 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
   setReferenceList,
   setSourceCodeList,
   deleteProjectList,
+  setSelectedProject,
 }) => {
   const onProjectLinkClick = async () => {
+    setSelectedProject(projectData);
     const projectSocket = new WebSocket(wsUrl);
     const request = setRequest("com.tmax.service.project.DetailService", {
       proj_id: projectData.projId,
@@ -86,4 +88,5 @@ type ProjectLinkProps = {
   setReferenceList?: Function;
   setSourceCodeList?: Function;
   deleteProjectList?: Function;
+  setSelectedProject?: Function;
 };

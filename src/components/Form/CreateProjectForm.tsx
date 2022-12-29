@@ -9,11 +9,10 @@ import DialogTitle from "@mui/material/DialogTitle";
 import AddIcon from "@mui/icons-material/Add";
 import { setRequest } from "../../utils/service-utils";
 
-export const CreateProjectForm: React.FC<CreateProjectFormDialogProps> = ({
+export const CreateProjectForm: React.FC<CreateProjectFormProps> = ({
   wsUrl,
   open,
   setOpen,
-  projectList,
   updateProjectList,
   setEditorText,
 }) => {
@@ -28,7 +27,7 @@ export const CreateProjectForm: React.FC<CreateProjectFormDialogProps> = ({
   const onClickCreate = () => {
     const projectSocket = new WebSocket(wsUrl);
     const request = setRequest("com.tmax.service.project.InsertService", {
-      project: { name: text },
+      project: { name: projectName },
       reference: { name: "main", type: 0 },
     });
     projectSocket.onopen = (event) => {
@@ -39,13 +38,13 @@ export const CreateProjectForm: React.FC<CreateProjectFormDialogProps> = ({
       console.log(event.data);
       const wsdata = JSON.parse(event.data).body.data;
       updateProjectList({ name: wsdata.name, projId: wsdata.projId });
-      setEditorText(`Add Project List from ${wsUrl}.`);
+      setEditorText(`Add Project to ${wsUrl}.`);
     };
     setOpen(false);
   };
-  const [text, setText] = React.useState("");
-  const onTextChange = (event) => {
-    setText(event.target.value);
+  const [projectName, setProjectName] = React.useState("");
+  const onProjectNameChange = (event) => {
+    setProjectName(event.target.value);
   };
 
   return (
@@ -66,7 +65,7 @@ export const CreateProjectForm: React.FC<CreateProjectFormDialogProps> = ({
             type="text"
             fullWidth
             variant="standard"
-            onChange={onTextChange}
+            onChange={onProjectNameChange}
           />
         </DialogContent>
         <DialogActions>
@@ -78,11 +77,10 @@ export const CreateProjectForm: React.FC<CreateProjectFormDialogProps> = ({
   );
 };
 
-type CreateProjectFormDialogProps = {
+type CreateProjectFormProps = {
   wsUrl: string;
   open: boolean;
   setOpen: Function;
-  projectList: any[];
   updateProjectList: Function;
   setEditorText: Function;
 };
