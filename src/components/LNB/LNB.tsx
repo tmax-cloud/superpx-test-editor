@@ -5,10 +5,16 @@ import { RefernceLink } from "./ReferenceLink";
 import { SourceCodeLink } from "./SourceCodeLink";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import Typography from "@mui/material/Typography";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import AddIcon from "@mui/icons-material/Add";
+import Divider from "@mui/material/Divider";
 
 export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
   const [projectList, setProjectList] = React.useState([]);
-  const [showProjectList, setShowProjectList] = React.useState(true);
   const [referenceList, setReferenceList] = React.useState([]);
   const [showReferenceList, setShowReferenceList] = React.useState(true);
   const [sourceCodeList, setSourceCodeList] = React.useState([]);
@@ -36,6 +42,9 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
       setEditorText(`Get Project List from ${wsUrl}.`);
     };
   }, []);
+  const onAddProjectClick = () => {
+    alert("Hi");
+  };
 
   return (
     <div className="sidebar">
@@ -50,25 +59,35 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
       )}
 
       <div>
+        <Divider />
         <h3>ProjectList</h3>
-        <button
-          onClick={() => {
-            setShowProjectList(!showProjectList);
-          }}
-        >
-          {showProjectList ? "접기" : "열기"}
-        </button>
-        {showProjectList &&
-          projectList.map((projectdata) => {
+        <Accordion defaultExpanded={true}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography>{wsUrl}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Button onClick={onAddProjectClick}>
+              Add Project
+              <AddIcon />
+            </Button>
+          </AccordionDetails>
+          {projectList.map((projectdata) => {
             return (
-              <ProjectLink
-                wsUrl={wsUrl}
-                projectData={projectdata}
-                setReferenceList={setReferenceList}
-                setSourceCodeList={setSourceCodeList}
-              />
+              <AccordionDetails>
+                <ProjectLink
+                  wsUrl={wsUrl}
+                  projectData={projectdata}
+                  setReferenceList={setReferenceList}
+                  setSourceCodeList={setSourceCodeList}
+                />
+              </AccordionDetails>
             );
           })}
+        </Accordion>
       </div>
       <div>
         <h3>ReferenceList</h3>
