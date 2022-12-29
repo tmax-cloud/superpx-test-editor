@@ -23,6 +23,40 @@ export const RefernceLink: React.FC<ReferenceLinkProps> = ({
     refernceSocket.onmessage = (event) => {
       const wsdata = JSON.parse(event.data).body.data;
       alert(`Get Reference ${wsdata.name}.`);
+      const commitSocket = new WebSocket(wsUrl);
+      const commitSocketRequest = setRequest(
+        "com.tmax.service.commit.ListService",
+        {
+          ref_id: referenceData.refId,
+        }
+      );
+      commitSocket.onopen = (event) => {
+        commitSocket.send(JSON.stringify(commitSocketRequest));
+      };
+
+      commitSocket.onmessage = (event) => {
+        const commitId = JSON.parse(event.data).body.data
+          ? JSON.parse(event.data).body.data[0].commitId
+          : null;
+        if (commitId) {
+          const commitSocket = new WebSocket(wsUrl);
+          const commitSocketRequest = setRequest(
+            "com.tmax.service.commit.DetailService",
+            {
+              commit_id: commitId,
+            }
+          );
+          commitSocket.onopen = (event) => {
+            commitSocket.send(JSON.stringify(commitSocketRequest));
+          };
+
+          commitSocket.onmessage = (event) => {
+            setSourceCodeList(JSON.parse(event.data).body.data);
+          };
+        } else {
+          setSourceCodeList([]);
+        }
+      };
     };
   };
 
