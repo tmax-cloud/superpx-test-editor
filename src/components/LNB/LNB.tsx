@@ -56,7 +56,7 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
 
   return (
     <div className="sidebar">
-      {(["explorer", "search", "scm", "debug", "extension"] as const).map(
+      {/* {(["explorer", "search", "scm", "debug", "extension"] as const).map(
         (lnb) => (
           <div>
             <Link to={`/${lnb}`}>
@@ -64,7 +64,7 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
             </Link>
           </div>
         )
-      )}
+      )} */}
 
       <div>
         <Divider />

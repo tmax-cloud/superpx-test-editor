@@ -21,7 +21,7 @@ body,
   height: 100%;
   position: fixed;
   right: 0;
-  width: 90%;
+  width: 85%;
 }
 
 .sidebar {
@@ -32,5 +32,5 @@ body,
   color: #202020;
   height: 100%;
   z-index: 99;
-  width: 10%;
+  width: 15%;
 }
