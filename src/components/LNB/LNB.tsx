@@ -3,8 +3,7 @@ import { setRequest } from "../../utils/service-utils";
 import { ProjectLink } from "./ProjectLink";
 import { RefernceLink } from "./ReferenceLink";
 import { SourceCodeLink } from "./SourceCodeLink";
-import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
+import { CommitLink } from "./CommitLink";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -17,6 +16,9 @@ import { CreateReferenceForm } from "../Form/CreateReferenceForm";
 export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
   const [projectList, setProjectList] = React.useState([]);
   const [referenceList, setReferenceList] = React.useState([]);
+  const [commitList, setCommitList] = React.useState([]);
+
+  const [sourceCodeList, setSourceCodeList] = React.useState([]);
   const [selectedProject, setSelectedProject] = React.useState({
     name: "",
     projId: 0,
@@ -27,7 +29,12 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
     projId: 0,
     type: 0,
   });
-  const [sourceCodeList, setSourceCodeList] = React.useState([]);
+  const [selectedCommit, setSelectedCommit] = React.useState({
+    commitId: 0,
+    message: "",
+    preCommitId: 0,
+    isCommit: false,
+  });
   const [openCreateProjectForm, setOpenCreateProjectForm] =
     React.useState(false);
   const [openCreateReferenceForm, setOpenCreateReferenceForm] =
@@ -100,17 +107,18 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
               setEditorText={setEditorText}
             />
           </AccordionDetails>
-          {projectList.map((projectdata) => {
+          {projectList.map((projectData) => {
             return (
               <AccordionDetails>
                 <ProjectLink
                   wsUrl={wsUrl}
-                  projectData={projectdata}
+                  projectData={projectData}
                   setReferenceList={setReferenceList}
                   setSourceCodeList={setSourceCodeList}
                   deleteProjectList={deleteProjectList}
                   setSelectedProject={setSelectedProject}
                   setSelectedReference={setSelectedReference}
+                  setCommitList={setCommitList}
                 />
               </AccordionDetails>
             );
@@ -142,13 +150,42 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
               setEditorText={setEditorText}
             />
           </AccordionDetails>
-          {referenceList.map((filedata) => {
+          {referenceList.map((referenceData) => {
             return (
               <RefernceLink
                 wsUrl={wsUrl}
-                referenceData={filedata}
+                referenceData={referenceData}
                 setSourceCodeList={setSourceCodeList}
                 setSelectedReference={setSelectedReference}
+                setCommitList={setCommitList}
+                setSelectedCommit={setSelectedCommit}
+              />
+            );
+          })}
+        </Accordion>
+      </div>
+      <Divider />
+      <div>
+        <h3>Commit List</h3>
+        <Accordion defaultExpanded={true}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography>
+              {selectedReference.name
+                ? selectedReference.name
+                : "Select Project, please"}
+            </Typography>
+          </AccordionSummary>
+          {commitList.map((commitData) => {
+            return (
+              <CommitLink
+                wsUrl={wsUrl}
+                commitData={commitData}
+                setSourceCodeList={setSourceCodeList}
+                setSelectedCommit={setSelectedCommit}
               />
             );
           })}

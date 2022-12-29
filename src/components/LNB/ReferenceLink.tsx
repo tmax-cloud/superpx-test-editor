@@ -1,12 +1,13 @@
 import * as React from "react";
 import { setRequest } from "../../utils/service-utils";
-import DeleteIcon from "@mui/icons-material/Delete";
 
 export const RefernceLink: React.FC<ReferenceLinkProps> = ({
   wsUrl,
   referenceData,
   setSourceCodeList,
   setSelectedReference,
+  setCommitList,
+  setSelectedCommit,
 }) => {
   const onRefereneLinkClick = async () => {
     setSelectedReference(referenceData);
@@ -37,6 +38,10 @@ export const RefernceLink: React.FC<ReferenceLinkProps> = ({
       };
 
       commitSocket.onmessage = (event) => {
+        if (JSON.parse(event.data).body.data) {
+          setCommitList(JSON.parse(event.data).body.data);
+          setSelectedCommit(JSON.parse(event.data).body.data[0]);
+        }
         const commitId = JSON.parse(event.data).body.data
           ? JSON.parse(event.data).body.data[0].commitId
           : null;
@@ -79,4 +84,6 @@ type ReferenceLinkProps = {
   };
   setSourceCodeList?: Function;
   setSelectedReference?: Function;
+  setCommitList?: Function;
+  setSelectedCommit?: Function;
 };

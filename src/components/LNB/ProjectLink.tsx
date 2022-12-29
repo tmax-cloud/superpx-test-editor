@@ -10,6 +10,7 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
   deleteProjectList,
   setSelectedProject,
   setSelectedReference,
+  setCommitList,
 }) => {
   const onProjectLinkClick = async () => {
     setSelectedProject(projectData);
@@ -55,6 +56,9 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
       };
 
       commitSocket.onmessage = (event) => {
+        if (JSON.parse(event.data).body.data) {
+          setCommitList(JSON.parse(event.data).body.data)
+        }
         const commitId = JSON.parse(event.data).body.data
           ? JSON.parse(event.data).body.data[0].commitId
           : null;
@@ -74,6 +78,7 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
             setSourceCodeList(JSON.parse(event.data).body.data);
           };
         } else {
+          setCommitList([]);
           setSourceCodeList([]);
         }
       };
@@ -114,4 +119,5 @@ type ProjectLinkProps = {
   deleteProjectList?: Function;
   setSelectedProject?: Function;
   setSelectedReference?: Function;
+  setCommitList?: Function;
 };
