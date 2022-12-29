@@ -3,18 +3,7 @@ import { setRequest } from "../../utils/service-utils";
 import { ProjectLink } from "./ProjectLink";
 import { RefernceLink } from "./ReferenceLink";
 import { SourceCodeLink } from "./SourceCodeLink";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
@@ -26,63 +15,6 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
   const [showOpenSouceCodeList, setShowOpenSouceCodeList] =
     React.useState(true);
 
-  type LNB = "explorer" | "search" | "scm" | "debug" | "extension";
-
-  const [state, setState] = React.useState({
-    explorer: false,
-    search: false,
-    scm: false,
-    debug: false,
-    extension: false,
-  });
-  const toggleDrawer =
-    (lnb: LNB, open: boolean) =>
-    (event: React.KeyboardEvent | React.MouseEvent) => {
-      if (
-        event.type === "keydown" &&
-        ((event as React.KeyboardEvent).key === "Tab" ||
-          (event as React.KeyboardEvent).key === "Shift")
-      ) {
-        return;
-      }
-
-      setState({ ...state, [lnb]: open });
-    };
-
-  const list = (lnb: LNB) => (
-    <Box
-      sx={{ width: 250 }}
-      role="presentation"
-      onClick={toggleDrawer(lnb, false)}
-      onKeyDown={toggleDrawer(lnb, false)}
-    >
-      <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
   React.useEffect(() => {
     const exampleSocket = new WebSocket(wsUrl);
     const request = setRequest("com.tmax.service.project.ListService", {});
@@ -118,18 +50,6 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
       )}
 
       <div>
-        {/* <div>
-          {(["explorer", "search", "scm", "debug", "extension"] as const).map(
-            (lnb) => (
-              <div key={lnb}>
-                <Button onClick={toggleDrawer(lnb, true)}>{lnb}</Button>
-                <Drawer open={state[lnb]} onClose={toggleDrawer(lnb, false)}>
-                  {list(lnb)}
-                </Drawer>
-              </div>
-            )
-          )}
-        </div> */}
         <h3>ProjectList</h3>
         <button
           onClick={() => {
