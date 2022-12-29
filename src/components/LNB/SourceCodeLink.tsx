@@ -7,30 +7,13 @@ export const SourceCodeLink: React.FC<SourceCodeLinkProps> = ({
   sourceCodeData,
   setEditorText,
 }) => {
-  const onFileLinkClick = async () => {
-    const exampleSocket = new WebSocket(wsUrl);
-    const request = setRequest("com.tmax.service.sourceCode.DetailSrcService", {
-      srcId: sourceCodeData.id,
-    });
-    exampleSocket.onopen = (event) => {
-      exampleSocket.send(JSON.stringify(request));
-    };
-
-    exampleSocket.onmessage = (event) => {
-      console.log(event.data);
-      const wsdata = JSON.parse(event.data);
-      const lineData = [];
-      wsdata.body.data.forEach((d) => {
-        lineData.push(d.content);
-      });
-      setEditorText(lineData.join(""));
-    };
+  const onSourceCodeLinkClick = () => {
+    setEditorText(sourceCodeData.content);
   };
 
   return (
     <div>
-      <span onClick={onFileLinkClick}>{sourceCodeData.path}</span>
-      <DeleteIcon className="inline" />
+      <span onClick={onSourceCodeLinkClick}>{sourceCodeData.srcPath}</span>
     </div>
   );
 };
@@ -38,9 +21,12 @@ export const SourceCodeLink: React.FC<SourceCodeLinkProps> = ({
 type SourceCodeLinkProps = {
   wsUrl: string;
   sourceCodeData?: {
-    id: number;
-    path: string;
-    projectId: number;
+    commitId: number;
+    content: string;
+    createdTime: string;
+    srcHistId: number;
+    srcId: number;
+    srcPath: string;
   };
   setEditorText?: Function;
 };

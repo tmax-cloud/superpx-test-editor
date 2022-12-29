@@ -55,21 +55,27 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
       };
 
       commitSocket.onmessage = (event) => {
-        const commitId = JSON.parse(event.data).body.data[0].commitId;
-        const commitSocket = new WebSocket(wsUrl);
-        const commitSocketRequest = setRequest(
-          "com.tmax.service.commit.DetailService",
-          {
-            commit_id: commitId,
-          }
-        );
-        commitSocket.onopen = (event) => {
-          commitSocket.send(JSON.stringify(commitSocketRequest));
-        };
+        const commitId = JSON.parse(event.data).body.data
+          ? JSON.parse(event.data).body.data[0].commitId
+          : null;
+        if (commitId) {
+          const commitSocket = new WebSocket(wsUrl);
+          const commitSocketRequest = setRequest(
+            "com.tmax.service.commit.DetailService",
+            {
+              commit_id: commitId,
+            }
+          );
+          commitSocket.onopen = (event) => {
+            commitSocket.send(JSON.stringify(commitSocketRequest));
+          };
 
-        commitSocket.onmessage = (event) => {
-          setSourceCodeList(JSON.parse(event.data).body.data);
-        };
+          commitSocket.onmessage = (event) => {
+            setSourceCodeList(JSON.parse(event.data).body.data);
+          };
+        } else {
+          setSourceCodeList([]);
+        }
       };
     };
   };
