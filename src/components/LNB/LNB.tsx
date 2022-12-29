@@ -71,8 +71,12 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
           </AccordionSummary>
           <AccordionDetails>
             <CreateProjectForm
+              wsUrl={wsUrl}
               open={openCreateProjectForm}
               setOpen={setOpenCreateProjectForm}
+              projectList={projectList}
+              setProjectList={setProjectList}
+              setEditorText={setEditorText}
             />
           </AccordionDetails>
           {projectList.map((projectdata) => {

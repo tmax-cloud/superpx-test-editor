@@ -7,10 +7,15 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import AddIcon from "@mui/icons-material/Add";
+import { setRequest } from "../../utils/service-utils";
 
 export const CreateProjectForm: React.FC<CreateProjectFormDialogProps> = ({
+  wsUrl,
   open,
   setOpen,
+  projectList,
+  setProjectList,
+  setEditorText,
 }) => {
   const handleClickOpen = () => {
     setOpen(true);
@@ -21,7 +26,26 @@ export const CreateProjectForm: React.FC<CreateProjectFormDialogProps> = ({
   };
 
   const onClickCreate = () => {
-    alert(text);
+    const projectSocket = new WebSocket(wsUrl);
+    const request = setRequest("com.tmax.service.project.InsertService", {
+      project: { name: text },
+      reference: { name: "main", type: 0 },
+    });
+    projectSocket.onopen = (event) => {
+      projectSocket.send(JSON.stringify(request));
+    };
+
+    projectSocket.onmessage = (event) => {
+      console.log(event.data);
+      const wsdata = JSON.parse(event.data).body.data;
+
+      const tempProjectList = projectList;
+      console.log(wsdata);
+      tempProjectList.push({ name: wsdata.name, projId: wsdata.projId });
+
+      setProjectList(tempProjectList);
+      setEditorText(`Add Project List from ${wsUrl}.`);
+    };
     setOpen(false);
   };
   const [text, setText] = React.useState("");
@@ -36,18 +60,15 @@ export const CreateProjectForm: React.FC<CreateProjectFormDialogProps> = ({
         <AddIcon />
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Subscribe</DialogTitle>
+        <DialogTitle>Add Project</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            To subscribe to this website, please enter your email address here.
-            We will send updates occasionally.
-          </DialogContentText>
+          <DialogContentText>Add Project</DialogContentText>
           <TextField
             autoFocus
             margin="dense"
             id="name"
-            label="Email Address"
-            type="email"
+            label="Project Name"
+            type="text"
             fullWidth
             variant="standard"
             onChange={onTextChange}
@@ -63,6 +84,10 @@ export const CreateProjectForm: React.FC<CreateProjectFormDialogProps> = ({
 };
 
 type CreateProjectFormDialogProps = {
+  wsUrl: string;
   open: boolean;
   setOpen: Function;
+  projectList: any[];
+  setProjectList: Function;
+  setEditorText: Function;
 };
