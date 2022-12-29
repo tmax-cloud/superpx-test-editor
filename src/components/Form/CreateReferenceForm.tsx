@@ -13,7 +13,7 @@ export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
   wsUrl,
   open,
   setOpen,
-  selectedProjectId,
+  selectedProject,
   updateReferenceList,
   setEditorText,
 }) => {
@@ -29,7 +29,7 @@ export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
     const referenceSocket = new WebSocket(wsUrl);
     const request = setRequest("com.tmax.service.reference.InsertService", {
       reference: {
-        proj_id: selectedProjectId,
+        proj_id: selectedProject.projId,
         name: referenceName,
         type: referenceType,
       },
@@ -47,7 +47,7 @@ export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
         refId: wsdata.refId,
         type: wsdata.type,
       });
-      setEditorText(`Add Reference to ${wsdata.projId}.`);
+      setEditorText(`Add Reference to ${selectedProject.name}(${selectedProject.projId}).`);
     };
     setOpen(false);
   };
@@ -104,7 +104,10 @@ type CreateReferenceFormProps = {
   wsUrl: string;
   open: boolean;
   setOpen: Function;
-  selectedProjectId: number;
+  selectedProject: {
+    name: string;
+    projId: number;
+  };
   updateReferenceList: Function;
   setEditorText: Function;
 };

@@ -58,7 +58,7 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
   const updateReferenceList = (reference) => {
     const tempReferenceList = referenceList;
     tempReferenceList.push(reference);
-    setProjectList(tempReferenceList);
+    setReferenceList(tempReferenceList);
   };
   const deleteProjectList = (projId) => {
     setProjectList(projectList.filter((p) => p.projId != projId));
@@ -131,7 +131,7 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
             <CreateReferenceForm
               wsUrl={wsUrl}
               open={openCreateReferenceForm}
-              selectedProjectId={selectedProject.projId}
+              selectedProject={selectedProject}
               setOpen={setOpenCreateReferenceForm}
               updateReferenceList={updateReferenceList}
               setEditorText={setEditorText}
