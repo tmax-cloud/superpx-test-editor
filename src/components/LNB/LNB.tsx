@@ -10,8 +10,8 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import AddIcon from "@mui/icons-material/Add";
 import Divider from "@mui/material/Divider";
+import { CreateProjectForm } from "../Form/CreateProjectForm";
 
 export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
   const [projectList, setProjectList] = React.useState([]);
@@ -20,6 +20,9 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
   const [sourceCodeList, setSourceCodeList] = React.useState([]);
   const [showOpenSouceCodeList, setShowOpenSouceCodeList] =
     React.useState(true);
+
+  const [openCreateProjectForm, setOpenCreateProjectForm] =
+    React.useState(false);
 
   React.useEffect(() => {
     const projectSocket = new WebSocket(wsUrl);
@@ -42,9 +45,6 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
       setEditorText(`Get Project List from ${wsUrl}.`);
     };
   }, []);
-  const onAddProjectClick = () => {
-    alert("Hi");
-  };
 
   return (
     <div className="sidebar">
@@ -70,10 +70,10 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
             <Typography>{wsUrl}</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Button onClick={onAddProjectClick}>
-              Add Project
-              <AddIcon />
-            </Button>
+            <CreateProjectForm
+              open={openCreateProjectForm}
+              setOpen={setOpenCreateProjectForm}
+            />
           </AccordionDetails>
           {projectList.map((projectdata) => {
             return (
