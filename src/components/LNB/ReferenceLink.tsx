@@ -7,24 +7,28 @@ export const RefernceLink: React.FC<ReferenceLinkProps> = ({
   referenceData,
   setSourceCodeList,
 }) => {
-  const onFileLinkClick = async () => {
-    const exampleSocket = new WebSocket(wsUrl);
-    const request = setRequest("com.tmax.service.reference.ListService", {
-      proj_id: referenceData.projId,
-    });
-    exampleSocket.onopen = (event) => {
-      exampleSocket.send(JSON.stringify(request));
+  const onRefereneLinkClick = async () => {
+    const refernceSocket = new WebSocket(wsUrl);
+    const refernceRequest = setRequest(
+      "com.tmax.service.reference.DetailService",
+      {
+        proj_id: referenceData.projId,
+        ref_id: referenceData.refId,
+      }
+    );
+    refernceSocket.onopen = (event) => {
+      refernceSocket.send(JSON.stringify(refernceRequest));
     };
 
-    exampleSocket.onmessage = (event) => {
-      setSourceCodeList(JSON.parse(event.data).body.data);
+    refernceSocket.onmessage = (event) => {
+      const wsdata = JSON.parse(event.data).body.data;
+      alert(`Get Reference ${wsdata.name}.`);
     };
   };
 
   return (
     <div>
-      <span onClick={onFileLinkClick}>{referenceData.name}</span>
-      <DeleteIcon />
+      <span onClick={onRefereneLinkClick}>{referenceData.name}</span>
     </div>
   );
 };
