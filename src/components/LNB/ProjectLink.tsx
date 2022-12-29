@@ -42,7 +42,7 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
 
   return (
     <div>
-      <p onClick={onFileLinkClick}>{projectData.name}</p>;
+      <span onClick={onFileLinkClick}>{projectData.name}</span>
       <DeleteIcon className="inline" />
     </div>
   );

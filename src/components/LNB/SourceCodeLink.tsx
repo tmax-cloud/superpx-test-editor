@@ -29,7 +29,7 @@ export const SourceCodeLink: React.FC<SourceCodeLinkProps> = ({
 
   return (
     <div>
-      <p onClick={onFileLinkClick}>{sourceCodeData.path}</p>;
+      <span onClick={onFileLinkClick}>{sourceCodeData.path}</span>
       <DeleteIcon className="inline" />
     </div>
   );
