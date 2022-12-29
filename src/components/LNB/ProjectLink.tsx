@@ -37,23 +37,41 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
     };
 
     refernceSocket.onmessage = (event) => {
-      setReferenceList(JSON.parse(event.data).body.data);
+      const referenceList = JSON.parse(event.data).body.data;
+      setReferenceList(referenceList);
+      const mainReferenceId =
+        referenceList.filter((r) => r.name == "main")[0].refId ||
+        referenceList[0].refId;
+      console.log(mainReferenceId);
+      const commitSocket = new WebSocket(wsUrl);
+      const commitSocketRequest = setRequest(
+        "com.tmax.service.commit.ListService",
+        {
+          ref_id: mainReferenceId,
+        }
+      );
+      commitSocket.onopen = (event) => {
+        commitSocket.send(JSON.stringify(commitSocketRequest));
+      };
+
+      commitSocket.onmessage = (event) => {
+        const commitId = JSON.parse(event.data).body.data[0].commitId;
+        const commitSocket = new WebSocket(wsUrl);
+        const commitSocketRequest = setRequest(
+          "com.tmax.service.commit.DetailService",
+          {
+            commit_id: commitId,
+          }
+        );
+        commitSocket.onopen = (event) => {
+          commitSocket.send(JSON.stringify(commitSocketRequest));
+        };
+
+        commitSocket.onmessage = (event) => {
+          setSourceCodeList(JSON.parse(event.data).body.data);
+        };
+      };
     };
-
-    // const sourceCodeSocket = new WebSocket(wsUrl);
-    // const sourceCodeSocketRequest = setRequest(
-    //   "com.tmax.service.sourceCode.ListSrcService",
-    //   {
-    //     projectId: projectData.projId,
-    //   }
-    // );
-    // sourceCodeSocket.onopen = (event) => {
-    //   sourceCodeSocket.send(JSON.stringify(sourceCodeSocketRequest));
-    // };
-
-    // sourceCodeSocket.onmessage = (event) => {
-    //   setSourceCodeList(JSON.parse(event.data).body.data);
-    // };
   };
   const onDeleteClick = () => {
     const projectSocket = new WebSocket(wsUrl);
