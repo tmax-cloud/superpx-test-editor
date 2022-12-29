@@ -9,6 +9,7 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
   setSourceCodeList,
   deleteProjectList,
   setSelectedProject,
+  setSelectedReference,
 }) => {
   const onProjectLinkClick = async () => {
     setSelectedProject(projectData);
@@ -39,15 +40,14 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
     refernceSocket.onmessage = (event) => {
       const referenceList = JSON.parse(event.data).body.data;
       setReferenceList(referenceList);
-      const mainReferenceId =
-        referenceList.filter((r) => r.name == "main")[0].refId ||
-        referenceList[0].refId;
-      console.log(mainReferenceId);
+      const mainReference =
+        referenceList.filter((r) => r.name == "main")[0] || referenceList[0];
+      setSelectedReference(mainReference);
       const commitSocket = new WebSocket(wsUrl);
       const commitSocketRequest = setRequest(
         "com.tmax.service.commit.ListService",
         {
-          ref_id: mainReferenceId,
+          ref_id: mainReference.refId,
         }
       );
       commitSocket.onopen = (event) => {
@@ -113,4 +113,5 @@ type ProjectLinkProps = {
   setSourceCodeList?: Function;
   deleteProjectList?: Function;
   setSelectedProject?: Function;
+  setSelectedReference?: Function;
 };

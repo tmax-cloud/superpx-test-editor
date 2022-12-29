@@ -6,8 +6,10 @@ export const RefernceLink: React.FC<ReferenceLinkProps> = ({
   wsUrl,
   referenceData,
   setSourceCodeList,
+  setSelectedReference,
 }) => {
   const onRefereneLinkClick = async () => {
+    setSelectedReference(referenceData);
     const refernceSocket = new WebSocket(wsUrl);
     const refernceRequest = setRequest(
       "com.tmax.service.reference.DetailService",
@@ -76,4 +78,5 @@ type ReferenceLinkProps = {
     type: number;
   };
   setSourceCodeList?: Function;
+  setSelectedReference?: Function;
 };

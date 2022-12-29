@@ -21,9 +21,13 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
     name: "",
     projId: 0,
   });
+  const [selectedReference, setSelectedReference] = React.useState({
+    name: "",
+    refId: 0,
+    projId: 0,
+    type: 0,
+  });
   const [sourceCodeList, setSourceCodeList] = React.useState([]);
-  const [showOpenSouceCodeList, setShowOpenSouceCodeList] =
-    React.useState(true);
   const [openCreateProjectForm, setOpenCreateProjectForm] =
     React.useState(false);
   const [openCreateReferenceForm, setOpenCreateReferenceForm] =
@@ -78,7 +82,7 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
 
       <div>
         <Divider />
-        <h3>ProjectList</h3>
+        <h3>Project List</h3>
         <Accordion defaultExpanded={true}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -106,15 +110,16 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
                   setSourceCodeList={setSourceCodeList}
                   deleteProjectList={deleteProjectList}
                   setSelectedProject={setSelectedProject}
+                  setSelectedReference={setSelectedReference}
                 />
               </AccordionDetails>
             );
           })}
         </Accordion>
       </div>
+      <Divider />
       <div>
-        <Divider />
-        <h3>ReferenceList</h3>
+        <h3>Reference List</h3>
         <Accordion defaultExpanded={true}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -143,30 +148,37 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
                 wsUrl={wsUrl}
                 referenceData={filedata}
                 setSourceCodeList={setSourceCodeList}
+                setSelectedReference={setSelectedReference}
               />
             );
           })}
         </Accordion>
       </div>
+      <Divider />
       <div>
-        <h3>SourceCodeList</h3>
-        <button
-          onClick={() => {
-            setShowOpenSouceCodeList(!showOpenSouceCodeList);
-          }}
-        >
-          {showOpenSouceCodeList ? "접기" : "열기"}
-        </button>
-        {showOpenSouceCodeList &&
-          sourceCodeList.map((filedata) => {
+        <h3>Source Code List</h3>
+        <Accordion defaultExpanded={true}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography>
+              {selectedReference.name
+                ? selectedReference.name
+                : "Select Project, please"}
+            </Typography>
+          </AccordionSummary>
+          {sourceCodeList.map((sourceCodeData) => {
             return (
               <SourceCodeLink
                 wsUrl={wsUrl}
-                sourceCodeData={filedata}
+                sourceCodeData={sourceCodeData}
                 setEditorText={setEditorText}
               />
             );
           })}
+        </Accordion>
       </div>
     </div>
   );
