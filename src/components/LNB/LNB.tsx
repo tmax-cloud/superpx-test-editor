@@ -45,6 +45,14 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
       setEditorText(`Get Project List from ${wsUrl}.`);
     };
   }, []);
+  const updateProjectList = (project) => {
+    const tempProjectList = projectList;
+    tempProjectList.push(project);
+    setProjectList(tempProjectList);
+  };
+  const deleteProjectList = (projId) => {
+    setProjectList(projectList.filter((p) => p.projId != projId));
+  };
 
   return (
     <div className="sidebar">
@@ -75,7 +83,7 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
               open={openCreateProjectForm}
               setOpen={setOpenCreateProjectForm}
               projectList={projectList}
-              setProjectList={setProjectList}
+              updateProjectList={updateProjectList}
               setEditorText={setEditorText}
             />
           </AccordionDetails>
@@ -87,6 +95,7 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl, setEditorText }) => {
                   projectData={projectdata}
                   setReferenceList={setReferenceList}
                   setSourceCodeList={setSourceCodeList}
+                  deleteProjectList={deleteProjectList}
                 />
               </AccordionDetails>
             );

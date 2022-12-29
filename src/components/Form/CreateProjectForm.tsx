@@ -14,7 +14,7 @@ export const CreateProjectForm: React.FC<CreateProjectFormDialogProps> = ({
   open,
   setOpen,
   projectList,
-  setProjectList,
+  updateProjectList,
   setEditorText,
 }) => {
   const handleClickOpen = () => {
@@ -38,12 +38,7 @@ export const CreateProjectForm: React.FC<CreateProjectFormDialogProps> = ({
     projectSocket.onmessage = (event) => {
       console.log(event.data);
       const wsdata = JSON.parse(event.data).body.data;
-
-      const tempProjectList = projectList;
-      console.log(wsdata);
-      tempProjectList.push({ name: wsdata.name, projId: wsdata.projId });
-
-      setProjectList(tempProjectList);
+      updateProjectList({ name: wsdata.name, projId: wsdata.projId });
       setEditorText(`Add Project List from ${wsUrl}.`);
     };
     setOpen(false);
@@ -88,6 +83,6 @@ type CreateProjectFormDialogProps = {
   open: boolean;
   setOpen: Function;
   projectList: any[];
-  setProjectList: Function;
+  updateProjectList: Function;
   setEditorText: Function;
 };
