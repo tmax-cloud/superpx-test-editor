@@ -12,6 +12,9 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Divider from "@mui/material/Divider";
 import { CreateProjectForm } from "../Form/CreateProjectForm";
 import { CreateReferenceForm } from "../Form/CreateReferenceForm";
+import Button from "@mui/material/Button";
+import AddIcon from "@mui/icons-material/Add";
+import TextField from "@mui/material/TextField";
 
 export const LNB: React.FC<LNBProps> = ({
   wsUrl,
@@ -75,6 +78,17 @@ export const LNB: React.FC<LNBProps> = ({
     setProjectList(projectList.filter((p) => p.projId != projId));
   };
 
+  const [newFilePath, setNewFilePath] = React.useState("");
+
+  const onSourcePathChange = (event) => {
+    setNewFilePath(event.target.value);
+  }
+
+  const onAddSourceCodeClick = () => {
+    setEditorText("");
+    setEditorFilePath(newFilePath);
+  }
+
   return (
     <div className="sidebar">
       {/* {(["explorer", "search", "scm", "debug", "extension"] as const).map(
@@ -109,18 +123,16 @@ export const LNB: React.FC<LNBProps> = ({
           </AccordionDetails>
           {projectList.map((projectData) => {
             return (
-              <AccordionDetails>
-                <ProjectLink
-                  wsUrl={wsUrl}
-                  projectData={projectData}
-                  setReferenceList={setReferenceList}
-                  setSourceCodeList={setSourceCodeList}
-                  deleteProjectList={deleteProjectList}
-                  setSelectedProject={setSelectedProject}
-                  setSelectedReference={setSelectedReference}
-                  setCommitList={setCommitList}
-                />
-              </AccordionDetails>
+              <ProjectLink
+                wsUrl={wsUrl}
+                projectData={projectData}
+                setReferenceList={setReferenceList}
+                setSourceCodeList={setSourceCodeList}
+                deleteProjectList={deleteProjectList}
+                setSelectedProject={setSelectedProject}
+                setSelectedReference={setSelectedReference}
+                setCommitList={setCommitList}
+              />
             );
           })}
         </Accordion>
@@ -206,6 +218,20 @@ export const LNB: React.FC<LNBProps> = ({
                 : "Select Project, please"}
             </Typography>
           </AccordionSummary>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Source Code Path"
+            type="text"
+            fullWidth
+            variant="standard"
+            onChange={onSourcePathChange}
+          />
+          <Button variant="outlined" onClick={onAddSourceCodeClick}>
+            Add Source Code
+            <AddIcon />
+          </Button>
           {sourceCodeList.map((sourceCodeData) => {
             return (
               <SourceCodeLink
