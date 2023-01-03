@@ -1,10 +1,10 @@
 import * as React from "react";
 import { setRequest } from "../../utils/service-utils";
+import WorkspaceStore from "../../stores/workspaceStore";
 
 export const CommitLink: React.FC<CommitLinkProps> = ({
   wsUrl,
   commitData,
-  setSourceCodeList,
   setSelectedCommit,
 }) => {
   const onCommitinkClick = async () => {
@@ -21,7 +21,7 @@ export const CommitLink: React.FC<CommitLinkProps> = ({
     };
 
     commitSocket.onmessage = (event) => {
-      setSourceCodeList(JSON.parse(event.data).body.data);
+      WorkspaceStore.updateSourceCodeListAction(JSON.parse(event.data).body.data);
     };
   };
 
@@ -40,6 +40,5 @@ type CommitLinkProps = {
     preCommitId: number;
     isCommit: boolean;
   };
-  setSourceCodeList?: Function;
   setSelectedCommit?: Function;
 };

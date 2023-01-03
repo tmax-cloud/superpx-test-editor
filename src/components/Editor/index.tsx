@@ -6,6 +6,7 @@ import TextField from "@mui/material/TextField";
 import { setRequest } from "../../utils/service-utils";
 import { useObserver } from "mobx-react";
 import EditorContentsStore from "../../stores/editorContentsStore";
+import WorkspaceStore from "../../stores/workspaceStore";
 import { setAlert } from "../../utils/alert-utiles";
 // import parseAndGetASTRoot from "../../language-service/parser";
 
@@ -47,17 +48,10 @@ import { setAlert } from "../../utils/alert-utiles";
 interface IEditorProps {
   language: string;
   wsUrl?: string;
-  selectedReference?: {
-    name: string;
-    refId: number;
-    projId: number;
-    type: number;
-  };
-  sourceCodeList?: any[];
 }
 
 const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
-  const { wsUrl, selectedReference, sourceCodeList } = props;
+  const { wsUrl } = props;
   const [token, setToken] = React.useState([]);
   const [text, setText] = React.useState("");
   const [position, setPosition] = React.useState(new monaco.Position(0, 0));
@@ -122,14 +116,14 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
       { src_path: EditorContentsStore.contents[0].path, content: text },
     ];
     const nonModifiedSrc = [];
-    sourceCodeList.map((s) => {
+    WorkspaceStore.sourceCodeList.map((s) => {
       if (s.srcPath != EditorContentsStore.contents[0].path) {
         nonModifiedSrc.push({ src_path: s.srcPath, content: s.content });
       }
     });
     const request = setRequest("com.tmax.service.commit.InsertService", {
-      proj_id: selectedReference.projId,
-      ref_id: selectedReference.refId,
+      proj_id: WorkspaceStore.refernce.projId,
+      ref_id: WorkspaceStore.refernce.refId,
       commit: { message: commitMessage, is_commit: true },
       modified_src: modifiedSrc,
       non_modified_src: nonModifiedSrc,

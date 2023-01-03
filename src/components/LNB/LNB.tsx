@@ -18,14 +18,10 @@ import TextField from "@mui/material/TextField";
 // import { Counter } from "../Counter";
 import { setAlert } from "../../utils/alert-utiles";
 import EditorContentsStore from "../../stores/editorContentsStore";
+import WorkspaceStore from "../../stores/workspaceStore";
+import { useObserver } from "mobx-react";
 
-export const LNB: React.FC<LNBProps> = ({
-  wsUrl,
-  selectedReference,
-  setSelectedReference,
-  sourceCodeList,
-  setSourceCodeList,
-}) => {
+export const LNB: React.FC<LNBProps> = ({ wsUrl }) => {
   const [projectList, setProjectList] = React.useState([]);
   const [referenceList, setReferenceList] = React.useState([]);
   const [commitList, setCommitList] = React.useState([]);
@@ -126,10 +122,8 @@ export const LNB: React.FC<LNBProps> = ({
                 wsUrl={wsUrl}
                 projectData={projectData}
                 setReferenceList={setReferenceList}
-                setSourceCodeList={setSourceCodeList}
                 deleteProjectList={deleteProjectList}
                 setSelectedProject={setSelectedProject}
-                setSelectedReference={setSelectedReference}
                 setCommitList={setCommitList}
               />
             );
@@ -166,8 +160,6 @@ export const LNB: React.FC<LNBProps> = ({
                 key={`project-${referenceData.refId}`}
                 wsUrl={wsUrl}
                 referenceData={referenceData}
-                setSourceCodeList={setSourceCodeList}
-                setSelectedReference={setSelectedReference}
                 setCommitList={setCommitList}
                 setSelectedCommit={setSelectedCommit}
               />
@@ -185,8 +177,8 @@ export const LNB: React.FC<LNBProps> = ({
             id="panel1a-header"
           >
             <Typography>
-              {selectedReference.name
-                ? selectedReference.name
+              {WorkspaceStore.refernce.name
+                ? WorkspaceStore.refernce.name
                 : "Select Project, please"}
             </Typography>
           </AccordionSummary>
@@ -196,7 +188,6 @@ export const LNB: React.FC<LNBProps> = ({
                 key={`commit-${commitData.commitId}`}
                 wsUrl={wsUrl}
                 commitData={commitData}
-                setSourceCodeList={setSourceCodeList}
                 setSelectedCommit={setSelectedCommit}
               />
             );
@@ -213,8 +204,8 @@ export const LNB: React.FC<LNBProps> = ({
             id="panel1a-header"
           >
             <Typography>
-              {selectedReference.name
-                ? selectedReference.name
+              {WorkspaceStore.refernce.name
+                ? WorkspaceStore.refernce.name
                 : "Select Project, please"}
             </Typography>
           </AccordionSummary>
@@ -232,14 +223,16 @@ export const LNB: React.FC<LNBProps> = ({
             Add Source Code
             <AddIcon />
           </Button>
-          {sourceCodeList.map((sourceCodeData) => {
-            return (
-              <SourceCodeLink
-                key={`sourceCodeD-${sourceCodeData.srcPath}`}
-                sourceCodeData={sourceCodeData}
-              />
-            );
-          })}
+          {useObserver(() =>
+            WorkspaceStore.sourceCodeList.map((sourceCodeData) => {
+              return (
+                <SourceCodeLink
+                  key={`sourceCodeD-${sourceCodeData.srcPath}`}
+                  sourceCodeData={sourceCodeData}
+                />
+              );
+            })
+          )}
         </Accordion>
       </div>
     </div>
@@ -248,13 +241,4 @@ export const LNB: React.FC<LNBProps> = ({
 
 type LNBProps = {
   wsUrl?: string;
-  selectedReference?: {
-    name: string;
-    refId: number;
-    projId: number;
-    type: number;
-  };
-  setSelectedReference?: Function;
-  sourceCodeList?: any[];
-  setSourceCodeList?: Function;
 };

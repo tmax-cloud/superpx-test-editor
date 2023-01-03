@@ -3,7 +3,12 @@ import { observable } from "mobx";
 const WorkspaceStore = observable({
   // state
   projectId: 0,
-  refernceId: 0,
+  refernce: {
+    name: "",
+    refId: 0,
+    projId: 0,
+    type: 0,
+  },
   commitId: 0,
   sourceCodeList: [
     {
@@ -21,8 +26,8 @@ const WorkspaceStore = observable({
     this.projectId = projectId;
   },
 
-  updateRefernceIdAction(refernceId: number) {
-    this.refernceId = refernceId;
+  updateRefernceAction(refernce) {
+    this.refernce = refernce;
   },
 
   updateCommitIdAction(commitId: number) {

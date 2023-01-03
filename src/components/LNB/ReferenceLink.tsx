@@ -1,17 +1,16 @@
 import * as React from "react";
 import { setRequest } from "../../utils/service-utils";
 import { setAlert } from "../../utils/alert-utiles";
+import WorkspaceStore from "../../stores/workspaceStore";
 
 export const RefernceLink: React.FC<ReferenceLinkProps> = ({
   wsUrl,
   referenceData,
-  setSourceCodeList,
-  setSelectedReference,
   setCommitList,
   setSelectedCommit,
 }) => {
   const onRefereneLinkClick = async () => {
-    setSelectedReference(referenceData);
+    WorkspaceStore.updateRefernceAction(referenceData);
     const refernceSocket = new WebSocket(wsUrl);
     const refernceRequest = setRequest(
       "com.tmax.service.reference.DetailService",
@@ -59,10 +58,12 @@ export const RefernceLink: React.FC<ReferenceLinkProps> = ({
           };
 
           commitSocket.onmessage = (event) => {
-            setSourceCodeList(JSON.parse(event.data).body.data);
+            WorkspaceStore.updateSourceCodeListAction(
+              JSON.parse(event.data).body.data
+            );
           };
         } else {
-          setSourceCodeList([]);
+          WorkspaceStore.updateSourceCodeListAction([]);
         }
       };
     };
@@ -83,8 +84,6 @@ type ReferenceLinkProps = {
     name: string;
     type: number;
   };
-  setSourceCodeList?: Function;
-  setSelectedReference?: Function;
   setCommitList?: Function;
   setSelectedCommit?: Function;
 };

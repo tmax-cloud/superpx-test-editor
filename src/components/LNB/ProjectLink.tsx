@@ -2,15 +2,14 @@ import * as React from "react";
 import { setRequest } from "../../utils/service-utils";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { setAlert } from "../../utils/alert-utiles";
+import WorkspaceStore from "../../stores/workspaceStore";
 
 export const ProjectLink: React.FC<ProjectLinkProps> = ({
   wsUrl,
   projectData,
   setReferenceList,
-  setSourceCodeList,
   deleteProjectList,
   setSelectedProject,
-  setSelectedReference,
   setCommitList,
 }) => {
   const onProjectLinkClick = async () => {
@@ -47,7 +46,7 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
       setReferenceList(referenceList);
       const mainReference =
         referenceList.filter((r) => r.name == "main")[0] || referenceList[0];
-      setSelectedReference(mainReference);
+      WorkspaceStore.updateRefernceAction(mainReference);
       const commitSocket = new WebSocket(wsUrl);
       const commitSocketRequest = setRequest(
         "com.tmax.service.commit.ListService",
@@ -79,11 +78,13 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
           };
 
           commitSocket.onmessage = (event) => {
-            setSourceCodeList(JSON.parse(event.data).body.data);
+            WorkspaceStore.updateSourceCodeListAction(
+              JSON.parse(event.data).body.data
+            );
           };
         } else {
           setCommitList([]);
-          setSourceCodeList([]);
+          WorkspaceStore.updateSourceCodeListAction([]);
         }
       };
     };
@@ -122,9 +123,7 @@ type ProjectLinkProps = {
     name: string;
   };
   setReferenceList?: Function;
-  setSourceCodeList?: Function;
   deleteProjectList?: Function;
   setSelectedProject?: Function;
-  setSelectedReference?: Function;
   setCommitList?: Function;
 };

@@ -41,31 +41,12 @@ const App = () => {
 };
 
 const Main = () => {
-  const [selectedReference, setSelectedReference] = React.useState({
-    name: "",
-    refId: 0,
-    projId: 0,
-    type: 0,
-  });
-  const [sourceCodeList, setSourceCodeList] = React.useState([]);
-
   return (
     <div>
-      <LNB
-        wsUrl={wsUrl}
-        selectedReference={selectedReference}
-        setSelectedReference={setSelectedReference}
-        sourceCodeList={sourceCodeList}
-        setSourceCodeList={setSourceCodeList}
-      />
+      <LNB wsUrl={wsUrl} />
       <div className="editor-area">
         {/* <div className="title">Java Editor</div> */}
-        <Editor
-          language={languageID}
-          wsUrl={wsUrl}
-          selectedReference={selectedReference}
-          sourceCodeList={sourceCodeList}
-        />
+        <Editor language={languageID} wsUrl={wsUrl} />
       </div>
     </div>
   );
