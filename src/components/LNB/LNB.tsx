@@ -16,6 +16,7 @@ import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import TextField from "@mui/material/TextField";
 import { Counter } from "../Counter";
+import { setAlert } from "../../utils/alert-utiles";
 
 export const LNB: React.FC<LNBProps> = ({
   wsUrl,
@@ -60,7 +61,7 @@ export const LNB: React.FC<LNBProps> = ({
       });
 
       setProjectList(tempProjectList);
-      setEditorText(`Get Project List from ${wsUrl}.`);
+      setAlert("Get Project", `Get Project List from ${wsUrl}.`, "success");
     };
   }, []);
   const updateProjectList = (project) => {
@@ -118,7 +119,6 @@ export const LNB: React.FC<LNBProps> = ({
               open={openCreateProjectForm}
               setOpen={setOpenCreateProjectForm}
               updateProjectList={updateProjectList}
-              setEditorText={setEditorText}
             />
           </AccordionDetails>
           {projectList.map((projectData) => {
@@ -159,7 +159,6 @@ export const LNB: React.FC<LNBProps> = ({
               selectedProject={selectedProject}
               setOpen={setOpenCreateReferenceForm}
               updateReferenceList={updateReferenceList}
-              setEditorText={setEditorText}
             />
           </AccordionDetails>
           {referenceList.map((referenceData) => {

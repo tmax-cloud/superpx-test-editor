@@ -8,13 +8,13 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import AddIcon from "@mui/icons-material/Add";
 import { setRequest } from "../../utils/service-utils";
+import { setAlert } from "../../utils/alert-utiles";
 
 export const CreateProjectForm: React.FC<CreateProjectFormProps> = ({
   wsUrl,
   open,
   setOpen,
   updateProjectList,
-  setEditorText,
 }) => {
   const handleClickOpen = () => {
     setOpen(true);
@@ -37,7 +37,7 @@ export const CreateProjectForm: React.FC<CreateProjectFormProps> = ({
     projectSocket.onmessage = (event) => {
       const wsdata = JSON.parse(event.data).body.data;
       updateProjectList({ name: wsdata.name, projId: wsdata.projId });
-      setEditorText(`Add Project to ${wsUrl}.`);
+      setAlert("Add Project", `Add Project to ${wsUrl}.`, "success");
     };
     setOpen(false);
   };
@@ -81,5 +81,4 @@ type CreateProjectFormProps = {
   open: boolean;
   setOpen: Function;
   updateProjectList: Function;
-  setEditorText: Function;
 };

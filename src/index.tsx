@@ -71,7 +71,7 @@ const Main = () => {
           setFileText={setEditorText}
           editorFilePath={editorFilePath}
           sourceCodeList={sourceCodeList}
-        ></Editor>
+        />
       </div>
     </>
   );

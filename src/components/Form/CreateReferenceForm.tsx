@@ -8,6 +8,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import AddIcon from "@mui/icons-material/Add";
 import { setRequest } from "../../utils/service-utils";
+import { setAlert } from "../../utils/alert-utiles";
 
 export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
   wsUrl,
@@ -15,7 +16,6 @@ export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
   setOpen,
   selectedProject,
   updateReferenceList,
-  setEditorText,
 }) => {
   const handleClickOpen = () => {
     setOpen(true);
@@ -46,8 +46,10 @@ export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
         refId: wsdata.refId,
         type: wsdata.type,
       });
-      setEditorText(
-        `Add Reference to ${selectedProject.name}(${selectedProject.projId}).`
+      setAlert(
+        "Add Reference",
+        `Add Reference to ${selectedProject.name}(${selectedProject.projId}).`,
+        "success"
       );
     };
     setOpen(false);
@@ -110,5 +112,4 @@ type CreateReferenceFormProps = {
     projId: number;
   };
   updateReferenceList: Function;
-  setEditorText: Function;
 };
