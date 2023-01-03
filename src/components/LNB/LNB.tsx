@@ -15,6 +15,7 @@ import { CreateReferenceForm } from "../Form/CreateReferenceForm";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import TextField from "@mui/material/TextField";
+import { Counter } from "../Counter";
 
 export const LNB: React.FC<LNBProps> = ({
   wsUrl,
@@ -82,12 +83,12 @@ export const LNB: React.FC<LNBProps> = ({
 
   const onSourcePathChange = (event) => {
     setNewFilePath(event.target.value);
-  }
+  };
 
   const onAddSourceCodeClick = () => {
     setEditorText("");
     setEditorFilePath(newFilePath);
-  }
+  };
 
   return (
     <div className="sidebar">
@@ -100,6 +101,7 @@ export const LNB: React.FC<LNBProps> = ({
           </div>
         )
       )} */}
+      <Counter />
 
       <div>
         <Divider />
