@@ -8,7 +8,6 @@ import { GNB } from "./components/GNB/GNB";
 import { LNB } from "./components/LNB/LNB";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { BaseAlert } from "./components/Alert/Alert";
-import EditorContentsStore from "./stores/editorContentsStore";
 
 // import { language } from "./java";
 // const testCode = `class Simple{
