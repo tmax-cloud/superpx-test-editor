@@ -14,7 +14,7 @@ body,
 .editor-container {
   height: calc(100% - 50px);
   overflow: hidden;
-  width: 100%;
+  width: auto;
 }
 
 .editor-area {
@@ -30,8 +30,8 @@ body,
   left: 0;
   transition: 0.4s ease;
   color: #202020;
-  height: 95%;
+  height: auto;
   z-index: 99;
   width: 15%;
-  overflow: scroll;
+  overflow: auto;
 }
