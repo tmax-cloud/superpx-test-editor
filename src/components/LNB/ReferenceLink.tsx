@@ -1,5 +1,6 @@
 import * as React from "react";
 import { setRequest } from "../../utils/service-utils";
+import { setAlert } from "../../utils/alert-utiles";
 
 export const RefernceLink: React.FC<ReferenceLinkProps> = ({
   wsUrl,
@@ -25,7 +26,7 @@ export const RefernceLink: React.FC<ReferenceLinkProps> = ({
 
     refernceSocket.onmessage = (event) => {
       const wsdata = JSON.parse(event.data).body.data;
-      alert(`Get Reference ${wsdata.name}.`);
+      setAlert("Get Reference", `Get Reference ${wsdata.name}.`, "success");
       const commitSocket = new WebSocket(wsUrl);
       const commitSocketRequest = setRequest(
         "com.tmax.service.commit.ListService",

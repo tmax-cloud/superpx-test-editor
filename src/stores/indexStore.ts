@@ -1,12 +1,11 @@
 import numberStore from "./numberStore";
 import editorContentsStore from "./editorContentsStore";
+import alertStore from "./alertStore";
 
 const indexStore = () => ({
   numberStore,
   editorContentsStore,
-  // store1,
-  // store2,
-  // ...
+  alertStore,
 });
 
 export default indexStore;

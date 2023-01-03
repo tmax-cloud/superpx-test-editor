@@ -1,6 +1,7 @@
 import * as React from "react";
 import { setRequest } from "../../utils/service-utils";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { setAlert } from "../../utils/alert-utiles";
 
 export const ProjectLink: React.FC<ProjectLinkProps> = ({
   wsUrl,
@@ -25,7 +26,11 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
     projectSocket.onmessage = (event) => {
       console.log(event.data);
       const wsdata = JSON.parse(event.data).body.data;
-      alert(`Get Reference List from Project ${wsdata.name}.`);
+      setAlert(
+        "Get Reference",
+        `Get Reference List from Project ${wsdata.name}.`,
+        "success"
+      );
     };
     const refernceSocket = new WebSocket(wsUrl);
     const refernceRequest = setRequest(
@@ -57,7 +62,7 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
 
       commitSocket.onmessage = (event) => {
         if (JSON.parse(event.data).body.data) {
-          setCommitList(JSON.parse(event.data).body.data)
+          setCommitList(JSON.parse(event.data).body.data);
         }
         const commitId = JSON.parse(event.data).body.data
           ? JSON.parse(event.data).body.data[0].commitId
@@ -94,8 +99,11 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
     };
 
     projectSocket.onmessage = (event) => {
-      console.log(event.data);
-      alert(`Delete Project List from ${projectData.name}.`);
+      setAlert(
+        "Delete Reference",
+        `Delete Project List from ${projectData.name}.`,
+        "success"
+      );
     };
     deleteProjectList(projectData.projId);
   };

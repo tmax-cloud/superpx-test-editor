@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { BaseAlert } from "./components/Alert/Alert";
 
 // import { language } from "./java";
 const testCode = `class Simple{
@@ -22,6 +23,7 @@ setupLanguage();
 const App = () => {
   return (
     <div>
+      <BaseAlert />
       <GNB />
       <Routes>
         <Route path="/" element={<Main />}></Route>
