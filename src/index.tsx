@@ -21,7 +21,7 @@ const App = () => {
   return (
     <div>
       <BaseAlert />
-      <GNB />
+      {/* <GNB /> */}
       <Routes>
         <Route path="/" element={<Main />}></Route>
         {/* <Route path="/project/*" element={<Project />}></Route> */}
