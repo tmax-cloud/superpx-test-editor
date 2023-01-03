@@ -104,8 +104,6 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
 
   React.useEffect(() => {
     const tempToken = monaco.editor.tokenize(text, "java");
-    console.log("tempToken");
-    console.log(tempToken);
     setToken(tempToken);
   }, [text]);
   React.useEffect(() => {
@@ -141,7 +139,6 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
     };
 
     commitSocket.onmessage = (event) => {
-      console.log(event.data);
       const wsdata = JSON.parse(event.data).body.data;
       setResult(`${wsdata.message}(${wsdata.commitId}) is complite`);
     };

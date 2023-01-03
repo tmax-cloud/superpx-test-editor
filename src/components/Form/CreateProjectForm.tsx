@@ -35,7 +35,6 @@ export const CreateProjectForm: React.FC<CreateProjectFormProps> = ({
     };
 
     projectSocket.onmessage = (event) => {
-      console.log(event.data);
       const wsdata = JSON.parse(event.data).body.data;
       updateProjectList({ name: wsdata.name, projId: wsdata.projId });
       setEditorText(`Add Project to ${wsUrl}.`);

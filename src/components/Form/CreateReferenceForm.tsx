@@ -39,7 +39,6 @@ export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
     };
 
     referenceSocket.onmessage = (event) => {
-      console.log(event.data);
       const wsdata = JSON.parse(event.data).body.data;
       updateReferenceList({
         name: wsdata.name,
@@ -47,7 +46,9 @@ export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
         refId: wsdata.refId,
         type: wsdata.type,
       });
-      setEditorText(`Add Reference to ${selectedProject.name}(${selectedProject.projId}).`);
+      setEditorText(
+        `Add Reference to ${selectedProject.name}(${selectedProject.projId}).`
+      );
     };
     setOpen(false);
   };

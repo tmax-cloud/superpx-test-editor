@@ -24,7 +24,6 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
     };
 
     projectSocket.onmessage = (event) => {
-      console.log(event.data);
       const wsdata = JSON.parse(event.data).body.data;
       setAlert(
         "Get Reference",

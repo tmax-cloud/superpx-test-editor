@@ -52,11 +52,9 @@ export const LNB: React.FC<LNBProps> = ({
     };
 
     projectSocket.onmessage = (event) => {
-      console.log(event.data);
       const wsdata = JSON.parse(event.data).body.data;
 
       const tempProjectList = [];
-      console.log(wsdata);
       wsdata.forEach((d) => {
         tempProjectList.push(d);
       });
