@@ -27,7 +27,7 @@ const App = () => {
         {/* <Route path="/project/*" element={<Project />}></Route> */}
         {(["explorer", "search", "scm", "debug", "extension"] as const).map(
           (lnb) => (
-            <Route path={`/${lnb}`} element={<LNB wsUrl={wsUrl} />}></Route>
+            <Route key={`route-${lnb}`} path={`/${lnb}`} element={<LNB wsUrl={wsUrl} />}></Route>
           )
         )}
         <Route path="*" element={<NotFound />}></Route>

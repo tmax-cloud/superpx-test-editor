@@ -45,7 +45,7 @@ export const GNB = () => {
         </Link>
         {menus.map((menu) => {
           return (
-            <>
+            <span key={`menu-${menu}`}>
               <Button
                 id="basic-button"
                 aria-controls={open ? "basic-menu" : undefined}
@@ -66,10 +66,10 @@ export const GNB = () => {
                 }}
               >
                 {menusAction[menu].map((action) => {
-                  return <MenuItem onClick={handleClose}>{action}</MenuItem>;
+                  return <MenuItem key={`menuItem-${action}`} onClick={handleClose}>{action}</MenuItem>;
                 })}
               </Menu>
-            </>
+            </span>
           );
         })}
       </>

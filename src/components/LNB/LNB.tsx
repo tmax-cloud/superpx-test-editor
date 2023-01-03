@@ -124,6 +124,7 @@ export const LNB: React.FC<LNBProps> = ({
           {projectList.map((projectData) => {
             return (
               <ProjectLink
+                key={`project-${projectData.projId}`}
                 wsUrl={wsUrl}
                 projectData={projectData}
                 setReferenceList={setReferenceList}
@@ -164,6 +165,7 @@ export const LNB: React.FC<LNBProps> = ({
           {referenceList.map((referenceData) => {
             return (
               <RefernceLink
+                key={`project-${referenceData.refId}`}
                 wsUrl={wsUrl}
                 referenceData={referenceData}
                 setSourceCodeList={setSourceCodeList}
@@ -193,6 +195,7 @@ export const LNB: React.FC<LNBProps> = ({
           {commitList.map((commitData) => {
             return (
               <CommitLink
+                key={`commit-${commitData.commitId}`}
                 wsUrl={wsUrl}
                 commitData={commitData}
                 setSourceCodeList={setSourceCodeList}
@@ -234,6 +237,7 @@ export const LNB: React.FC<LNBProps> = ({
           {sourceCodeList.map((sourceCodeData) => {
             return (
               <SourceCodeLink
+                key={`sourceCodeD-${sourceCodeData.srcPath}`}
                 sourceCodeData={sourceCodeData}
                 setEditorText={setEditorText}
                 setEditorFilePath={setEditorFilePath}
