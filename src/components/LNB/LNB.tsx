@@ -15,7 +15,7 @@ import { CreateReferenceForm } from "../Form/CreateReferenceForm";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import TextField from "@mui/material/TextField";
-import { Counter } from "../Counter";
+// import { Counter } from "../Counter";
 import { setAlert } from "../../utils/alert-utiles";
 
 export const LNB: React.FC<LNBProps> = ({
@@ -100,7 +100,7 @@ export const LNB: React.FC<LNBProps> = ({
           </div>
         )
       )} */}
-      <Counter />
+      {/* <Counter /> */}
 
       <div>
         <Divider />

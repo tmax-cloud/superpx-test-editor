@@ -59,7 +59,7 @@ const Main = () => {
         setSourceCodeList={setSourceCodeList}
       />
       <div className="editor-area">
-        <div className="title">Java Editor</div>
+        {/* <div className="title">Java Editor</div> */}
         <Editor
           language={languageID}
           wsUrl={wsUrl}
