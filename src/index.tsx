@@ -8,13 +8,14 @@ import { GNB } from "./components/GNB/GNB";
 import { LNB } from "./components/LNB/LNB";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { BaseAlert } from "./components/Alert/Alert";
+import EditorContentsStore from "./stores/editorContentsStore";
 
 // import { language } from "./java";
-const testCode = `class Simple{
-  public static void main(String args[]){
-    System.out.println("Hello Java");
-  }
-}`;
+// const testCode = `class Simple{
+//   public static void main(String args[]){
+//     System.out.println("Hello Java");
+//   }
+// }`;
 const wsUrl = "ws://172.22.11.2:38080";
 setupLanguage();
 const App = () => {
@@ -27,7 +28,11 @@ const App = () => {
         {/* <Route path="/project/*" element={<Project />}></Route> */}
         {(["explorer", "search", "scm", "debug", "extension"] as const).map(
           (lnb) => (
-            <Route key={`route-${lnb}`} path={`/${lnb}`} element={<LNB wsUrl={wsUrl} />}></Route>
+            <Route
+              key={`route-${lnb}`}
+              path={`/${lnb}`}
+              element={<LNB wsUrl={wsUrl} />}
+            ></Route>
           )
         )}
         <Route path="*" element={<NotFound />}></Route>
@@ -37,8 +42,6 @@ const App = () => {
 };
 
 const Main = () => {
-  const [editorText, setEditorText] = React.useState(testCode);
-  const [editorFilePath, setEditorFilePath] = React.useState("");
   const [selectedReference, setSelectedReference] = React.useState({
     name: "",
     refId: 0,
@@ -51,8 +54,6 @@ const Main = () => {
     <div>
       <LNB
         wsUrl={wsUrl}
-        setEditorText={setEditorText}
-        setEditorFilePath={setEditorFilePath}
         selectedReference={selectedReference}
         setSelectedReference={setSelectedReference}
         sourceCodeList={sourceCodeList}
@@ -64,9 +65,6 @@ const Main = () => {
           language={languageID}
           wsUrl={wsUrl}
           selectedReference={selectedReference}
-          fileText={editorText}
-          setFileText={setEditorText}
-          editorFilePath={editorFilePath}
           sourceCodeList={sourceCodeList}
         />
       </div>

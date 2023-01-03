@@ -1,13 +1,11 @@
 import * as React from "react";
+import EditorContentsStore from "../../stores/editorContentsStore";
 
 export const SourceCodeLink: React.FC<SourceCodeLinkProps> = ({
   sourceCodeData,
-  setEditorText,
-  setEditorFilePath,
 }) => {
   const onSourceCodeLinkClick = () => {
-    setEditorText(sourceCodeData.content);
-    setEditorFilePath(sourceCodeData.srcPath);
+    EditorContentsStore.updateContentAction(0, sourceCodeData.srcPath, sourceCodeData.content);
   };
 
   return (
@@ -26,6 +24,4 @@ type SourceCodeLinkProps = {
     srcId: number;
     srcPath: string;
   };
-  setEditorText?: Function;
-  setEditorFilePath?: Function;
 };

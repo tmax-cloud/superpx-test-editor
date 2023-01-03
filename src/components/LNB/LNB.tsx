@@ -17,11 +17,10 @@ import AddIcon from "@mui/icons-material/Add";
 import TextField from "@mui/material/TextField";
 // import { Counter } from "../Counter";
 import { setAlert } from "../../utils/alert-utiles";
+import EditorContentsStore from "../../stores/editorContentsStore";
 
 export const LNB: React.FC<LNBProps> = ({
   wsUrl,
-  setEditorText,
-  setEditorFilePath,
   selectedReference,
   setSelectedReference,
   sourceCodeList,
@@ -85,8 +84,7 @@ export const LNB: React.FC<LNBProps> = ({
   };
 
   const onAddSourceCodeClick = () => {
-    setEditorText("");
-    setEditorFilePath(newFilePath);
+    EditorContentsStore.updateContentAction(0, newFilePath, "");
   };
 
   return (
@@ -239,8 +237,6 @@ export const LNB: React.FC<LNBProps> = ({
               <SourceCodeLink
                 key={`sourceCodeD-${sourceCodeData.srcPath}`}
                 sourceCodeData={sourceCodeData}
-                setEditorText={setEditorText}
-                setEditorFilePath={setEditorFilePath}
               />
             );
           })}
@@ -252,8 +248,6 @@ export const LNB: React.FC<LNBProps> = ({
 
 type LNBProps = {
   wsUrl?: string;
-  setEditorText?: Function;
-  setEditorFilePath?: Function;
   selectedReference?: {
     name: string;
     refId: number;

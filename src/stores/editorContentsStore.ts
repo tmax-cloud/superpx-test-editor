@@ -1,8 +1,14 @@
 import { observable } from "mobx";
 
+const testCode = `class Simple{
+  public static void main(String args[]){
+    System.out.println("Hello Java");
+  }
+}`;
+
 const EditorContentsStore = observable({
   // state
-  contents: [{ path: "", content: "" }],
+  contents: [{ path: "testcode.java", content: testCode }],
 
   // action
   updateContentAction(index: number, path: string, content: string) {

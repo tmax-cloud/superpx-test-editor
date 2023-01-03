@@ -4,6 +4,9 @@ import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import TextField from "@mui/material/TextField";
 import { setRequest } from "../../utils/service-utils";
+import { useObserver } from "mobx-react";
+import EditorContentsStore from "../../stores/editorContentsStore";
+import { setAlert } from "../../utils/alert-utiles";
 // import parseAndGetASTRoot from "../../language-service/parser";
 
 // function validate(model) {
@@ -42,10 +45,7 @@ import { setRequest } from "../../utils/service-utils";
 // }
 
 interface IEditorProps {
-  fileText?: string;
-  setFileText?: Function;
   language: string;
-  editorFilePath?: string;
   wsUrl?: string;
   selectedReference?: {
     name: string;
@@ -57,8 +57,7 @@ interface IEditorProps {
 }
 
 const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
-  const { fileText, editorFilePath, wsUrl, selectedReference, sourceCodeList } =
-    props;
+  const { wsUrl, selectedReference, sourceCodeList } = props;
   const [token, setToken] = React.useState([]);
   const [text, setText] = React.useState("");
   const [position, setPosition] = React.useState(new monaco.Position(0, 0));
@@ -81,7 +80,7 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
         theme: "vs-dark",
         mouseWheelZoom: true,
         fontSize: 25,
-        value: fileText,
+        value: EditorContentsStore.contents[0].content,
         // model,
       });
       // validate(model);
@@ -108,22 +107,23 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
   }, [text]);
   React.useEffect(() => {
     const model = monaco.editor.getEditors()[0].getModel();
-    model.setValue(fileText);
-  }, [fileText]);
+    model.setValue(EditorContentsStore.contents[0].content);
+  }, [EditorContentsStore.contents[0].content]);
 
   const [commitMessage, setCommitMessage] = React.useState(
     "Enter Commit Message"
   );
-  const [result, setResult] = React.useState("");
   const onReferenceNameChange = (event) => {
     setCommitMessage(event.target.value);
   };
   const onCommitClick = () => {
     const commitSocket = new WebSocket(wsUrl);
-    const modifiedSrc = [{ src_path: editorFilePath, content: text }];
+    const modifiedSrc = [
+      { src_path: EditorContentsStore.contents[0].path, content: text },
+    ];
     const nonModifiedSrc = [];
     sourceCodeList.map((s) => {
-      if (s.srcPath != editorFilePath) {
+      if (s.srcPath != EditorContentsStore.contents[0].path) {
         nonModifiedSrc.push({ src_path: s.srcPath, content: s.content });
       }
     });
@@ -140,13 +140,16 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
 
     commitSocket.onmessage = (event) => {
       const wsdata = JSON.parse(event.data).body.data;
-      setResult(`${wsdata.message}(${wsdata.commitId}) is complite`);
+      setAlert(
+        "Commit",
+        `${wsdata.message}(${wsdata.commitId}) is done`,
+        "success"
+      );
     };
   };
 
   return (
     <div style={{ height: 750 }}>
-      <div className="title">{editorFilePath}</div>
       <TextField
         autoFocus
         margin="dense"
@@ -161,8 +164,12 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
         Commit
         <AddIcon />
       </Button>
-      {result}
-      <div ref={assignRef} className="editor-container"></div>
+      {useObserver(() => (
+        <>
+          <div className="title">{EditorContentsStore.contents[0].path}</div>
+          <div ref={assignRef} className="editor-container"></div>
+        </>
+      ))}
       {/* <div>Content Change Position</div>
       <div>LineNumber : {position.lineNumber}</div>
       <div>Column : {position.column}</div>
