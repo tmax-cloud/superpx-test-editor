@@ -35,3 +35,10 @@ body,
   width: 15%;
   overflow: auto;
 }
+
+.alert {
+  position: absolute;
+  z-Index: 100;
+  padding: 20px;
+  right: 10px;
+}
