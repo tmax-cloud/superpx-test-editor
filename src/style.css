@@ -30,10 +30,10 @@ body,
   left: 0;
   transition: 0.4s ease;
   color: #202020;
-  height: auto;
+  height: 95%;
   z-index: 99;
   width: 15%;
-  overflow: auto;
+  overflow-y: scroll;
 }
 
 .alert {
