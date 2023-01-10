@@ -223,15 +223,17 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl }) => {
             Add Source Code
             <AddIcon />
           </Button>
-          {useObserver(() =>
-            WorkspaceStore.sourceCodeList.map((sourceCodeData) => {
-              return (
-                <SourceCodeLink
-                  key={`sourceCodeD-${sourceCodeData.srcPath}`}
-                  sourceCodeData={sourceCodeData}
-                />
-              );
-            })
+          {useObserver(
+            () =>
+              WorkspaceStore.sourceCodeList &&
+              WorkspaceStore.sourceCodeList.map((sourceCodeData) => {
+                return (
+                  <SourceCodeLink
+                    key={`sourceCodeD-${sourceCodeData.srcPath}`}
+                    sourceCodeData={sourceCodeData}
+                  />
+                );
+              })
           )}
         </Accordion>
       </div>
