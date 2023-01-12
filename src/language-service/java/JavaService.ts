@@ -16,12 +16,12 @@ export class JavaService extends LanguageService<BlockContext> {
   validate(code: string): IJavaError[] {
     const inputStream = CharStreams.fromString('{' + code + '}');
     const lexer = new Java9Lexer(inputStream);
-    // lexer.removeErrorListeners();
+    lexer.removeErrorListeners();
     const javaErrorListener = new JavaErrorListener();
     lexer.addErrorListener(javaErrorListener);
     const tokenStream = new CommonTokenStream(lexer);
     const parser = new Java9Parser(tokenStream);
-    // parser.removeErrorListeners();
+    parser.removeErrorListeners();
     parser.addErrorListener(javaErrorListener);
     parser.block();
     const errors: IJavaError[]  = javaErrorListener.getErrors();
@@ -37,10 +37,13 @@ export class JavaService extends LanguageService<BlockContext> {
   convertCodeToAntlr(code: string): BlockContext {
     const inputStream = CharStreams.fromString('{' + code + '}');
     const lexer = new Java9Lexer(inputStream);
+    lexer.removeErrorListeners();
+    const javaErrorListener = new JavaErrorListener();
+    lexer.addErrorListener(javaErrorListener);
     const tokenStream = new CommonTokenStream(lexer);
-    console.log(tokenStream);
-
     const parser = new Java9Parser(tokenStream);
+    parser.removeErrorListeners();
+    parser.addErrorListener(javaErrorListener);
     return parser.block();
   }
 

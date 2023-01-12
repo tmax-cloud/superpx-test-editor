@@ -1,4 +1,5 @@
 import * as monaco from "monaco-editor";
+import { JavaService } from "./../language-service/java/JavaService";
 
 export const setGoToDefinitionProvdier = () => {
   monaco.languages.registerDefinitionProvider("java", {
@@ -11,8 +12,12 @@ export const setGoToDefinitionProvdier = () => {
     },
   });
 };
-const getAst = () => {
-  const ast = {};
+const getAst = (model) => {
+  const code = model.getValue();
+  const javaService = new JavaService();
+//   const antlr = javaService.convertCodeToAntlr(code);
+//   const ast = javaService.convertAntlrToAst(antlr);
+  const ast = javaService.convertCodeToAst(code);
   return ast;
 };
 
@@ -24,7 +29,7 @@ const getClassData = (ast, word) => {
 };
 
 const getDefinitionByApi = (model, position) => {
-  const ast = getAst();
+  const ast = getAst(model);
   const word = model.getWordAtPosition(position).word;
   const classData = getClassData(ast, word);
   //   let isClass = classData.isClass
@@ -33,29 +38,27 @@ const getDefinitionByApi = (model, position) => {
   if (isClass) {
     return getDefinition(model, position, classData);
   }
-
-//   const result = {
-//     defUri: model.uri,
-//     defRange: {
-//       startLineNumber: 3,
-//       startColumn: 9,
-//       endLineNumber: 3,
-//       endColumn: 20,
-//     },
-//   };
-//   return result;
+  return {
+    defUri: model.uri,
+    defRange: {
+      startLineNumber: position.startLineNumber,
+      startColumn: position.startColumn,
+      endLineNumber: position.endLineNumber,
+      endColumn: position.endColumn,
+    },
+  };
 };
 
 const getDefinition = (model, position, classData) => {
-    // api call
+  // api call
 
-    return {
-        defUri: model.uri,
-        defRange: {
-          startLineNumber: 9,
-          startColumn: 9,
-          endLineNumber: 9,
-          endColumn: 26,
-        },
-      }
-}
+  return {
+    defUri: model.uri,
+    defRange: {
+      startLineNumber: 9,
+      startColumn: 9,
+      endLineNumber: 9,
+      endColumn: 26,
+    },
+  };
+};
