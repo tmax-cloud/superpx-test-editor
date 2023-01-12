@@ -5,6 +5,7 @@ import { conf, language } from "./java";
 import { JavaWorker } from "./javaWorker";
 import { WorkerManager } from "./WorkerManager";
 import DiagnosticsAdapter from "./DiagnosticsAdapter";
+import { setGoToDefinitionProvdier } from "./gotodefinition"
 
 const testHtml = `<!DOCTYPE html>
 <html lang="en">
@@ -53,6 +54,7 @@ export function setupLanguage() {
     //         };
     //     }
     // });
+    setGoToDefinitionProvdier();
 
 }
 
