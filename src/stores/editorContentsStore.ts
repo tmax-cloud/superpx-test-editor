@@ -1,9 +1,6 @@
 import { observable } from "mobx";
 
-const testCode = `import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
-public class CurrentDateTime {
+const testCode = `public class CurrentDateTime {
 
     public static void main(String[] args) {
         LocalDateTime current = LocalDateTime.now();

@@ -55,9 +55,9 @@ const getDefinition = (model, position, classData) => {
   return {
     defUri: model.uri,
     defRange: {
-      startLineNumber: 9,
+      startLineNumber: 6,
       startColumn: 9,
-      endLineNumber: 9,
+      endLineNumber: 6,
       endColumn: 26,
     },
   };
