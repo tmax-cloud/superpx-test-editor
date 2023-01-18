@@ -199,23 +199,28 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl }) => {
                 : "Select Project, please"}
             </Typography>
           </AccordionSummary>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Source Code Path"
-            type="text"
-            fullWidth
-            variant="standard"
-            onChange={onSourcePathChange}
-          />
-          <Button variant="outlined" onClick={onAddSourceCodeClick}>
-            Add Source Code
-            <AddIcon />
-          </Button>
+
+          {WorkspaceStore.sourceCodeList.length > 0 && (
+            <>
+              <TextField
+                autoFocus
+                margin="dense"
+                id="name"
+                label="Source Code Path"
+                type="text"
+                fullWidth
+                variant="standard"
+                onChange={onSourcePathChange}
+              />
+              <Button variant="outlined" onClick={onAddSourceCodeClick}>
+                Add Source Code
+                <AddIcon />
+              </Button>
+            </>
+          )}
           {useObserver(
             () =>
-              WorkspaceStore.sourceCodeList &&
+              WorkspaceStore.sourceCodeList.length > 0 &&
               WorkspaceStore.sourceCodeList.map((sourceCodeData) => {
                 return (
                   <SourceCodeLink

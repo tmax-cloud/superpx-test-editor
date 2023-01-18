@@ -10,16 +10,7 @@ const WorkspaceStore = observable({
     type: 0,
   },
   commitId: 0,
-  sourceCodeList: [
-    {
-      commitId: 0,
-      content: "",
-      createdTime: "",
-      srcHistId: 0,
-      srcId: 0,
-      srcPath: "",
-    },
-  ],
+  sourceCodeList: [],
 
   // action
   updateProjectIdAction(projectId: number) {
