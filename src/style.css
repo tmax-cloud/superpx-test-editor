@@ -38,7 +38,7 @@ body,
 
 .alert {
   position: absolute;
-  z-Index: 100;
+  z-Index: 4800;
   padding: 20px;
   right: 10px;
 }

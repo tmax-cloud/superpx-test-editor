@@ -4,7 +4,7 @@ import { Editor } from "./components/Editor";
 import "./style.css";
 import { setupLanguage } from "./java/setup";
 import { languageID } from "./java/config";
-// import { GNB } from "./components/GNB/GNB";
+import { GNB } from "./components/GNB/GNB";
 import { LNB } from "./components/LNB/LNB";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { BaseAlert } from "./components/Alert/Alert";
@@ -21,19 +21,19 @@ const App = () => {
   return (
     <div>
       <BaseAlert />
-      {/* <GNB /> */}
+      <GNB />
       <Routes>
-        <Route path="/" element={<Main />}></Route>
         {/* <Route path="/project/*" element={<Project />}></Route> */}
         {(["explorer", "search", "scm", "debug", "extension"] as const).map(
           (lnb) => (
             <Route
               key={`route-${lnb}`}
               path={`/${lnb}`}
-              element={<LNB wsUrl={wsUrl} />}
+              element={<GNB />}
             ></Route>
           )
         )}
+        <Route path="/" element={<Main />}></Route>
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </div>

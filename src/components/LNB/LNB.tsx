@@ -19,6 +19,10 @@ import { setAlert } from "../../utils/alert-utiles";
 import EditorContentsStore from "../../stores/editorContentsStore";
 import WorkspaceStore from "../../stores/workspaceStore";
 import { useObserver } from "mobx-react";
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+
+const drawerWidth = 240;
 
 export const LNB: React.FC<LNBProps> = ({ wsUrl }) => {
   const [projectList, setProjectList] = React.useState([]);
@@ -77,8 +81,20 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl }) => {
   };
 
   return (
-    <div className="sidebar">
-      {/* {(["explorer", "search", "scm", "debug", "extension"] as const).map(
+    <Box sx={{ display: "flex" }}>
+      <Drawer
+        variant="permanent"
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          [`& .MuiDrawer-paper`]: {
+            width: drawerWidth,
+            boxSizing: "border-box",
+          },
+        }}
+        // className="sidebar"
+      >
+        {/* {(["explorer", "search", "scm", "debug", "extension"] as const).map(
         (lnb) => (
           <div>
             <Link to={`/${lnb}`}>
@@ -87,152 +103,154 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl }) => {
           </div>
         )
       )} */}
+        <div style={{ height: 40 }}></div>
 
-      <div>
+        <div>
+          <Divider />
+          <h3 style={{ paddingLeft: 10 }}>Project List</h3>
+          <Accordion defaultExpanded={true}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <Typography>{wsUrl}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <CreateProjectForm
+                wsUrl={wsUrl}
+                open={openCreateProjectForm}
+                setOpen={setOpenCreateProjectForm}
+                updateProjectList={updateProjectList}
+              />
+            </AccordionDetails>
+            {projectList.map((projectData) => {
+              return (
+                <ProjectLink
+                  key={`project-${projectData.projId}`}
+                  wsUrl={wsUrl}
+                  projectData={projectData}
+                  setReferenceList={setReferenceList}
+                  deleteProjectList={deleteProjectList}
+                  setSelectedProject={setSelectedProject}
+                  setCommitList={setCommitList}
+                />
+              );
+            })}
+          </Accordion>
+        </div>
         <Divider />
-        <h3 style={{ paddingLeft: 10 }}>Project List</h3>
-        <Accordion defaultExpanded={true}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            <Typography>{wsUrl}</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <CreateProjectForm
-              wsUrl={wsUrl}
-              open={openCreateProjectForm}
-              setOpen={setOpenCreateProjectForm}
-              updateProjectList={updateProjectList}
-            />
-          </AccordionDetails>
-          {projectList.map((projectData) => {
-            return (
-              <ProjectLink
-                key={`project-${projectData.projId}`}
+        <div>
+          <h3 style={{ paddingLeft: 10 }}>Reference List</h3>
+          <Accordion defaultExpanded={true}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <Typography>
+                {selectedProject.name
+                  ? selectedProject.name
+                  : "Select Project, please"}
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <CreateReferenceForm
                 wsUrl={wsUrl}
-                projectData={projectData}
-                setReferenceList={setReferenceList}
-                deleteProjectList={deleteProjectList}
-                setSelectedProject={setSelectedProject}
-                setCommitList={setCommitList}
+                open={openCreateReferenceForm}
+                selectedProject={selectedProject}
+                setOpen={setOpenCreateReferenceForm}
+                updateReferenceList={updateReferenceList}
               />
-            );
-          })}
-        </Accordion>
-      </div>
-      <Divider />
-      <div>
-        <h3 style={{ paddingLeft: 10 }}>Reference List</h3>
-        <Accordion defaultExpanded={true}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            <Typography>
-              {selectedProject.name
-                ? selectedProject.name
-                : "Select Project, please"}
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <CreateReferenceForm
-              wsUrl={wsUrl}
-              open={openCreateReferenceForm}
-              selectedProject={selectedProject}
-              setOpen={setOpenCreateReferenceForm}
-              updateReferenceList={updateReferenceList}
-            />
-          </AccordionDetails>
-          {referenceList.map((referenceData) => {
-            return (
-              <RefernceLink
-                key={`project-${referenceData.refId}`}
-                wsUrl={wsUrl}
-                referenceData={referenceData}
-                setCommitList={setCommitList}
-              />
-            );
-          })}
-        </Accordion>
-      </div>
-      <Divider />
-      <div>
-        <h3 style={{ paddingLeft: 10 }}>Commit List</h3>
-        <Accordion defaultExpanded={true}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            <Typography>
-              {WorkspaceStore.refernce.name
-                ? WorkspaceStore.refernce.name
-                : "Select Project, please"}
-            </Typography>
-          </AccordionSummary>
-          {commitList.map((commitData) => {
-            return (
-              <CommitLink
-                key={`commit-${commitData.commitId}`}
-                wsUrl={wsUrl}
-                commitData={commitData}
-              />
-            );
-          })}
-        </Accordion>
-      </div>
-      <Divider />
-      <div>
-        <h3 style={{ paddingLeft: 10 }}>Source Code List</h3>
-        <Accordion defaultExpanded={true}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            <Typography>
-              {WorkspaceStore.refernce.name
-                ? WorkspaceStore.refernce.name
-                : "Select Project, please"}
-            </Typography>
-          </AccordionSummary>
+            </AccordionDetails>
+            {referenceList.map((referenceData) => {
+              return (
+                <RefernceLink
+                  key={`project-${referenceData.refId}`}
+                  wsUrl={wsUrl}
+                  referenceData={referenceData}
+                  setCommitList={setCommitList}
+                />
+              );
+            })}
+          </Accordion>
+        </div>
+        <Divider />
+        <div>
+          <h3 style={{ paddingLeft: 10 }}>Commit List</h3>
+          <Accordion defaultExpanded={true}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <Typography>
+                {WorkspaceStore.refernce.name
+                  ? WorkspaceStore.refernce.name
+                  : "Select Project, please"}
+              </Typography>
+            </AccordionSummary>
+            {commitList.map((commitData) => {
+              return (
+                <CommitLink
+                  key={`commit-${commitData.commitId}`}
+                  wsUrl={wsUrl}
+                  commitData={commitData}
+                />
+              );
+            })}
+          </Accordion>
+        </div>
+        <Divider />
+        <div>
+          <h3 style={{ paddingLeft: 10 }}>Source Code List</h3>
+          <Accordion defaultExpanded={true}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <Typography>
+                {WorkspaceStore.refernce.name
+                  ? WorkspaceStore.refernce.name
+                  : "Select Project, please"}
+              </Typography>
+            </AccordionSummary>
 
-          {WorkspaceStore.sourceCodeList.length > 0 && (
-            <>
-              <TextField
-                autoFocus
-                margin="dense"
-                id="name"
-                label="Source Code Path"
-                type="text"
-                fullWidth
-                variant="standard"
-                onChange={onSourcePathChange}
-              />
-              <Button variant="outlined" onClick={onAddSourceCodeClick}>
-                Add Source Code
-                <AddIcon />
-              </Button>
-            </>
-          )}
-          {useObserver(
-            () =>
-              WorkspaceStore.sourceCodeList.length > 0 &&
-              WorkspaceStore.sourceCodeList.map((sourceCodeData) => {
-                return (
-                  <SourceCodeLink
-                    key={`sourceCodeD-${sourceCodeData.srcPath}`}
-                    sourceCodeData={sourceCodeData}
-                  />
-                );
-              })
-          )}
-        </Accordion>
-      </div>
-    </div>
+            {WorkspaceStore.sourceCodeList.length > 0 && (
+              <>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="name"
+                  label="Source Code Path"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  onChange={onSourcePathChange}
+                />
+                <Button variant="outlined" onClick={onAddSourceCodeClick}>
+                  Add Source Code
+                  <AddIcon />
+                </Button>
+              </>
+            )}
+            {useObserver(
+              () =>
+                WorkspaceStore.sourceCodeList.length > 0 &&
+                WorkspaceStore.sourceCodeList.map((sourceCodeData) => {
+                  return (
+                    <SourceCodeLink
+                      key={`sourceCodeD-${sourceCodeData.srcPath}`}
+                      sourceCodeData={sourceCodeData}
+                    />
+                  );
+                })
+            )}
+          </Accordion>
+        </div>
+      </Drawer>
+    </Box>
   );
 };
 
