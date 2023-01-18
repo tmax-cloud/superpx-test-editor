@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import Box from "@mui/material/Box";
+import HomeIcon from "@mui/icons-material/Home";
 // import { LNB } from "../LNB/LNB";
 
 export const GNB = () => {
@@ -49,9 +49,11 @@ export const GNB = () => {
         overflow: "auto",
       }}
     >
-      <Link to="/">
-        <span>Home</span>
-      </Link>
+      <span>
+        <Link to="/">
+          <HomeIcon />
+        </Link>
+      </span>
       {menus.map((menu) => {
         return (
           <span key={`menu-${menu}`}>
