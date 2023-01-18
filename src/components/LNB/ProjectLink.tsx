@@ -3,6 +3,7 @@ import { setRequest } from "../../utils/service-utils";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { setAlert } from "../../utils/alert-utiles";
 import WorkspaceStore from "../../stores/workspaceStore";
+import { Button, IconButton } from "@mui/material";
 
 export const ProjectLink: React.FC<ProjectLinkProps> = ({
   wsUrl,
@@ -109,9 +110,19 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
   };
 
   return (
-    <div>
-      <span onClick={onProjectLinkClick}>{projectData.name}</span>
-      <DeleteIcon onClick={onDeleteClick} />
+    <div style={{ paddingLeft: 15 }}>
+      <Button
+        size="small"
+        variant="text"
+        color="inherit"
+        style={{ textTransform: "none" }}
+        onClick={onProjectLinkClick}
+      >
+        {projectData.name}
+      </Button>
+      <IconButton aria-label="delete" size="small" style={{ left: 0 }}>
+        <DeleteIcon onClick={onDeleteClick} fontSize="inherit" />
+      </IconButton>
     </div>
   );
 };

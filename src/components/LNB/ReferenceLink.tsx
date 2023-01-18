@@ -2,6 +2,7 @@ import * as React from "react";
 import { setRequest } from "../../utils/service-utils";
 import { setAlert } from "../../utils/alert-utiles";
 import WorkspaceStore from "../../stores/workspaceStore";
+import { Button } from "@mui/material";
 
 export const RefernceLink: React.FC<ReferenceLinkProps> = ({
   wsUrl,
@@ -68,8 +69,16 @@ export const RefernceLink: React.FC<ReferenceLinkProps> = ({
   };
 
   return (
-    <div>
-      <span onClick={onRefereneLinkClick}>{referenceData.name}</span>
+    <div style={{ paddingLeft: 15 }}>
+      <Button
+        size="small"
+        variant="text"
+        color="inherit"
+        style={{ textTransform: "none" }}
+        onClick={onRefereneLinkClick}
+      >
+        {referenceData.name}
+      </Button>
     </div>
   );
 };

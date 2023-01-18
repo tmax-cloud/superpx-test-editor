@@ -1,6 +1,7 @@
 import * as React from "react";
 import { setRequest } from "../../utils/service-utils";
 import WorkspaceStore from "../../stores/workspaceStore";
+import { Button } from "@mui/material";
 
 export const CommitLink: React.FC<CommitLinkProps> = ({
   wsUrl,
@@ -19,13 +20,23 @@ export const CommitLink: React.FC<CommitLinkProps> = ({
     };
 
     commitSocket.onmessage = (event) => {
-      WorkspaceStore.updateSourceCodeListAction(JSON.parse(event.data).body.data);
+      WorkspaceStore.updateSourceCodeListAction(
+        JSON.parse(event.data).body.data
+      );
     };
   };
 
   return (
-    <div>
-      <span onClick={onCommitinkClick}>{commitData.message}</span>
+    <div style={{ paddingLeft: 15 }}>
+      <Button
+        size="small"
+        variant="text"
+        color="inherit"
+        style={{ textTransform: "none" }}
+        onClick={onCommitinkClick}
+      >
+        {commitData.message}
+      </Button>
     </div>
   );
 };
