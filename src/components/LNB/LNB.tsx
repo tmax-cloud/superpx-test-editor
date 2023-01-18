@@ -90,7 +90,7 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl }) => {
 
       <div>
         <Divider />
-        <h3>Project List</h3>
+        <h3 style={{ paddingLeft: 10 }}>Project List</h3>
         <Accordion defaultExpanded={true}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -124,7 +124,7 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl }) => {
       </div>
       <Divider />
       <div>
-        <h3>Reference List</h3>
+        <h3 style={{ paddingLeft: 10 }}>Reference List</h3>
         <Accordion defaultExpanded={true}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -160,7 +160,7 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl }) => {
       </div>
       <Divider />
       <div>
-        <h3>Commit List</h3>
+        <h3 style={{ paddingLeft: 10 }}>Commit List</h3>
         <Accordion defaultExpanded={true}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -186,7 +186,7 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl }) => {
       </div>
       <Divider />
       <div>
-        <h3>Source Code List</h3>
+        <h3 style={{ paddingLeft: 10 }}>Source Code List</h3>
         <Accordion defaultExpanded={true}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}

@@ -120,7 +120,7 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
       >
         {projectData.name}
       </Button>
-      <IconButton aria-label="delete" size="small" style={{ left: 0 }}>
+      <IconButton aria-label="delete" size="small">
         <DeleteIcon onClick={onDeleteClick} fontSize="inherit" />
       </IconButton>
     </div>
