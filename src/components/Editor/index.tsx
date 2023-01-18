@@ -47,11 +47,9 @@ import { setAlert } from "../../utils/alert-utiles";
 
 interface IEditorProps {
   language: string;
-  wsUrl?: string;
 }
 
 const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
-  const { wsUrl } = props;
   const [token, setToken] = React.useState([]);
   const [text, setText] = React.useState("");
   const [position, setPosition] = React.useState(new monaco.Position(0, 0));
@@ -111,7 +109,7 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
     setCommitMessage(event.target.value);
   };
   const onCommitClick = () => {
-    const commitSocket = new WebSocket(wsUrl);
+    const commitSocket = new WebSocket(WorkspaceStore.wsUrl);
     const modifiedSrc = [
       { src_path: EditorContentsStore.contents[0].path, content: text },
     ];

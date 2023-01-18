@@ -24,7 +24,7 @@ import Drawer from "@mui/material/Drawer";
 
 const drawerWidth = 240;
 
-export const LNB: React.FC<LNBProps> = ({ wsUrl }) => {
+export const LNB: React.FC<LNBProps> = ({}) => {
   const [projectList, setProjectList] = React.useState([]);
   const [referenceList, setReferenceList] = React.useState([]);
   const [commitList, setCommitList] = React.useState([]);
@@ -38,7 +38,7 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl }) => {
     React.useState(false);
 
   React.useEffect(() => {
-    const projectSocket = new WebSocket(wsUrl);
+    const projectSocket = new WebSocket(WorkspaceStore.wsUrl);
     const request = setRequest("com.tmax.service.project.ListService", {});
     projectSocket.onopen = (event) => {
       projectSocket.send(JSON.stringify(request));
@@ -53,7 +53,7 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl }) => {
       });
 
       setProjectList(tempProjectList);
-      setAlert("Get Project", `Get Project List from ${wsUrl}.`, "success");
+      setAlert("Get Project", `Get Project List from ${WorkspaceStore.wsUrl}.`, "success");
     };
   }, []);
   const updateProjectList = (project) => {
@@ -114,11 +114,11 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl }) => {
               aria-controls="panel1a-content"
               id="panel1a-header"
             >
-              <Typography>{wsUrl}</Typography>
+              <Typography>{WorkspaceStore.wsUrl}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <CreateProjectForm
-                wsUrl={wsUrl}
+                wsUrl={WorkspaceStore.wsUrl}
                 open={openCreateProjectForm}
                 setOpen={setOpenCreateProjectForm}
                 updateProjectList={updateProjectList}
@@ -128,7 +128,7 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl }) => {
               return (
                 <ProjectLink
                   key={`project-${projectData.projId}`}
-                  wsUrl={wsUrl}
+                  wsUrl={WorkspaceStore.wsUrl}
                   projectData={projectData}
                   setReferenceList={setReferenceList}
                   deleteProjectList={deleteProjectList}
@@ -156,7 +156,7 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl }) => {
             </AccordionSummary>
             <AccordionDetails>
               <CreateReferenceForm
-                wsUrl={wsUrl}
+                wsUrl={WorkspaceStore.wsUrl}
                 open={openCreateReferenceForm}
                 selectedProject={selectedProject}
                 setOpen={setOpenCreateReferenceForm}
@@ -167,7 +167,7 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl }) => {
               return (
                 <RefernceLink
                   key={`project-${referenceData.refId}`}
-                  wsUrl={wsUrl}
+                  wsUrl={WorkspaceStore.wsUrl}
                   referenceData={referenceData}
                   setCommitList={setCommitList}
                 />
@@ -194,7 +194,7 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl }) => {
               return (
                 <CommitLink
                   key={`commit-${commitData.commitId}`}
-                  wsUrl={wsUrl}
+                  wsUrl={WorkspaceStore.wsUrl}
                   commitData={commitData}
                 />
               );
@@ -254,6 +254,4 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl }) => {
   );
 };
 
-type LNBProps = {
-  wsUrl?: string;
-};
+type LNBProps = {};

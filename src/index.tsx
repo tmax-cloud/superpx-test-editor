@@ -15,7 +15,7 @@ import { BaseAlert } from "./components/Alert/Alert";
 //     System.out.println("Hello Java");
 //   }
 // }`;
-const wsUrl = "ws://172.22.11.2:38080";
+export const defaultWsUrl = "ws://172.22.11.2:38080";
 setupLanguage();
 const App = () => {
   return (
@@ -43,10 +43,10 @@ const App = () => {
 const Main = () => {
   return (
     <div>
-      <LNB wsUrl={wsUrl} />
+      <LNB />
       <div className="editor-area">
         {/* <div className="title">Java Editor</div> */}
-        <Editor language={languageID} wsUrl={wsUrl} />
+        <Editor language={languageID} />
       </div>
     </div>
   );

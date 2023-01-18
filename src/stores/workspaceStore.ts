@@ -2,6 +2,7 @@ import { observable } from "mobx";
 
 const WorkspaceStore = observable({
   // state
+  wsUrl: "ws://172.22.11.2:38080",
   projectId: 0,
   refernce: {
     name: "",
