@@ -15,7 +15,6 @@ import { CreateReferenceForm } from "../Form/CreateReferenceForm";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import TextField from "@mui/material/TextField";
-// import { Counter } from "../Counter";
 import { setAlert } from "../../utils/alert-utiles";
 import EditorContentsStore from "../../stores/editorContentsStore";
 import WorkspaceStore from "../../stores/workspaceStore";
@@ -28,12 +27,6 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl }) => {
   const [selectedProject, setSelectedProject] = React.useState({
     name: "",
     projId: 0,
-  });
-  const [selectedCommit, setSelectedCommit] = React.useState({
-    commitId: 0,
-    message: "",
-    preCommitId: 0,
-    isCommit: false,
   });
   const [openCreateProjectForm, setOpenCreateProjectForm] =
     React.useState(false);
@@ -94,7 +87,6 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl }) => {
           </div>
         )
       )} */}
-      {/* <Counter /> */}
 
       <div>
         <Divider />
@@ -161,7 +153,6 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl }) => {
                 wsUrl={wsUrl}
                 referenceData={referenceData}
                 setCommitList={setCommitList}
-                setSelectedCommit={setSelectedCommit}
               />
             );
           })}
@@ -188,7 +179,6 @@ export const LNB: React.FC<LNBProps> = ({ wsUrl }) => {
                 key={`commit-${commitData.commitId}`}
                 wsUrl={wsUrl}
                 commitData={commitData}
-                setSelectedCommit={setSelectedCommit}
               />
             );
           })}

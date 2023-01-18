@@ -7,7 +7,6 @@ export const RefernceLink: React.FC<ReferenceLinkProps> = ({
   wsUrl,
   referenceData,
   setCommitList,
-  setSelectedCommit,
 }) => {
   const onRefereneLinkClick = async () => {
     WorkspaceStore.updateRefernceAction(referenceData);
@@ -40,7 +39,6 @@ export const RefernceLink: React.FC<ReferenceLinkProps> = ({
       commitSocket.onmessage = (event) => {
         if (JSON.parse(event.data).body.data) {
           setCommitList(JSON.parse(event.data).body.data);
-          setSelectedCommit(JSON.parse(event.data).body.data[0]);
         }
         const commitId = JSON.parse(event.data).body.data
           ? JSON.parse(event.data).body.data[0].commitId
@@ -85,5 +83,4 @@ type ReferenceLinkProps = {
     type: number;
   };
   setCommitList?: Function;
-  setSelectedCommit?: Function;
 };

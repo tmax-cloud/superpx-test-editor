@@ -5,10 +5,8 @@ import WorkspaceStore from "../../stores/workspaceStore";
 export const CommitLink: React.FC<CommitLinkProps> = ({
   wsUrl,
   commitData,
-  setSelectedCommit,
 }) => {
   const onCommitinkClick = async () => {
-    setSelectedCommit(commitData);
     const commitSocket = new WebSocket(wsUrl);
     const commitSocketRequest = setRequest(
       "com.tmax.service.commit.DetailService",
@@ -40,5 +38,4 @@ type CommitLinkProps = {
     preCommitId: number;
     isCommit: boolean;
   };
-  setSelectedCommit?: Function;
 };
