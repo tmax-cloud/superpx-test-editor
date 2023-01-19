@@ -49,7 +49,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
   const [lnbOpenState, setLnbOpenState] = React.useState({
     explorer: false,
     search: false,
-    scm: false,
+    scm: true,
     debug: false,
     extension: false,
   });
