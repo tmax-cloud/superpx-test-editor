@@ -944,7 +944,7 @@ antlr4ts-cli@^0.5.0-alpha.4:
   resolved "https://registry.yarnpkg.com/antlr4ts-cli/-/antlr4ts-cli-0.5.0-alpha.4.tgz#f3bfc37f10131e78d7b981c397a2aaa0450b67f6"
   integrity sha512-lVPVBTA2CVHRYILSKilL6Jd4hAumhSZZWA7UbQNQrmaSSj7dPmmYaN4bOmZG79cOy0lS00i4LY68JZZjZMWVrw==
 
-antlr4ts@^0.5.0-alpha.4:
+antlr4ts@^0.5.0-alpha.3, antlr4ts@^0.5.0-alpha.4:
   version "0.5.0-alpha.4"
   resolved "https://registry.yarnpkg.com/antlr4ts/-/antlr4ts-0.5.0-alpha.4.tgz#71702865a87478ed0b40c0709f422cf14d51652a"
   integrity sha512-WPQDt1B74OfPv/IMS2ekXAKkTZIHl88uMetg6q3OTqgFxZ/dxDXI0EWLyZid/1Pe6hTftyg5N7gel5wNAGxXyQ==
@@ -2563,6 +2563,13 @@ isobject@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
   integrity sha512-WhB9zCku7EGTj/HQQRz5aUQEUeoQZH2bWcltRErOpymJ4boYE6wL9Tbr23krRPSZ+C5zqNSrSw+Cc7sZZ4b7vg==
+
+java-ast@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/java-ast/-/java-ast-0.3.0.tgz#85786d61ce906724dffd4fc3fea89dafad0eec77"
+  integrity sha512-FQheUCKa8ryT2YheVKRl4238N39HT4A0wTLO5OXLAT1A0WVokw27EcXjF+Dk15eEL5RVBidhD6SCbIa5K6qLcA==
+  dependencies:
+    antlr4ts "^0.5.0-alpha.3"
 
 jest-diff@^28.1.3:
   version "28.1.3"
