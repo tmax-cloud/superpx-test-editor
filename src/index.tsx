@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { Editor } from "./components/Editor";
+import { Editors } from "./components/Editor/Editors";
 import "./style.css";
 import { setupLanguage } from "./java/setup";
 import { languageID } from "./java/config";
@@ -45,8 +45,8 @@ const Main = () => {
     <div>
       <LNB />
       <div className="editor-area">
-        {/* <div className="title">Java Editor</div> */}
-        <Editor language={languageID} />
+        {/* <div className="title">Java Editor</div> */}        
+        <Editors />
       </div>
     </div>
   );

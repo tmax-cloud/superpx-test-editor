@@ -150,7 +150,11 @@ export const LNB: React.FC<LNBProps> = ({}) => {
         <div style={{ height: 50 }}></div>
         {(["explorer", "search", "scm", "debug", "extension"] as const).map(
           (lnb) => (
-            <Button id={`lnb-${lnb}`} onClick={toggleDrawer(lnb, true)} style={{ zIndex: 1800 }}>
+            <Button
+              id={`lnb-${lnb}`}
+              onClick={toggleDrawer(lnb, true)}
+              style={{ zIndex: 1800 }}
+            >
               {lnbIcon[lnb]}
             </Button>
           )
