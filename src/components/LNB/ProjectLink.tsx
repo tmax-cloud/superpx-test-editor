@@ -31,23 +31,23 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
         "success"
       );
     };
-    const refernceSocket = new WebSocket(wsUrl);
-    const refernceRequest = setRequest(
+    const referenceSocket = new WebSocket(wsUrl);
+    const referenceRequest = setRequest(
       "com.tmax.service.reference.ListService",
       {
         proj_id: projectData.projId,
       }
     );
-    refernceSocket.onopen = (event) => {
-      refernceSocket.send(JSON.stringify(refernceRequest));
+    referenceSocket.onopen = (event) => {
+      referenceSocket.send(JSON.stringify(referenceRequest));
     };
 
-    refernceSocket.onmessage = (event) => {
+    referenceSocket.onmessage = (event) => {
       const referenceList = JSON.parse(event.data).body.data;
       setReferenceList(referenceList);
       const mainReference =
         referenceList.filter((r) => r.name == "main")[0] || referenceList[0];
-      WorkspaceStore.updateRefernceAction(mainReference);
+      WorkspaceStore.updateReferenceAction(mainReference);
       const commitSocket = new WebSocket(wsUrl);
       const commitSocketRequest = setRequest(
         "com.tmax.service.commit.ListService",

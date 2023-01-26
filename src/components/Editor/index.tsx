@@ -120,8 +120,8 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
       }
     });
     const request = setRequest("com.tmax.service.commit.InsertService", {
-      proj_id: WorkspaceStore.refernce.projId,
-      ref_id: WorkspaceStore.refernce.refId,
+      proj_id: WorkspaceStore.reference.projId,
+      ref_id: WorkspaceStore.reference.refId,
       commit: { message: commitMessage, is_commit: true },
       modified_src: modifiedSrc,
       non_modified_src: nonModifiedSrc,

@@ -4,26 +4,26 @@ import { setAlert } from "../../utils/alert-utiles";
 import WorkspaceStore from "../../stores/workspaceStore";
 import { Button } from "@mui/material";
 
-export const RefernceLink: React.FC<ReferenceLinkProps> = ({
+export const ReferenceLink: React.FC<ReferenceLinkProps> = ({
   wsUrl,
   referenceData,
   setCommitList,
 }) => {
   const onRefereneLinkClick = async () => {
-    WorkspaceStore.updateRefernceAction(referenceData);
-    const refernceSocket = new WebSocket(wsUrl);
-    const refernceRequest = setRequest(
+    WorkspaceStore.updateReferenceAction(referenceData);
+    const referenceSocket = new WebSocket(wsUrl);
+    const referenceRequest = setRequest(
       "com.tmax.service.reference.DetailService",
       {
         proj_id: referenceData.projId,
         ref_id: referenceData.refId,
       }
     );
-    refernceSocket.onopen = (event) => {
-      refernceSocket.send(JSON.stringify(refernceRequest));
+    referenceSocket.onopen = (event) => {
+      referenceSocket.send(JSON.stringify(referenceRequest));
     };
 
-    refernceSocket.onmessage = (event) => {
+    referenceSocket.onmessage = (event) => {
       const wsdata = JSON.parse(event.data).body.data;
       setAlert("Get Commit", `Get Commit List from Reference ${wsdata.name}.`, "success");
       const commitSocket = new WebSocket(wsUrl);

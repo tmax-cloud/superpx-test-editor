@@ -2,7 +2,7 @@ import * as React from "react";
 import * as _ from "lodash-es";
 import { setRequest } from "../../utils/service-utils";
 import { ProjectLink } from "./ProjectLink";
-import { RefernceLink } from "./ReferenceLink";
+import { ReferenceLink } from "./ReferenceLink";
 import { SourceCodeLink } from "./SourceCodeLink";
 import { CommitLink } from "./CommitLink";
 import Accordion from "@mui/material/Accordion";
@@ -245,7 +245,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                         </AccordionDetails>
                         {referenceList.map((referenceData) => {
                           return (
-                            <RefernceLink
+                            <ReferenceLink
                               key={`project-${referenceData.refId}`}
                               wsUrl={WorkspaceStore.wsUrl}
                               referenceData={referenceData}
@@ -265,8 +265,8 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                           id="panel1a-header"
                         >
                           <Typography>
-                            {WorkspaceStore.refernce.name
-                              ? WorkspaceStore.refernce.name
+                            {WorkspaceStore.reference.name
+                              ? WorkspaceStore.reference.name
                               : "Select Project, please"}
                           </Typography>
                         </AccordionSummary>
@@ -294,8 +294,8 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                           id="panel1a-header"
                         >
                           <Typography>
-                            {WorkspaceStore.refernce.name
-                              ? WorkspaceStore.refernce.name
+                            {WorkspaceStore.reference.name
+                              ? WorkspaceStore.reference.name
                               : "Select Project, please"}
                           </Typography>
                         </AccordionSummary>
@@ -404,7 +404,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
             </AccordionDetails>
             {referenceList.map((referenceData) => {
               return (
-                <RefernceLink
+                <ReferenceLink
                   key={`project-${referenceData.refId}`}
                   wsUrl={WorkspaceStore.wsUrl}
                   referenceData={referenceData}
@@ -424,8 +424,8 @@ export const LNB: React.FC<LNBProps> = ({}) => {
               id="panel1a-header"
             >
               <Typography>
-                {WorkspaceStore.refernce.name
-                  ? WorkspaceStore.refernce.name
+                {WorkspaceStore.reference.name
+                  ? WorkspaceStore.reference.name
                   : "Select Project, please"}
               </Typography>
             </AccordionSummary>
@@ -450,8 +450,8 @@ export const LNB: React.FC<LNBProps> = ({}) => {
               id="panel1a-header"
             >
               <Typography>
-                {WorkspaceStore.refernce.name
-                  ? WorkspaceStore.refernce.name
+                {WorkspaceStore.reference.name
+                  ? WorkspaceStore.reference.name
                   : "Select Project, please"}
               </Typography>
             </AccordionSummary>

@@ -1,15 +1,22 @@
 import { observable } from "mobx";
 
+type Reference = {
+  name: string;
+  refId: number;
+  projId: number;
+  type: number;
+};
+
 const WorkspaceStore = observable({
   // state
   wsUrl: "ws://172.22.11.2:38080",
   projectId: 0,
-  refernce: {
+  reference: {
     name: "",
     refId: 0,
     projId: 0,
     type: 0,
-  },
+  } as Reference,
   commitId: 0,
   sourceCodeList: [],
 
@@ -18,8 +25,8 @@ const WorkspaceStore = observable({
     this.projectId = projectId;
   },
 
-  updateRefernceAction(refernce) {
-    this.refernce = refernce;
+  updateReferenceAction(reference) {
+    this.reference = reference;
   },
 
   updateCommitIdAction(commitId: number) {
