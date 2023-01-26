@@ -1,28 +1,46 @@
 import { AlertColor } from "@mui/material";
 import { observable } from "mobx";
 
+type AlertInfo = {
+  title: string;
+  message: string;
+  type: AlertColor;
+};
+
 const AlertStore = observable({
   // state
-  title: "Title",
-  message: "Message",
-  isAlert: false,
-  type: "info" as AlertColor,
+  alertList: [] as AlertInfo[],
+  // title: "Title",
+  // message: "Message",
+  // isAlert: false,
+  // type: "info" as AlertColor,
 
   // action
-  setTitleAction(title) {
-    this.title = title;
+  // setTitleAction(title) {
+  //   this.title = title;
+  // },
+
+  // setMessageAction(message) {
+  //   this.message = message;
+  // },
+
+  // setTypeAction(type) {
+  //   this.type = type;
+  // },
+
+  // setIsAlertAction(isAlert) {
+  //   this.isAlert = isAlert;
+  // },
+
+  resetAlertInfo() {
+    this.alertList = [] as AlertInfo[];
   },
 
-  setMessageAction(message) {
-    this.message = message;
+  addAlertInfo(alertInfo: AlertInfo) {
+    this.alertList.push(alertInfo);
   },
-
-  setTypeAction(type) {
-    this.type = type;
-  },
-
-  setIsAlertAction(isAlert) {
-    this.isAlert = isAlert;
+  deleteAlertInfo(index: number) {
+    this.alertList.splice(index, 1);
   },
 });
 

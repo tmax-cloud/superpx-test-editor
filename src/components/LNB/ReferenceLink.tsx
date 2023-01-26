@@ -25,7 +25,7 @@ export const RefernceLink: React.FC<ReferenceLinkProps> = ({
 
     refernceSocket.onmessage = (event) => {
       const wsdata = JSON.parse(event.data).body.data;
-      setAlert("Get Reference", `Get Reference ${wsdata.name}.`, "success");
+      setAlert("Get Commit", `Get Commit List from Reference ${wsdata.name}.`, "success");
       const commitSocket = new WebSocket(wsUrl);
       const commitSocketRequest = setRequest(
         "com.tmax.service.commit.ListService",
