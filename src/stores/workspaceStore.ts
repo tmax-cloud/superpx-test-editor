@@ -36,10 +36,6 @@ const WorkspaceStore = observable({
   updateSourceCodeListAction(sourceCodeList: []) {
     this.sourceCodeList = sourceCodeList;
   },
-
-  pushContentAction(path: string, content: string) {
-    this.contents.push({ path, content });
-  },
 });
 
 export default WorkspaceStore;

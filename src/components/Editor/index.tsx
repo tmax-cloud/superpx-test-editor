@@ -47,6 +47,7 @@ import { setAlert } from "../../utils/alert-utiles";
 
 interface IEditorProps {
   language: string;
+  contentsIndex?: number;
 }
 
 const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
@@ -72,7 +73,9 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
         theme: "vs-dark",
         mouseWheelZoom: true,
         fontSize: 25,
-        value: EditorContentsStore.contents[0].content,
+        value: props.contentsIndex
+          ? EditorContentsStore.contents[props.contentsIndex].content
+          : "",
         // model,
       });
       // validate(model);

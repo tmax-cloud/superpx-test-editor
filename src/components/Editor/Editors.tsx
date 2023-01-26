@@ -2,7 +2,11 @@ import * as React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
+import CloseIcon from "@mui/icons-material/Close";
+import Button from "@mui/material/Button";
 import { Editor } from "./index";
+import { useObserver } from "mobx-react";
+import EditorContentsStore from "../../stores/editorContentsStore";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -63,26 +67,28 @@ export const Editors = () => {
         scrollButtons="auto"
         aria-label="scrollable auto tabs example"
       >
-        <Tab label="Item One" />
-        <Tab label="Item Two" />
-        <Tab label="Item Three" />
-        <Tab label="Item Four" />
-        <Tab label="Item Five" />
-        <Tab label="Item Six" />
-        <Tab label="Item Seven" />
+        {useObserver(() =>
+          EditorContentsStore.contents.map((content) => (
+            <div>
+              <Tab label={content.path}></Tab>
+              <Button
+                onClick={() => {
+                  EditorContentsStore.deleteContentAction(content.path);
+                }}
+              >
+                <CloseIcon />
+              </Button>
+            </div>
+          ))
+        )}
       </Tabs>
-      <TabPanel value={value} index={0}>
-        <Editor language="java" />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <Editor language="java" />
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        <Editor language="java" />
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        <Editor language="java" />
-      </TabPanel>
+      {useObserver(() =>
+        EditorContentsStore.contents.map((content, index) => (
+          <TabPanel value={value} index={index}>
+            <Editor language="java" contentsIndex={index} />
+          </TabPanel>
+        ))
+      )}
     </Box>
   );
 };
