@@ -35,6 +35,7 @@ export const Editors = () => {
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
+    console.log(111, newValue);
   };
 
   //create Collapse button data
@@ -65,8 +66,8 @@ export const Editors = () => {
         onClick={(event) => {
           const eventTarget = event.target as HTMLElement;
           const parentElement = eventTarget.parentElement as HTMLDivElement;
-          const newIndex = parentElement.getAttribute("value");
-          setValue(Number(newIndex));
+          const newValue = parentElement.getAttribute("value");
+          setValue(Number(newValue));
         }}
         variant="scrollable"
         scrollButtons="auto"
