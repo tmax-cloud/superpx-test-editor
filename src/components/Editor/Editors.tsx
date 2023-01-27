@@ -29,13 +29,12 @@ function TabPanel(props: TabPanelProps) {
     </div>
   );
 }
-//내생각엔 두개 다 띄어져 있음 이를 고치려면 z축이동?
+
 export const Editors = () => {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
-    console.log(111, newValue);
   };
 
   //create Collapse button data
