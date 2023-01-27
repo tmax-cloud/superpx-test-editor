@@ -29,7 +29,7 @@ function TabPanel(props: TabPanelProps) {
     </div>
   );
 }
-
+//내생각엔 두개 다 띄어져 있음 이를 고치려면 z축이동?
 export const Editors = () => {
   const [value, setValue] = React.useState(0);
 
@@ -57,12 +57,17 @@ export const Editors = () => {
     textSize: 15,
     showCollapseAll: true,
   };
-
   return (
     <Box sx={{ bgcolor: "background.paper" }}>
       <Tabs
         value={value}
         onChange={handleChange}
+        onClick={(event) => {
+          const eventTarget = event.target as HTMLElement;
+          const parentElement = eventTarget.parentElement as HTMLDivElement;
+          const newIndex = parentElement.getAttribute("value");
+          setValue(Number(newIndex));
+        }}
         variant="scrollable"
         scrollButtons="auto"
         aria-label="scrollable auto tabs example"
