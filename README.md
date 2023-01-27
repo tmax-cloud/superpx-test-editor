@@ -37,7 +37,7 @@ npm run start # 실행
 
 ## syntax highlighting
 - ANTLR 통해 생성된 룰을 바탕으로 java highlighting, validation 수행함
-- 
+
 ## get text from websocket
 - srcId 입력 받고 Web Socket 연결해서 com.tmax.service.sourceCode.DetailSrcService 를 통해서 소스코드 데이터를 받고 monaco editor 로 보냄
 
