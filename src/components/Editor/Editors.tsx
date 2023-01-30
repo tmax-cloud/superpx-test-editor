@@ -57,6 +57,7 @@ export const Editors = () => {
     textSize: 15,
     showCollapseAll: true,
   };
+
   return (
     <Box sx={{ bgcolor: "background.paper" }}>
       <Tabs
@@ -90,7 +91,7 @@ export const Editors = () => {
       {useObserver(() =>
         EditorContentsStore.contents.map((content, index) => (
           <TabPanel value={value} index={index}>
-            <Editor language="java" contentsIndex={index} />
+            <Editor language="java" contentsIndex={index} value={value} />
           </TabPanel>
         ))
       )}
