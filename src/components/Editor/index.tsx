@@ -100,10 +100,11 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
   React.useEffect(() => {
     const model = monaco.editor
       .getEditors()
-      [EditorContentsStore.veiwIndex].getModel();
-    model.setValue(
-      EditorContentsStore.contents[EditorContentsStore.veiwIndex].content
-    );
+      [EditorContentsStore.veiwIndex]?.getModel();
+    model &&
+      model.setValue(
+        EditorContentsStore.contents[EditorContentsStore.veiwIndex]?.content
+      );
   }, [EditorContentsStore.contents[EditorContentsStore.veiwIndex].content]);
 
   const [commitMessage, setCommitMessage] = React.useState(
