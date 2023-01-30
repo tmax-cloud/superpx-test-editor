@@ -7,7 +7,6 @@ export const SourceCodeLink: React.FC<SourceCodeLinkProps> = ({
 }) => {
   const onSourceCodeLinkClick = () => {
     EditorContentsStore.updateContentAction(
-      0,
       sourceCodeData.srcPath,
       sourceCodeData.content
     );

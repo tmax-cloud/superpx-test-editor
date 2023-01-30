@@ -15,26 +15,26 @@ interface TabPanelProps {
 }
 
 function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
+  const { children, index, ...other } = props;
 
   return (
     <div
       role="tabpanel"
-      hidden={value !== index}
+      hidden={EditorContentsStore.veiwIndex !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      {EditorContentsStore.veiwIndex === index && (
+        <Box sx={{ p: 3 }}>{children}</Box>
+      )}
     </div>
   );
 }
 
 export const Editors = () => {
-  const [value, setValue] = React.useState(0);
-
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+    EditorContentsStore.updateVeiwIndex(newValue);
   };
 
   //create Collapse button data
@@ -61,13 +61,13 @@ export const Editors = () => {
   return (
     <Box sx={{ bgcolor: "background.paper" }}>
       <Tabs
-        value={value}
+        value={EditorContentsStore.veiwIndex}
         onChange={handleChange}
         onClick={(event) => {
           const eventTarget = event.target as HTMLElement;
           const parentElement = eventTarget.parentElement as HTMLDivElement;
           const newValue = parentElement.getAttribute("value");
-          setValue(Number(newValue));
+          EditorContentsStore.updateVeiwIndex(Number(newValue));
         }}
         variant="scrollable"
         scrollButtons="auto"
@@ -90,8 +90,8 @@ export const Editors = () => {
       </Tabs>
       {useObserver(() =>
         EditorContentsStore.contents.map((content, index) => (
-          <TabPanel value={value} index={index}>
-            <Editor language="java" contentsIndex={index} value={value} />
+          <TabPanel value={EditorContentsStore.veiwIndex} index={index}>
+            <Editor language="java" contentsIndex={index} />
           </TabPanel>
         ))
       )}

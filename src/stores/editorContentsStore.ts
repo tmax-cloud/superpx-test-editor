@@ -43,10 +43,18 @@ const EditorContentsStore = observable({
     { path: "testcode2.java", content: testCode2 },
     { path: "testcode3.java", content: testCode3 },
   ],
+  veiwIndex: 0,
 
   // action
-  updateContentAction(index: number, path: string, content: string) {
-    this.contents[index] = { path, content };
+  updateContentAction(path: string, content: string) {
+    if (
+      !this.contents.some((c) => {
+        if (c.path === path) return true;
+      })
+    ) {
+      this.contents.unshift({ path, content });
+      this.veiwIndex = 0;
+    }
   },
 
   pushContentAction(path: string, content: string) {
@@ -63,6 +71,10 @@ const EditorContentsStore = observable({
     this.contents = this.contents.filter((c) => {
       return c.path !== path;
     });
+  },
+
+  updateVeiwIndex(index: number) {
+    this.veiwIndex = index;
   },
 });
 

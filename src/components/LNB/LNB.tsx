@@ -130,7 +130,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
   };
 
   const onAddSourceCodeClick = () => {
-    EditorContentsStore.updateContentAction(0, newFilePath, "");
+    EditorContentsStore.updateContentAction(newFilePath, "");
   };
 
   return (

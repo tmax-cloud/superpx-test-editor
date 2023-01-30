@@ -47,7 +47,6 @@ import { setAlert } from "../../utils/alert-utiles";
 
 interface IEditorProps {
   language: string;
-  value: number;
   contentsIndex?: number;
 }
 
@@ -73,7 +72,8 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
         theme: "vs-dark",
         mouseWheelZoom: true,
         fontSize: 25,
-        value: EditorContentsStore.contents[props.value].content,
+        value:
+          EditorContentsStore.contents[EditorContentsStore.veiwIndex].content,
         // model,
       });
       // validate(model);
@@ -93,15 +93,18 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
     // const ast = parseAndGetASTRoot(`ADD TODO "Create an editor"\nCOMPLETE TODO "Create an editor"`);
     // console.log(ast);
   }, [assignRef]);
-
   React.useEffect(() => {
     const tempToken = monaco.editor.tokenize(text, "java");
     setToken(tempToken);
   }, [text]);
   React.useEffect(() => {
-    const model = monaco.editor.getEditors()[props.value].getModel();
-    model.setValue(EditorContentsStore.contents[props.value].content);
-  }, [EditorContentsStore.contents[props.value].content]);
+    const model = monaco.editor
+      .getEditors()
+      [EditorContentsStore.veiwIndex].getModel();
+    model.setValue(
+      EditorContentsStore.contents[EditorContentsStore.veiwIndex].content
+    );
+  }, [EditorContentsStore.contents[EditorContentsStore.veiwIndex].content]);
 
   const [commitMessage, setCommitMessage] = React.useState(
     "Enter Commit Message"
@@ -160,7 +163,7 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
       {useObserver(() => (
         <>
           <div className="title">
-            {EditorContentsStore.contents[props.value].path}
+            {EditorContentsStore.contents[EditorContentsStore.veiwIndex].path}
           </div>
           <div ref={assignRef} className="editor-container"></div>
         </>
