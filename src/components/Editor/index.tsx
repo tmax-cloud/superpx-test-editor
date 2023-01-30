@@ -47,6 +47,7 @@ import { setAlert } from "../../utils/alert-utiles";
 
 interface IEditorProps {
   language: string;
+  value: number;
   contentsIndex?: number;
 }
 
@@ -62,7 +63,6 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
     // On mount get the ref of the div and assign it the divNode
     divNode = node;
   }, []);
-
   React.useEffect(() => {
     if (divNode) {
       // const model = monaco.editor.createModel("", "java");
@@ -73,9 +73,7 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
         theme: "vs-dark",
         mouseWheelZoom: true,
         fontSize: 25,
-        value: props.contentsIndex
-          ? EditorContentsStore.contents[props.contentsIndex].content
-          : "",
+        value: EditorContentsStore.contents[props.value].content,
         // model,
       });
       // validate(model);
@@ -101,9 +99,9 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
     setToken(tempToken);
   }, [text]);
   React.useEffect(() => {
-    const model = monaco.editor.getEditors()[0].getModel();
-    model.setValue(EditorContentsStore.contents[0].content);
-  }, [EditorContentsStore.contents[0].content]);
+    const model = monaco.editor.getEditors()[props.value].getModel();
+    model.setValue(EditorContentsStore.contents[props.value].content);
+  }, [EditorContentsStore.contents[props.value].content]);
 
   const [commitMessage, setCommitMessage] = React.useState(
     "Enter Commit Message"
@@ -161,7 +159,9 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
       </Button>
       {useObserver(() => (
         <>
-          <div className="title">{EditorContentsStore.contents[0].path}</div>
+          <div className="title">
+            {EditorContentsStore.contents[props.value].path}
+          </div>
           <div ref={assignRef} className="editor-container"></div>
         </>
       ))}

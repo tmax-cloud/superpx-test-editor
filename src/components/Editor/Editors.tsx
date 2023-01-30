@@ -63,6 +63,12 @@ export const Editors = () => {
       <Tabs
         value={value}
         onChange={handleChange}
+        onClick={(event) => {
+          const eventTarget = event.target as HTMLElement;
+          const parentElement = eventTarget.parentElement as HTMLDivElement;
+          const newValue = parentElement.getAttribute("value");
+          setValue(Number(newValue));
+        }}
         variant="scrollable"
         scrollButtons="auto"
         aria-label="scrollable auto tabs example"
@@ -85,7 +91,7 @@ export const Editors = () => {
       {useObserver(() =>
         EditorContentsStore.contents.map((content, index) => (
           <TabPanel value={value} index={index}>
-            <Editor language="java" contentsIndex={index} />
+            <Editor language="java" contentsIndex={index} value={value} />
           </TabPanel>
         ))
       )}
