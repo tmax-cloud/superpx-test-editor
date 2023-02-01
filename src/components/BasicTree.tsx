@@ -10,7 +10,7 @@ export const BasicTree = () => {
 
     const pathToJson = (fileList)=>{
       let resultJson = {
-        name: '',
+        name: 'root',
         children: []
       };
       fileList.forEach((pathList) => {
@@ -18,7 +18,6 @@ export const BasicTree = () => {
         let nodePaths = pathList.path.split('/');
       while (nodePaths.length > 0) {
         let nodePath = nodePaths.shift();
-        node.name = nodePath;
         if (!node.children.map(pathList => pathList.name).includes(nodePath)) {
           if(nodePath.includes('.')){
             node.children.push({
