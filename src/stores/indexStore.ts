@@ -1,13 +1,13 @@
 import numberStore from "./numberStore";
 import editorContentsStore from "./editorContentsStore";
 import alertStore from "./alertStore";
-import testData from "./fileTreeStore";
+import testStore from "./fileTreeStore";
 
 const indexStore = () => ({
   numberStore,
   editorContentsStore,
   alertStore,
-  testData,
+  testStore,
 });
 
 export default indexStore;

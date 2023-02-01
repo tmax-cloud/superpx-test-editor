@@ -287,7 +287,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                 )}
                 {lnb === "extension" && (
                   <div style={{ paddingLeft: 50 }}>
-                    <BasicTree></BasicTree>
+                    <BasicTree/>
                   </div>
                 )}
                 {lnb === "explorer" && (
