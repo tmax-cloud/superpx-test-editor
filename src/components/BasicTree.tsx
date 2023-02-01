@@ -9,17 +9,44 @@ export const BasicTree = () => {
     const onTreeStateChange = (state, event) => console.log(state, event);
 
     const pathToJson = (fileList)=>{
-      let resultJson = {};
-      
+      let resultJson = {
+        name: '',
+        children: []
+      };
+      fileList.forEach((pathList) => {
+        let node = resultJson;
+        let nodePaths = pathList.path.split('/');
+      while (nodePaths.length > 0) {
+        let nodePath = nodePaths.shift();
+        node.name = nodePath;
+        if (!node.children.map(pathList => pathList.name).includes(nodePath)) {
+          if(nodePath.includes('.')){
+            node.children.push({
+              name: nodePath
+            }  
+            );
+          }
+          else{
+            node.children.push({
+              name: nodePath,
+              children: []
+            }  
+            );
+          };
+        }
+        node = node.children.filter(pathList => pathList.name === nodePath)[0];
+      }
+      });
+      console.log(resultJson);
       return resultJson;
     };
 
     const onClickAdd = () => {
-      testStore.addAction('src/component/Alert.tsx');
+      testStore.addAction('src/component/BasicTree.tsx');
     };
   
     const onClickDelete = () => {
-      testStore.deleteAction('src/component/Alert.tsx');
+      testStore.deleteAction('src/component/BasicTree.tsx');
     };
 
     return useObserver (()=>(
@@ -28,11 +55,12 @@ export const BasicTree = () => {
         data={ pathToJson(testStore.fileList) }
         onChange={ onTreeStateChange }
       />
-      {testStore.fileList.map((file)=>{
+      
+      {/*testStore.fileList.map((file)=>{
         return(
           <div>{file.path}</div>
         )
-      })}
+      })*/}
       <button onClick={onClickAdd}>Add</button>
       <button onClick={onClickDelete}>Delete</button>
       </div>
