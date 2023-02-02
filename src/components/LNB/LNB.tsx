@@ -135,6 +135,19 @@ export const LNB: React.FC<LNBProps> = ({}) => {
     EditorContentsStore.updateContentAction(newFilePath, "");
   };
 
+  const onFileChange = (e) => {
+    let file = e.target.files[0];
+    let fileReader = new FileReader();
+    fileReader.onload = () => {
+      EditorContentsStore.pushContentAction(
+        file.name,
+        fileReader.result as string
+      );
+      console.log(fileReader.result);
+    };
+    fileReader.readAsText(file);
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
       <Drawer
