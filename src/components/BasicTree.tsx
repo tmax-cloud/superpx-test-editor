@@ -6,7 +6,6 @@ import indexStore from "../stores/indexStore";
 
 export const BasicTree = () => {
     const { testStore } = indexStore();
-    const onTreeStateChange = (state, event) => console.log(state, event);
 
     const pathToJson = (fileList)=>{
       const resultJson = {
@@ -51,7 +50,6 @@ export const BasicTree = () => {
       <div>
       <FolderTree
         data={ pathToJson(testStore.fileList) }
-        onChange={ onTreeStateChange }
       />
       
       <button onClick={onClickAdd}>Add</button>
