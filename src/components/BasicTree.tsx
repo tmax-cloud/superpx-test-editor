@@ -1,4 +1,4 @@
-import React = require("react");
+import * as React from "react";
 import { useObserver } from "mobx-react";
 import FolderTree from "react-folder-tree";
 import 'react-folder-tree/dist/style.css';
@@ -9,15 +9,15 @@ export const BasicTree = () => {
     const onTreeStateChange = (state, event) => console.log(state, event);
 
     const pathToJson = (fileList)=>{
-      let resultJson = {
-        name: 'root',
+      const resultJson = {
+        name: 'project',
         children: []
       };
       fileList.forEach((pathList) => {
         let node = resultJson;
-        let nodePaths = pathList.path.split('/');
+        const nodePaths = pathList.path.split('/');
       while (nodePaths.length > 0) {
-        let nodePath = nodePaths.shift();
+        const nodePath = nodePaths.shift(); //while문 무한루프 가능성 상정
         if (!node.children.map(pathList => pathList.name).includes(nodePath)) {
           if(nodePath.includes('.')){
             node.children.push({
@@ -36,7 +36,6 @@ export const BasicTree = () => {
         node = node.children.filter(pathList => pathList.name === nodePath)[0];
       }
       });
-      console.log(resultJson);
       return resultJson;
     };
 
@@ -55,11 +54,6 @@ export const BasicTree = () => {
         onChange={ onTreeStateChange }
       />
       
-      {/*testStore.fileList.map((file)=>{
-        return(
-          <div>{file.path}</div>
-        )
-      })*/}
       <button onClick={onClickAdd}>Add</button>
       <button onClick={onClickDelete}>Delete</button>
       </div>

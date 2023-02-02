@@ -290,6 +290,11 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                     <BasicTree/>
                   </div>
                 )}
+                {lnb === "debug" && (
+                  <div style={{ paddingLeft: 50 }}>
+                    <input type="file" onChange={onFileChange} />
+                  </div>
+                )}
                 {lnb === "explorer" && (
                   <div style={{ paddingLeft: 50 }}>
                     <div>
