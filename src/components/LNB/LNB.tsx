@@ -28,6 +28,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import CommitIcon from "@mui/icons-material/Commit";
 import BugReportIcon from "@mui/icons-material/BugReport";
 import ExtensionIcon from "@mui/icons-material/Extension";
+import { Counter } from "../Counter";
+import { BasicTree } from "../BasicTree";
 
 const drawerWidth = 240;
 
@@ -294,6 +296,11 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                         })}
                       </Accordion>
                     </div>
+                  </div>
+                )}
+                {lnb === "extension" && (
+                  <div style={{ paddingLeft: 50 }}>
+                    <BasicTree/>
                   </div>
                 )}
                 {lnb === "debug" && (
