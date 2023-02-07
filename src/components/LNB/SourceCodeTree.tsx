@@ -2,38 +2,69 @@ import * as React from "react";
 import { useObserver } from "mobx-react";
 import FolderTree from "react-folder-tree";
 import 'react-folder-tree/dist/style.css';
-import WorkspaceStore from "../stores/workspaceStore";
-import testStore from "../stores/fileTreeStore";
+import WorkspaceStore from "../../stores/workspaceStore";
+import testStore from "../../stores/fileTreeStore";
+import EditorContentsStore from "../../stores/editorContentsStore";
 
-export const BasicTree = () => {
+export const SourceCodeTree = () => {
+      const onSourceCodeLinkClick = ({defaultOnClick, nodeData}) => {
+        const {path, name, checked, isOpen, content} = nodeData
+        if(nodeData.name.includes('.')){
+        EditorContentsStore.updateContentAction(
+          nodeData.path,
+          nodeData.content
+        )
+        }
+      };
 
     const pathToJson = (sourceCodeList)=>{
       const resultJson = {
         name: (WorkspaceStore.reference.name),
-        children: []
+        children: [],
+        content: []
       };
       console.log(sourceCodeList);
       sourceCodeList.forEach((srcList) => {
-        console.log(srcList);
         let node = resultJson;
         const nodePaths = srcList.srcPath.split('/');
+        const nodeData = srcList.content;
+        const nodePath = nodePaths.shift();
       while (nodePaths.length > 0) {
         const nodePath = nodePaths.shift(); //while문 무한루프 가능성 상정
+        console.log(typeof node.children);
+        if (typeof node.children == "undefined"){
+          node.children = [];
+        if(nodePath.includes('.')){
+          node.children.push({
+            name: nodePath,
+            content: nodeData,
+          }  
+          );
+        }
+        else{
+          node.children.push({
+            name: nodePath,
+            children: [],
+          }  
+          );
+        }}
+        else {
         if (!node.children.map(srcList => srcList.name).includes(nodePath)) {
           if(nodePath.includes('.')){
             node.children.push({
-              name: nodePath
+              name: nodePath,
+              content: nodeData,
             }  
             );
           }
           else{
             node.children.push({
               name: nodePath,
-              children: []
+              children: [],
             }  
             );
           };
-        }
+        }};
         node = node.children.filter(pathList => pathList.name === nodePath)[0];
       }
       });
@@ -48,16 +79,15 @@ export const BasicTree = () => {
       testStore.deleteAction('src/component/BasicTree.tsx');
     };
 
-    return useObserver (()=>(
+    return (
       <div>
       <FolderTree
         data={ pathToJson(WorkspaceStore.sourceCodeList) }
         showCheckbox={ false }
-        
+        indentPixels={ 5 }
+        onNameClick={onSourceCodeLinkClick}
       />
       
-      <button onClick={onClickAdd}>Add</button>
-      <button onClick={onClickDelete}>Delete</button>
       </div>
-      ));
+      );
     };
