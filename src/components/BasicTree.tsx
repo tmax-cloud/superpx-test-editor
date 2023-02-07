@@ -2,22 +2,24 @@ import * as React from "react";
 import { useObserver } from "mobx-react";
 import FolderTree from "react-folder-tree";
 import 'react-folder-tree/dist/style.css';
-import indexStore from "../stores/indexStore";
+import WorkspaceStore from "../stores/workspaceStore";
+import testStore from "../stores/fileTreeStore";
 
 export const BasicTree = () => {
-    const { testStore } = indexStore();
 
-    const pathToJson = (fileList)=>{
+    const pathToJson = (sourceCodeList)=>{
       const resultJson = {
-        name: 'project',
+        name: (WorkspaceStore.reference.name),
         children: []
       };
-      fileList.forEach((pathList) => {
+      console.log(sourceCodeList);
+      sourceCodeList.forEach((srcList) => {
+        console.log(srcList);
         let node = resultJson;
-        const nodePaths = pathList.path.split('/');
+        const nodePaths = srcList.srcPath.split('/');
       while (nodePaths.length > 0) {
         const nodePath = nodePaths.shift(); //while문 무한루프 가능성 상정
-        if (!node.children.map(pathList => pathList.name).includes(nodePath)) {
+        if (!node.children.map(srcList => srcList.name).includes(nodePath)) {
           if(nodePath.includes('.')){
             node.children.push({
               name: nodePath
@@ -49,11 +51,13 @@ export const BasicTree = () => {
     return useObserver (()=>(
       <div>
       <FolderTree
-        data={ pathToJson(testStore.fileList) }
+        data={ pathToJson(WorkspaceStore.sourceCodeList) }
+        showCheckbox={ false }
+        
       />
       
       <button onClick={onClickAdd}>Add</button>
       <button onClick={onClickDelete}>Delete</button>
       </div>
       ));
-  };
+    };

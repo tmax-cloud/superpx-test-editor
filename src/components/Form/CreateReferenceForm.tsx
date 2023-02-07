@@ -29,7 +29,7 @@ export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
     const referenceSocket = new WebSocket(wsUrl);
     const request = setRequest(setService("reference","InsertService"), {
       reference: {
-        proj_id: selectedProject.projId,
+        proj_name: selectedProject.name,
         name: referenceName,
         type: referenceType,
       },
@@ -39,7 +39,7 @@ export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
     };
 
     referenceSocket.onmessage = (event) => {
-      const wsdata = JSON.parse(event.data).body.data;
+      const wsdata = JSON.parse(event.data).data;
       updateReferenceList({
         name: wsdata.name,
         projId: wsdata.projId,

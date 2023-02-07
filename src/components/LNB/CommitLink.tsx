@@ -21,7 +21,7 @@ export const CommitLink: React.FC<CommitLinkProps> = ({
 
     commitSocket.onmessage = (event) => {
       WorkspaceStore.updateSourceCodeListAction(
-        JSON.parse(event.data).body.data
+        JSON.parse(event.data).data
       );
     };
   };

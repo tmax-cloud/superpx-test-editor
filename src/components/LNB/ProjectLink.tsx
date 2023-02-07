@@ -17,14 +17,14 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
     setSelectedProject(projectData);
     const projectSocket = new WebSocket(wsUrl);
     const request = setRequest(setService("project","DetailService"), {
-      proj_id: projectData.projId,
+      proj_name: projectData.name,
     });
     projectSocket.onopen = (event) => {
       projectSocket.send(JSON.stringify(request));
     };
 
     projectSocket.onmessage = (event) => {
-      const wsdata = JSON.parse(event.data).body.data;
+      const wsdata = JSON.parse(event.data).data;
       setAlert(
         "Get Reference",
         `Get Reference List from Project ${wsdata.name}.`,
@@ -35,7 +35,7 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
     const referenceRequest = setRequest(
       setService("reference","ListService"),
       {
-        proj_id: projectData.projId,
+        proj_name: projectData.name,
       }
     );
     referenceSocket.onopen = (event) => {
@@ -43,7 +43,7 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
     };
 
     referenceSocket.onmessage = (event) => {
-      const referenceList = JSON.parse(event.data).body.data;
+      const referenceList = JSON.parse(event.data).data;
       setReferenceList(referenceList);
       const mainReference =
         referenceList.filter((r) => r.name == "main")[0] || referenceList[0];
@@ -52,7 +52,8 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
       const commitSocketRequest = setRequest(
         setService("commit","ListService"),
         {
-          ref_id: mainReference.refId,
+          proj_name: projectData.name,
+          ref_name: mainReference.name,
         }
       );
       commitSocket.onopen = (event) => {
@@ -60,11 +61,11 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
       };
 
       commitSocket.onmessage = (event) => {
-        if (JSON.parse(event.data).body.data) {
-          setCommitList(JSON.parse(event.data).body.data);
+        if (JSON.parse(event.data).data) {
+          setCommitList(JSON.parse(event.data).data);
         }
-        const commitId = JSON.parse(event.data).body.data
-          ? JSON.parse(event.data).body.data[0].commitId
+        const commitId = JSON.parse(event.data).data
+          ? JSON.parse(event.data).data[0].commitId
           : null;
         if (commitId) {
           const commitSocket = new WebSocket(wsUrl);
@@ -80,7 +81,7 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
 
           commitSocket.onmessage = (event) => {
             WorkspaceStore.updateSourceCodeListAction(
-              JSON.parse(event.data).body.data
+              JSON.parse(event.data).data
             );
           };
         } else {
@@ -93,7 +94,7 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
   const onDeleteClick = () => {
     const projectSocket = new WebSocket(wsUrl);
     const request = setRequest(setService("project","DeleteService"), {
-      proj_id: projectData.projId,
+      proj_name: projectData.name,
     });
     projectSocket.onopen = (event) => {
       projectSocket.send(JSON.stringify(request));

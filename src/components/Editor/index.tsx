@@ -138,7 +138,7 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
     };
 
     commitSocket.onmessage = (event) => {
-      const wsdata = JSON.parse(event.data).body.data;
+      const wsdata = JSON.parse(event.data).data;
       setAlert(
         "Commit",
         `${wsdata.message}(${wsdata.commitId}) is done`,
