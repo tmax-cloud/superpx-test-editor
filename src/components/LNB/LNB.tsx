@@ -90,14 +90,14 @@ export const LNB: React.FC<LNBProps> = ({}) => {
 
   React.useEffect(() => {
     const projectSocket = new WebSocket(WorkspaceStore.wsUrl);
-    const request = setRequest("com.tmax.service.project.ListService", {});
+    const request = setRequest("super-px-0.1.4/com.tmax.scm.service.project.ListService", {});
     projectSocket.onopen = (event) => {
       projectSocket.send(JSON.stringify(request));
     };
+    
 
     projectSocket.onmessage = (event) => {
       const wsdata = JSON.parse(event.data).body.data;
-
       const tempProjectList = [];
       wsdata.forEach((d) => {
         tempProjectList.push(d);
