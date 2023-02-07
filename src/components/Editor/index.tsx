@@ -152,9 +152,7 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
       {useObserver(() => (
         <>
           <div ref={assignRef} className="editor-container"></div>
-          <div className="title">
-            {EditorContentsStore.contents[EditorContentsStore.veiwIndex].path}
-          </div>
+
           <TextField
             autoFocus
             margin="dense"
