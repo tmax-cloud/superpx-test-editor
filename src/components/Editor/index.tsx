@@ -152,6 +152,7 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
       {useObserver(() => (
         <>
           <div ref={assignRef} className="editor-container"></div>
+
           <TextField
             autoFocus
             margin="dense"
