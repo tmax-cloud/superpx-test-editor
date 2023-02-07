@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as _ from "lodash-es";
-import { setRequest } from "../../utils/service-utils";
+import { setRequest, setService } from "../../utils/service-utils";
 import { ProjectLink } from "./ProjectLink";
 import { ReferenceLink } from "./ReferenceLink";
 import { SourceCodeLink } from "./SourceCodeLink";
@@ -90,14 +90,14 @@ export const LNB: React.FC<LNBProps> = ({}) => {
 
   React.useEffect(() => {
     const projectSocket = new WebSocket(WorkspaceStore.wsUrl);
-    const request = setRequest("super-px-0.1.4/com.tmax.scm.service.project.ListService", {});
+    const request = setRequest(setService("project", "ListService"), {});
     projectSocket.onopen = (event) => {
       projectSocket.send(JSON.stringify(request));
     };
     
 
     projectSocket.onmessage = (event) => {
-      const wsdata = JSON.parse(event.data).body.data;
+      const wsdata = JSON.parse(event.data).data;
       const tempProjectList = [];
       wsdata.forEach((d) => {
         tempProjectList.push(d);
@@ -300,12 +300,17 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                 )}
                 {lnb === "extension" && (
                   <div style={{ paddingLeft: 50 }}>
-                    <BasicTree/>
+                    <BasicTree />
                   </div>
                 )}
                 {lnb === "debug" && (
                   <div style={{ paddingLeft: 50 }}>
-                    <input type="file" onChange={onFileChange} />
+                    <input
+                      type="file"
+                      onChange={onFileChange}
+                      multiple={true}
+                      accept=".java"
+                    />
                   </div>
                 )}
                 {lnb === "explorer" && (

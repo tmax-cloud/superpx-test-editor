@@ -24,9 +24,12 @@ function TabPanel(props: TabPanelProps) {
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
       {...other}
+      style={{ height: "100%" }}
     >
       {EditorContentsStore.veiwIndex === index && (
-        <Box sx={{ p: 3 }}>{children}</Box>
+        <Box sx={{ p: 3 }} style={{ height: "100%" }}>
+          {children}
+        </Box>
       )}
     </div>
   );
@@ -59,7 +62,7 @@ export const Editors = () => {
   };
 
   return (
-    <Box sx={{ bgcolor: "background.paper" }}>
+    <Box sx={{ bgcolor: "background.paper" }} style={{ height: "100%" }}>
       <Tabs
         value={EditorContentsStore.veiwIndex}
         onChange={handleChange}
