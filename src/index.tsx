@@ -42,10 +42,10 @@ const App = () => {
 
 const Main = () => {
   return (
-    <div>
+    <div style={{ height: "100%" }}>
       <LNB />
-      <div className="editor-area">
-        {/* <div className="title">Java Editor</div> */}        
+      <div className="editor-area" style={{ height: "100%" }}>
+        {/* <div className="title">Java Editor</div> */}
         <Editors />
       </div>
     </div>

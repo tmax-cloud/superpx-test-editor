@@ -8,6 +8,7 @@ import { useObserver } from "mobx-react";
 import EditorContentsStore from "../../stores/editorContentsStore";
 import WorkspaceStore from "../../stores/workspaceStore";
 import { setAlert } from "../../utils/alert-utiles";
+import { flexbox } from "@mui/system";
 // import parseAndGetASTRoot from "../../language-service/parser";
 
 // function validate(model) {
@@ -76,6 +77,7 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
           EditorContentsStore.contents[EditorContentsStore.veiwIndex].content,
         // model,
       });
+      divNode.style.height = "100%";
       // validate(model);
       // model.onDidChangeContent(() => {
       //   // validate(model);
@@ -146,27 +148,27 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
   };
 
   return (
-    <div style={{ height: 750 }}>
-      <TextField
-        autoFocus
-        margin="dense"
-        id="name"
-        label="Commit Message"
-        type="text"
-        fullWidth
-        variant="standard"
-        onChange={onReferenceNameChange}
-      />
-      <Button variant="outlined" onClick={onCommitClick}>
-        Commit
-        <AddIcon />
-      </Button>
+    <div style={{ height: "80%", display: "flex", flexDirection: "column" }}>
       {useObserver(() => (
         <>
+          <div ref={assignRef} className="editor-container"></div>
           <div className="title">
             {EditorContentsStore.contents[EditorContentsStore.veiwIndex].path}
           </div>
-          <div ref={assignRef} className="editor-container"></div>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Commit Message"
+            type="text"
+            fullWidth
+            variant="standard"
+            onChange={onReferenceNameChange}
+          />
+          <Button variant="outlined" onClick={onCommitClick}>
+            Commit
+            <AddIcon />
+          </Button>
         </>
       ))}
       {/* <div>Content Change Position</div>
