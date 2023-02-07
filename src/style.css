@@ -10,9 +10,13 @@ body,
 .title {
   height: 50px;
 }
-
+@media only screen and (max-height: 600px) {
+  .editor-container {
+    height: 50%;
+  }
+}
 .editor-container {
-  height: calc(100% - 50px);
+  height: 100%;
   overflow: hidden;
   width: auto;
 }
@@ -21,7 +25,7 @@ body,
   height: 100%;
   position: fixed;
   right: 0;
-  width: 85%;
+  width: calc(100% - 270px);
 }
 
 .sidebar {
@@ -38,7 +42,11 @@ body,
 
 .alert {
   position: absolute;
-  z-Index: 4800;
+  z-index: 4800;
   padding: 20px;
   right: 10px;
+}
+
+.monaco-editor {
+  height: 100% !important;
 }
