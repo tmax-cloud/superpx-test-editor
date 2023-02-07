@@ -7,7 +7,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import AddIcon from "@mui/icons-material/Add";
-import { setRequest } from "../../utils/service-utils";
+import { setRequest, setService } from "../../utils/service-utils";
 import { setAlert } from "../../utils/alert-utiles";
 
 export const CreateProjectForm: React.FC<CreateProjectFormProps> = ({
@@ -26,7 +26,7 @@ export const CreateProjectForm: React.FC<CreateProjectFormProps> = ({
 
   const onClickCreate = () => {
     const projectSocket = new WebSocket(wsUrl);
-    const request = setRequest("com.tmax.service.project.InsertService", {
+    const request = setRequest(setService("project","InsertService"), {
       project: { name: projectName },
       reference: { name: "main", type: 0 },
     });

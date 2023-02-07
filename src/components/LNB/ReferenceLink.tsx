@@ -1,5 +1,5 @@
 import * as React from "react";
-import { setRequest } from "../../utils/service-utils";
+import { setRequest, setService } from "../../utils/service-utils";
 import { setAlert } from "../../utils/alert-utiles";
 import WorkspaceStore from "../../stores/workspaceStore";
 import { Button } from "@mui/material";
@@ -13,7 +13,7 @@ export const ReferenceLink: React.FC<ReferenceLinkProps> = ({
     WorkspaceStore.updateReferenceAction(referenceData);
     const referenceSocket = new WebSocket(wsUrl);
     const referenceRequest = setRequest(
-      "com.tmax.service.reference.DetailService",
+      setService("reference","DetailService"),
       {
         proj_id: referenceData.projId,
         ref_id: referenceData.refId,
@@ -28,7 +28,7 @@ export const ReferenceLink: React.FC<ReferenceLinkProps> = ({
       setAlert("Get Commit", `Get Commit List from Reference ${wsdata.name}.`, "success");
       const commitSocket = new WebSocket(wsUrl);
       const commitSocketRequest = setRequest(
-        "com.tmax.service.commit.ListService",
+        setService("commit","ListService"),
         {
           ref_id: referenceData.refId,
         }
@@ -47,7 +47,7 @@ export const ReferenceLink: React.FC<ReferenceLinkProps> = ({
         if (commitId) {
           const commitSocket = new WebSocket(wsUrl);
           const commitSocketRequest = setRequest(
-            "com.tmax.service.commit.DetailService",
+            setService("commit","DetailService"),
             {
               commit_id: commitId,
             }

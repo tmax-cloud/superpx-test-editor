@@ -3,7 +3,7 @@ import * as monaco from "monaco-editor";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import TextField from "@mui/material/TextField";
-import { setRequest } from "../../utils/service-utils";
+import { setRequest, setService } from "../../utils/service-utils";
 import { useObserver } from "mobx-react";
 import EditorContentsStore from "../../stores/editorContentsStore";
 import WorkspaceStore from "../../stores/workspaceStore";
@@ -126,7 +126,7 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
         nonModifiedSrc.push({ src_path: s.srcPath, content: s.content });
       }
     });
-    const request = setRequest("com.tmax.service.commit.InsertService", {
+    const request = setRequest(setService("commit","InsertService"), {
       proj_id: WorkspaceStore.reference.projId,
       ref_id: WorkspaceStore.reference.refId,
       commit: { message: commitMessage, is_commit: true },

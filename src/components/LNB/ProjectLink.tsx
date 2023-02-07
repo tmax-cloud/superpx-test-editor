@@ -1,5 +1,5 @@
 import * as React from "react";
-import { setRequest } from "../../utils/service-utils";
+import { setRequest, setService } from "../../utils/service-utils";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { setAlert } from "../../utils/alert-utiles";
 import WorkspaceStore from "../../stores/workspaceStore";
@@ -16,7 +16,7 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
   const onProjectLinkClick = async () => {
     setSelectedProject(projectData);
     const projectSocket = new WebSocket(wsUrl);
-    const request = setRequest("com.tmax.service.project.DetailService", {
+    const request = setRequest(setService("project","DetailService"), {
       proj_id: projectData.projId,
     });
     projectSocket.onopen = (event) => {
@@ -33,7 +33,7 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
     };
     const referenceSocket = new WebSocket(wsUrl);
     const referenceRequest = setRequest(
-      "com.tmax.service.reference.ListService",
+      setService("reference","ListService"),
       {
         proj_id: projectData.projId,
       }
@@ -50,7 +50,7 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
       WorkspaceStore.updateReferenceAction(mainReference);
       const commitSocket = new WebSocket(wsUrl);
       const commitSocketRequest = setRequest(
-        "com.tmax.service.commit.ListService",
+        setService("commit","ListService"),
         {
           ref_id: mainReference.refId,
         }
@@ -69,7 +69,7 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
         if (commitId) {
           const commitSocket = new WebSocket(wsUrl);
           const commitSocketRequest = setRequest(
-            "com.tmax.service.commit.DetailService",
+            setService("commit","DetailService"),
             {
               commit_id: commitId,
             }
@@ -92,7 +92,7 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
   };
   const onDeleteClick = () => {
     const projectSocket = new WebSocket(wsUrl);
-    const request = setRequest("com.tmax.service.project.DeleteService", {
+    const request = setRequest(setService("project","DeleteService"), {
       proj_id: projectData.projId,
     });
     projectSocket.onopen = (event) => {
