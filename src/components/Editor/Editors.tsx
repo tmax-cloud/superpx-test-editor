@@ -75,12 +75,15 @@ export const Editors = () => {
     setShowModal(true);
   };
 
-  const handleCloseModal = () => {
+  const handleCreateModal = () => {
     EditorContentsStore.pushContentAction(inputValue, "");
     setShowModal(false);
     setInputValue("");
   };
-
+  const handleCancelModal = () => {
+    setShowModal(false);
+    setInputValue("");
+  };
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
   };
@@ -103,7 +106,7 @@ export const Editors = () => {
         </Button>
       </Tabs>
       <div>
-        <Dialog open={showModal} onClose={handleCloseModal}>
+        <Dialog open={showModal} onClose={handleCancelModal}>
           <DialogTitle> File name</DialogTitle>
           <DialogContent>
             <DialogContentText>Please enter a file name</DialogContentText>
@@ -120,8 +123,8 @@ export const Editors = () => {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleCloseModal}>Cancel</Button>
-            <Button onClick={handleCloseModal}>Create</Button>
+            <Button onClick={handleCancelModal}>Cancel</Button>
+            <Button onClick={handleCreateModal}>Create</Button>
           </DialogActions>
         </Dialog>
       </div>
