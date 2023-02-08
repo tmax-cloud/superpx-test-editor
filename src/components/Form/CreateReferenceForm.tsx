@@ -7,7 +7,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import AddIcon from "@mui/icons-material/Add";
-import { setRequest } from "../../utils/service-utils";
+import { setRequest, setService } from "../../utils/service-utils";
 import { setAlert } from "../../utils/alert-utiles";
 
 export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
@@ -27,9 +27,9 @@ export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
 
   const onClickCreate = () => {
     const referenceSocket = new WebSocket(wsUrl);
-    const request = setRequest("com.tmax.service.reference.InsertService", {
+    const request = setRequest(setService("reference","InsertService"), {
       reference: {
-        proj_id: selectedProject.projId,
+        proj_name: selectedProject.name,
         name: referenceName,
         type: referenceType,
       },
@@ -39,7 +39,7 @@ export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
     };
 
     referenceSocket.onmessage = (event) => {
-      const wsdata = JSON.parse(event.data).body.data;
+      const wsdata = JSON.parse(event.data).data;
       updateReferenceList({
         name: wsdata.name,
         projId: wsdata.projId,
