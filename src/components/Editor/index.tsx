@@ -72,7 +72,7 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
         autoIndent: "full",
         theme: "vs-dark",
         mouseWheelZoom: true,
-        fontSize: 25,
+        fontSize: 20,
         value:
           EditorContentsStore.contents[EditorContentsStore.veiwIndex].content,
         // model,
