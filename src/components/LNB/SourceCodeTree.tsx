@@ -7,15 +7,24 @@ import testStore from "../../stores/fileTreeStore";
 import EditorContentsStore from "../../stores/editorContentsStore";
 
 export const SourceCodeTree = () => {
-      const onSourceCodeLinkClick = ({defaultOnClick, nodeData}) => {
-        const {path, name, checked, isOpen, content} = nodeData
-        if(nodeData.name.includes('.')){
+       function checkFileType(filePath) {
+          let fileFormat = filePath.split(".");
+          if (fileFormat.indexOf("xlsx") || fileFormat.indexOf("xls") > -1) {
+              return true;
+          } else {
+              return false;
+          }
+      }
+
+    const onSourceCodeLinkClick = ({nodeData}) => {
+      const {path, name, checked, isOpen, content} = nodeData
+      if(!(typeof(nodeData.isOpen)=="boolean")){
         EditorContentsStore.updateContentAction(
-          nodeData.path,
+          nodeData.name,
           nodeData.content
         )
-        }
-      };
+      }
+    };
 
     const pathToJson = (sourceCodeList)=>{
       const resultJson = {
@@ -31,26 +40,17 @@ export const SourceCodeTree = () => {
         const nodePath = nodePaths.shift();
       while (nodePaths.length > 0) {
         const nodePath = nodePaths.shift(); //while문 무한루프 가능성 상정
-        console.log(typeof node.children);
         if (typeof node.children == "undefined"){
           node.children = [];
-        if(nodePath.includes('.')){
-          node.children.push({
-            name: nodePath,
-            content: nodeData,
-          }  
-          );
-        }
-        else{
           node.children.push({
             name: nodePath,
             children: [],
           }  
           );
-        }}
+        }
         else {
         if (!node.children.map(srcList => srcList.name).includes(nodePath)) {
-          if(nodePath.includes('.')){
+          if(nodePaths.length == 0){
             node.children.push({
               name: nodePath,
               content: nodeData,
@@ -71,13 +71,13 @@ export const SourceCodeTree = () => {
       return resultJson;
     };
 
-    const onClickAdd = () => {
+    /*const onClickAdd = () => {
       testStore.addAction('src/component/BasicTree.tsx');
     };
   
     const onClickDelete = () => {
       testStore.deleteAction('src/component/BasicTree.tsx');
-    };
+    };*/
 
     return (
       <div>
