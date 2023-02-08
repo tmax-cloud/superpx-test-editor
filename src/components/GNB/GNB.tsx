@@ -18,7 +18,7 @@ export const GNB = () => {
     "help",
   ];
   const menusAction = {
-    file: ["fileAction1", "fileAction2"],
+    file: ["Import Directory", "Import File"],
     edit: ["editAction1", "editAction2"],
     select: ["selectAction1", "selectAction2"],
     view: ["viewAction1", "viewAction2"],
@@ -33,6 +33,26 @@ export const GNB = () => {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setOpenMenu({ [event.currentTarget.value]: true });
     setAnchorEl(event.currentTarget);
+  };
+  const getActions = (action) => {
+    switch (action) {
+      case "Import Directory":
+        return handleImportDiretory;
+      case "Import File":
+        return handleImportFile;
+      default:
+        return handleClose;
+    }
+  };
+  const handleImportDiretory = () => {
+    alert("Import Directory");
+    setOpenMenu({});
+    setAnchorEl(null);
+  };
+  const handleImportFile = () => {
+    alert("Import File");
+    setOpenMenu({});
+    setAnchorEl(null);
   };
   const handleClose = () => {
     setOpenMenu({});
@@ -78,7 +98,10 @@ export const GNB = () => {
             >
               {menusAction[menu].map((action) => {
                 return (
-                  <MenuItem key={`menuItem-${action}`} onClick={handleClose}>
+                  <MenuItem
+                    key={`menuItem-${action}`}
+                    onClick={getActions(action)}
+                  >
                     {action}
                   </MenuItem>
                 );

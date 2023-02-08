@@ -30,6 +30,8 @@ import BugReportIcon from "@mui/icons-material/BugReport";
 import ExtensionIcon from "@mui/icons-material/Extension";
 import { Counter } from "../Counter";
 import { BasicTree } from "../BasicTree";
+import Uploady from "@rpldy/uploady";
+import UploadDropZone from "@rpldy/upload-drop-zone";
 
 const drawerWidth = 240;
 
@@ -135,17 +137,29 @@ export const LNB: React.FC<LNBProps> = ({}) => {
     EditorContentsStore.updateContentAction(newFilePath, "");
   };
 
+  const ref = React.useRef<HTMLInputElement>(null);
+
+  React.useEffect(() => {
+    if (ref.current !== null) {
+      // ref.current.setAttribute("directory", "");
+      ref.current.setAttribute("webkitdirectory", "");
+    }
+  }, [ref]);
+
   const onFileChange = (e) => {
-    let file = e.target.files[0];
-    let fileReader = new FileReader();
-    fileReader.onload = () => {
-      EditorContentsStore.pushContentAction(
-        file.name,
-        fileReader.result as string
-      );
-      console.log(fileReader.result);
-    };
-    fileReader.readAsText(file);
+    const files = e.target.files;
+    for (const file of files) {
+      const fileReader = new FileReader();
+      fileReader.onload = () => {
+        EditorContentsStore.pushContentAction(
+          file.webkitRelativePath,
+          fileReader.result as string
+        );
+        console.log(fileReader.result);
+      };
+      fileReader.readAsText(file);
+    }
+    // fileReader.readAsText(file);
   };
 
   return (
@@ -305,12 +319,35 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                 )}
                 {lnb === "debug" && (
                   <div style={{ paddingLeft: 50 }}>
-                    <input
+                    {/* <input
+                      ref={ref}
                       type="file"
                       onChange={onFileChange}
                       multiple={true}
                       accept=".java"
-                    />
+                    /> */}
+                    <Uploady>
+                      <UploadDropZone
+                        onDragOverClassName="drag-over"
+                        grouped
+                        maxGroupSize={3}
+                        dropHandler={() => {
+                          return new Promise((resolveInner) => {
+                            setTimeout(resolveInner, 1000);
+                          });
+                        }}
+                      >
+                        <Box
+                          style={{
+                            height: 150,
+                            width: 180,
+                            border: "2px solid",
+                          }}
+                        >
+                          <span>Drag&Drop File(s) Here</span>
+                        </Box>
+                      </UploadDropZone>
+                    </Uploady>
                   </div>
                 )}
                 {lnb === "explorer" && (
