@@ -7,6 +7,13 @@ import Button from "@mui/material/Button";
 import { Editor } from "./index";
 import { useObserver } from "mobx-react";
 import EditorContentsStore from "../../stores/editorContentsStore";
+import CustomTab from "./CustomTab";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -61,36 +68,66 @@ export const Editors = () => {
     showCollapseAll: true,
   };
 
+  const [showModal, setShowModal] = React.useState(false);
+  const [inputValue, setInputValue] = React.useState("");
+
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+
+  const handleCreateModal = () => {
+    EditorContentsStore.pushContentAction(inputValue, "");
+    setShowModal(false);
+    setInputValue("");
+  };
+  const handleCancelModal = () => {
+    setShowModal(false);
+    setInputValue("");
+  };
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
+  };
   return (
     <Box sx={{ bgcolor: "background.paper" }} style={{ height: "100%" }}>
       <Tabs
         value={EditorContentsStore.veiwIndex}
         onChange={handleChange}
-        onClick={(event) => {
-          const eventTarget = event.target as HTMLElement;
-          const parentElement = eventTarget.parentElement as HTMLDivElement;
-          const newValue = parentElement.getAttribute("value");
-          EditorContentsStore.updateVeiwIndex(Number(newValue));
-        }}
         variant="scrollable"
         scrollButtons="auto"
         aria-label="scrollable auto tabs example"
       >
         {useObserver(() =>
-          EditorContentsStore.contents.map((content) => (
-            <div>
-              <Tab label={content.path}></Tab>
-              <Button
-                onClick={() => {
-                  EditorContentsStore.deleteContentAction(content.path);
-                }}
-              >
-                <CloseIcon />
-              </Button>
-            </div>
+          EditorContentsStore.contents.map((content, index) => (
+            <CustomTab content={content} index={index} />
           ))
         )}
+        <Button variant="outlined" onClick={handleOpenModal}>
+          +
+        </Button>
       </Tabs>
+      <div>
+        <Dialog open={showModal} onClose={handleCancelModal}>
+          <DialogTitle> File name</DialogTitle>
+          <DialogContent>
+            <DialogContentText>Please enter a file name</DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="file name"
+              type="email"
+              fullWidth
+              variant="standard"
+              value={inputValue}
+              onChange={handleInputChange}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCancelModal}>Cancel</Button>
+            <Button onClick={handleCreateModal}>Create</Button>
+          </DialogActions>
+        </Dialog>
+      </div>
       {useObserver(() =>
         EditorContentsStore.contents.map((content, index) => (
           <TabPanel value={EditorContentsStore.veiwIndex} index={index}>
