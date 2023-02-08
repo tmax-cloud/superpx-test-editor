@@ -1,5 +1,5 @@
 import * as React from "react";
-import { setRequest } from "../../utils/service-utils";
+import { setRequest, setService } from "../../utils/service-utils";
 import { setAlert } from "../../utils/alert-utiles";
 import WorkspaceStore from "../../stores/workspaceStore";
 import { Button } from "@mui/material";
@@ -13,7 +13,7 @@ export const ReferenceLink: React.FC<ReferenceLinkProps> = ({
     WorkspaceStore.updateReferenceAction(referenceData);
     const referenceSocket = new WebSocket(wsUrl);
     const referenceRequest = setRequest(
-      "com.tmax.service.reference.DetailService",
+      setService("reference","DetailService"),
       {
         proj_id: referenceData.projId,
         ref_id: referenceData.refId,
@@ -24,11 +24,11 @@ export const ReferenceLink: React.FC<ReferenceLinkProps> = ({
     };
 
     referenceSocket.onmessage = (event) => {
-      const wsdata = JSON.parse(event.data).body.data;
+      const wsdata = JSON.parse(event.data).data;
       setAlert("Get Commit", `Get Commit List from Reference ${wsdata.name}.`, "success");
       const commitSocket = new WebSocket(wsUrl);
       const commitSocketRequest = setRequest(
-        "com.tmax.service.commit.ListService",
+        setService("commit","ListService"),
         {
           ref_id: referenceData.refId,
         }
@@ -38,16 +38,16 @@ export const ReferenceLink: React.FC<ReferenceLinkProps> = ({
       };
 
       commitSocket.onmessage = (event) => {
-        if (JSON.parse(event.data).body.data) {
-          setCommitList(JSON.parse(event.data).body.data);
+        if (JSON.parse(event.data).data) {
+          setCommitList(JSON.parse(event.data).data);
         }
-        const commitId = JSON.parse(event.data).body.data
-          ? JSON.parse(event.data).body.data[0].commitId
+        const commitId = JSON.parse(event.data).data
+          ? JSON.parse(event.data).data[0].commitId
           : null;
         if (commitId) {
           const commitSocket = new WebSocket(wsUrl);
           const commitSocketRequest = setRequest(
-            "com.tmax.service.commit.DetailService",
+            setService("commit","DetailService"),
             {
               commit_id: commitId,
             }
@@ -58,7 +58,7 @@ export const ReferenceLink: React.FC<ReferenceLinkProps> = ({
 
           commitSocket.onmessage = (event) => {
             WorkspaceStore.updateSourceCodeListAction(
-              JSON.parse(event.data).body.data
+              JSON.parse(event.data).data
             );
           };
         } else {

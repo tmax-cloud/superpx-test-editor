@@ -1,5 +1,5 @@
 import * as React from "react";
-import { setRequest } from "../../utils/service-utils";
+import { setRequest, setService } from "../../utils/service-utils";
 import WorkspaceStore from "../../stores/workspaceStore";
 import { Button } from "@mui/material";
 
@@ -10,7 +10,7 @@ export const CommitLink: React.FC<CommitLinkProps> = ({
   const onCommitinkClick = async () => {
     const commitSocket = new WebSocket(wsUrl);
     const commitSocketRequest = setRequest(
-      "com.tmax.service.commit.DetailService",
+      setService("commit","DetailService"),
       {
         commit_id: commitData.commitId,
       }
@@ -21,7 +21,7 @@ export const CommitLink: React.FC<CommitLinkProps> = ({
 
     commitSocket.onmessage = (event) => {
       WorkspaceStore.updateSourceCodeListAction(
-        JSON.parse(event.data).body.data
+        JSON.parse(event.data).data
       );
     };
   };

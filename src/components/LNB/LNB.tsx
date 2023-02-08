@@ -29,9 +29,13 @@ import CommitIcon from "@mui/icons-material/Commit";
 import BugReportIcon from "@mui/icons-material/BugReport";
 import ExtensionIcon from "@mui/icons-material/Extension";
 import { Counter } from "../Counter";
+<<<<<<< HEAD
 import { BasicTree } from "../BasicTree";
 import Uploady from "@rpldy/uploady";
 import UploadDropZone from "@rpldy/upload-drop-zone";
+=======
+import { SourceCodeTree } from "./SourceCodeTree";
+>>>>>>> a0e312c0abb241f39aa1d1794c7224c3ffc935b8
 
 const drawerWidth = 240;
 
@@ -96,10 +100,10 @@ export const LNB: React.FC<LNBProps> = ({}) => {
     projectSocket.onopen = (event) => {
       projectSocket.send(JSON.stringify(request));
     };
+    
 
     projectSocket.onmessage = (event) => {
       const wsdata = JSON.parse(event.data).data;
-
       const tempProjectList = [];
       wsdata.forEach((d) => {
         tempProjectList.push(d);
@@ -314,7 +318,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                 )}
                 {lnb === "extension" && (
                   <div style={{ paddingLeft: 50 }}>
-                    <BasicTree />
+                  
                   </div>
                 )}
                 {lnb === "debug" && (
@@ -390,16 +394,8 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                         )}
                         {useObserver(
                           () =>
-                            WorkspaceStore.sourceCodeList.length > 0 &&
-                            WorkspaceStore.sourceCodeList.map(
-                              (sourceCodeData) => {
-                                return (
-                                  <SourceCodeLink
-                                    key={`sourceCodeD-${sourceCodeData.srcPath}`}
-                                    sourceCodeData={sourceCodeData}
-                                  />
-                                );
-                              }
+                            (
+                              <SourceCodeTree/>
                             )
                         )}
                       </Accordion>

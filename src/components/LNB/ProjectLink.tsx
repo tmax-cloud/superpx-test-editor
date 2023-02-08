@@ -1,5 +1,5 @@
 import * as React from "react";
-import { setRequest } from "../../utils/service-utils";
+import { setRequest, setService } from "../../utils/service-utils";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { setAlert } from "../../utils/alert-utiles";
 import WorkspaceStore from "../../stores/workspaceStore";
@@ -16,15 +16,15 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
   const onProjectLinkClick = async () => {
     setSelectedProject(projectData);
     const projectSocket = new WebSocket(wsUrl);
-    const request = setRequest("com.tmax.service.project.DetailService", {
-      proj_id: projectData.projId,
+    const request = setRequest(setService("project","DetailService"), {
+      proj_name: projectData.name,
     });
     projectSocket.onopen = (event) => {
       projectSocket.send(JSON.stringify(request));
     };
 
     projectSocket.onmessage = (event) => {
-      const wsdata = JSON.parse(event.data).body.data;
+      const wsdata = JSON.parse(event.data).data;
       setAlert(
         "Get Reference",
         `Get Reference List from Project ${wsdata.name}.`,
@@ -33,9 +33,9 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
     };
     const referenceSocket = new WebSocket(wsUrl);
     const referenceRequest = setRequest(
-      "com.tmax.service.reference.ListService",
+      setService("reference","ListService"),
       {
-        proj_id: projectData.projId,
+        proj_name: projectData.name,
       }
     );
     referenceSocket.onopen = (event) => {
@@ -43,16 +43,17 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
     };
 
     referenceSocket.onmessage = (event) => {
-      const referenceList = JSON.parse(event.data).body.data;
+      const referenceList = JSON.parse(event.data).data;
       setReferenceList(referenceList);
       const mainReference =
         referenceList.filter((r) => r.name == "main")[0] || referenceList[0];
       WorkspaceStore.updateReferenceAction(mainReference);
       const commitSocket = new WebSocket(wsUrl);
       const commitSocketRequest = setRequest(
-        "com.tmax.service.commit.ListService",
+        setService("commit","ListService"),
         {
-          ref_id: mainReference.refId,
+          proj_name: projectData.name,
+          ref_name: mainReference.name,
         }
       );
       commitSocket.onopen = (event) => {
@@ -60,16 +61,16 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
       };
 
       commitSocket.onmessage = (event) => {
-        if (JSON.parse(event.data).body.data) {
-          setCommitList(JSON.parse(event.data).body.data);
+        if (JSON.parse(event.data).data) {
+          setCommitList(JSON.parse(event.data).data);
         }
-        const commitId = JSON.parse(event.data).body.data
-          ? JSON.parse(event.data).body.data[0].commitId
+        const commitId = JSON.parse(event.data).data
+          ? JSON.parse(event.data).data[0].commitId
           : null;
         if (commitId) {
           const commitSocket = new WebSocket(wsUrl);
           const commitSocketRequest = setRequest(
-            "com.tmax.service.commit.DetailService",
+            setService("commit","DetailService"),
             {
               commit_id: commitId,
             }
@@ -80,7 +81,7 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
 
           commitSocket.onmessage = (event) => {
             WorkspaceStore.updateSourceCodeListAction(
-              JSON.parse(event.data).body.data
+              JSON.parse(event.data).data
             );
           };
         } else {
@@ -92,8 +93,8 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
   };
   const onDeleteClick = () => {
     const projectSocket = new WebSocket(wsUrl);
-    const request = setRequest("com.tmax.service.project.DeleteService", {
-      proj_id: projectData.projId,
+    const request = setRequest(setService("project","DeleteService"), {
+      proj_name: projectData.name,
     });
     projectSocket.onopen = (event) => {
       projectSocket.send(JSON.stringify(request));
