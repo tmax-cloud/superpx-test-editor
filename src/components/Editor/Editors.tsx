@@ -78,6 +78,7 @@ export const Editors = () => {
   const handleCloseModal = () => {
     EditorContentsStore.pushContentAction(inputValue, "");
     setShowModal(false);
+    setInputValue("");
   };
 
   const handleInputChange = (event) => {
