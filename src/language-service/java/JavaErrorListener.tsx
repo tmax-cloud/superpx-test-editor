@@ -1,4 +1,4 @@
-import { ANTLRErrorListener, RecognitionException, Recognizer } from "antlr4ts";
+import { ANTLRErrorListener, CommonTokenStream, RecognitionException, Recognizer } from "antlr4ts";
 
 export interface IJavaError {
   startLineNumber: number;
@@ -19,11 +19,12 @@ export default class JavaErrorListener implements ANTLRErrorListener<any> {
     message: string,
     e: RecognitionException | undefined
   ): void {
+    const errorToken = (recognizer as any)?.inputStream?.tokens[offendingSymbol.index-1];
     this.errors.push({
-      startLineNumber: line,
-      endLineNumber: line,
-      startColumn: charPositionInLine,
-      endColumn: charPositionInLine + 1,
+      startLineNumber: errorToken._line,
+      endLineNumber: errorToken._line,
+      startColumn: errorToken.charPositionInLine,
+      endColumn: errorToken.charPositionInLine + 1,
       message,
       code: '123', // This the error code you can customize them as you want
     });
