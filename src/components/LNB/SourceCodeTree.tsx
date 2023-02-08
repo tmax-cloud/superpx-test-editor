@@ -3,18 +3,9 @@ import { useObserver } from "mobx-react";
 import FolderTree from "react-folder-tree";
 import 'react-folder-tree/dist/style.css';
 import WorkspaceStore from "../../stores/workspaceStore";
-import testStore from "../../stores/fileTreeStore";
 import EditorContentsStore from "../../stores/editorContentsStore";
 
 export const SourceCodeTree = () => {
-       function checkFileType(filePath) {
-          let fileFormat = filePath.split(".");
-          if (fileFormat.indexOf("xlsx") || fileFormat.indexOf("xls") > -1) {
-              return true;
-          } else {
-              return false;
-          }
-      }
 
     const onSourceCodeLinkClick = ({nodeData}) => {
       const {path, name, checked, isOpen, content} = nodeData
