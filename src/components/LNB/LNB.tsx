@@ -29,8 +29,8 @@ import CommitIcon from "@mui/icons-material/Commit";
 import BugReportIcon from "@mui/icons-material/BugReport";
 import ExtensionIcon from "@mui/icons-material/Extension";
 import { SourceCodeTree } from "./SourceCodeTree";
-import Uploady from "@rpldy/uploady";
-import UploadDropZone from "@rpldy/upload-drop-zone";
+// import Uploady from "@rpldy/uploady";
+// import UploadDropZone from "@rpldy/upload-drop-zone";
 
 const drawerWidth = 240;
 
@@ -139,7 +139,6 @@ export const LNB: React.FC<LNBProps> = ({}) => {
 
   React.useEffect(() => {
     if (ref.current !== null) {
-      // ref.current.setAttribute("directory", "");
       ref.current.setAttribute("webkitdirectory", "");
     }
   }, [ref]);
@@ -157,7 +156,6 @@ export const LNB: React.FC<LNBProps> = ({}) => {
       };
       fileReader.readAsText(file);
     }
-    // fileReader.readAsText(file);
   };
 
   return (
@@ -313,14 +311,14 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                 {lnb === "extension" && <div style={{ paddingLeft: 50 }}></div>}
                 {lnb === "debug" && (
                   <div style={{ paddingLeft: 50 }}>
-                    {/* <input
+                    <input
                       ref={ref}
                       type="file"
                       onChange={onFileChange}
                       multiple={true}
                       accept=".java"
-                    /> */}
-                    <Uploady>
+                    />
+                    {/* <Uploady>
                       <UploadDropZone
                         onDragOverClassName="drag-over"
                         grouped
@@ -341,7 +339,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                           <span>Drag&Drop File(s) Here</span>
                         </Box>
                       </UploadDropZone>
-                    </Uploady>
+                    </Uploady> */}
                   </div>
                 )}
                 {lnb === "explorer" && (
