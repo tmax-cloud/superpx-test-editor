@@ -1,5 +1,15 @@
 import * as monaco from "monaco-editor";
 import { JavaService } from "./../language-service/java/JavaService";
+import { setAlert } from "../utils/alert-utiles";
+import { TerminalNode } from "antlr4ts/tree";
+import {
+  TypeIdentifierContext,
+  VariableDeclaratorIdContext,
+  ClassOrInterfaceModifierContext,
+  IdentifierContext,
+  MethodCallContext,
+  TypeTypeOrVoidContext,
+} from "../ANTLR/java/JavaParser";
 
 export const setGoToDefinitionProvdier = () => {
   monaco.languages.registerDefinitionProvider("java", {
@@ -12,31 +22,53 @@ export const setGoToDefinitionProvdier = () => {
     },
   });
 };
-const getAst = (model) => {
+const getCompilationUnit = (model) => {
   const code = model.getValue();
   const javaService = new JavaService();
-//   const antlr = javaService.convertCodeToAntlr(code);
-//   const ast = javaService.convertAntlrToAst(antlr);
-  const ast = javaService.convertCodeToAst(code);
-  return ast;
+  return javaService.convertCodeToCompilationUnit(code);
 };
 
-const getClassData = (ast, word) => {
-  if (word === "formatter") {
-    return { name: "formatter", type: "DateTimeFormatter", isClass: true };
-  }
-  return { name: "", type: "", isClass: false };
+const getNodeData = (compilationUnit, position, word) => {
+  let nodeType = "";
+  const getNodeType = (node) => {
+    if (
+      node.text === word &&
+      !(node instanceof TerminalNode) &&
+      node._start._line &&
+      node._start._line === position.lineNumber &&
+      node._start._charPositionInLine <= position.column &&
+      node._start._charPositionInLine + node._start.stop - node._start.start >=
+        position.column
+    ) {
+      console.log(node);
+      if (node instanceof VariableDeclaratorIdContext) {
+        nodeType = "VariableDeclaratorIdContext";
+      } else if (node instanceof TypeIdentifierContext) {
+        nodeType = "TypeIdentifierContext";
+      } else if (node instanceof ClassOrInterfaceModifierContext) {
+        nodeType = "ClassOrInterfaceModifierContext";
+      } else if (node instanceof IdentifierContext) {
+        nodeType = "IdentifierContext";
+        if (node._parent instanceof MethodCallContext) {
+          nodeType = "IdentifierContext and Parent is MethodCallContext";
+        }
+      } else if (node instanceof TypeTypeOrVoidContext) {
+        nodeType = "TypeTypeOrVoidContext";
+      }
+    }
+    node.children?.map((child) => getNodeType(child));
+  };
+  getNodeType(compilationUnit);
+  return nodeType ? { word, type: nodeType } : null;
 };
 
 const getDefinitionByApi = (model, position) => {
-  const ast = getAst(model);
+  const compilationUnit = getCompilationUnit(model);
   const word = model.getWordAtPosition(position).word;
-  const classData = getClassData(ast, word);
-  //   let isClass = classData.isClass
-  let isClass = model.getWordAtPosition(position).word === "formatter";
+  const nodeData = getNodeData(compilationUnit, position, word);
 
-  if (isClass) {
-    return getDefinition(model, position, classData);
+  if (nodeData) {
+    return getDefinition(model, position, nodeData);
   }
   return {
     defUri: model.uri,
@@ -49,16 +81,21 @@ const getDefinitionByApi = (model, position) => {
   };
 };
 
-const getDefinition = (model, position, classData) => {
+const getDefinition = (model, position, nodeData) => {
   // api call
+  setAlert(
+    nodeData.type,
+    `${nodeData.word}'s node type is ${nodeData.type}`,
+    "info"
+  );
 
   return {
     defUri: model.uri,
     defRange: {
-      startLineNumber: 6,
-      startColumn: 9,
-      endLineNumber: 6,
-      endColumn: 26,
+      startLineNumber: position.startLineNumber,
+      startColumn: position.startColumn,
+      endLineNumber: position.endLineNumber,
+      endColumn: position.endColumn,
     },
   };
 };
