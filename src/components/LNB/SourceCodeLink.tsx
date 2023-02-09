@@ -13,12 +13,12 @@ export const SourceCodeLink: React.FC<SourceCodeLinkProps> = ({
   };
 
   return (
-    <div style={{ paddingLeft: 15 }}>
+    <div className="commit-link">
       <Button
         size="small"
         variant="text"
         color="inherit"
-        style={{ textTransform: "none" }}
+        className="commit-btn"
         onClick={onSourceCodeLinkClick}
       >
         {sourceCodeData.srcPath}

@@ -172,13 +172,13 @@ export const LNB: React.FC<LNBProps> = ({}) => {
         }}
         // className="sidebar"
       >
-        <div style={{ height: 50 }}></div>
+        <div className="white-block"></div>
         {(["explorer", "search", "scm", "debug", "extension"] as const).map(
           (lnb) => (
             <Button
               id={`lnb-${lnb}`}
               onClick={toggleDrawer(lnb, true)}
-              style={{ zIndex: 1800 }}
+              className="btn-front"
             >
               {lnbIcon[lnb]}
             </Button>
@@ -202,17 +202,15 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                 onClose={toggleDrawer(lnb, false)}
                 variant="persistent"
               >
-                <div style={{ height: 40 }}></div>
+                <div className="white-block"></div>
                 <Button onClick={toggleDrawer(lnb, false)}>
-                  <CloseIcon
-                    style={{ position: "absolute", right: 0, top: 0 }}
-                  />
+                  <CloseIcon className="lnb-close-icon" />
                 </Button>
 
                 {lnb === "scm" && (
-                  <div style={{ paddingLeft: 50 }}>
+                  <div className="lnb-scm">
                     <div>
-                      <h3 style={{ paddingLeft: 10 }}>Project List</h3>
+                      <h3 className="list-title">Project List</h3>
                       <Accordion defaultExpanded={true}>
                         <AccordionSummary
                           expandIcon={<ExpandMoreIcon />}
@@ -246,7 +244,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                     </div>
                     <Divider />
                     <div>
-                      <h3 style={{ paddingLeft: 10 }}>Reference List</h3>
+                      <h3 className="list-title">Reference List</h3>
                       <Accordion defaultExpanded={true}>
                         <AccordionSummary
                           expandIcon={<ExpandMoreIcon />}
@@ -282,7 +280,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                     </div>
                     <Divider />
                     <div>
-                      <h3 style={{ paddingLeft: 10 }}>Commit List</h3>
+                      <h3 className="list-title">Commit List</h3>
                       <Accordion defaultExpanded={true}>
                         <AccordionSummary
                           expandIcon={<ExpandMoreIcon />}
@@ -308,9 +306,9 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                     </div>
                   </div>
                 )}
-                {lnb === "extension" && <div style={{ paddingLeft: 50 }}></div>}
+                {lnb === "extension" && <div className="lnb-scm"></div>}
                 {lnb === "debug" && (
-                  <div style={{ paddingLeft: 50 }}>
+                  <div className="lnb-scm">
                     <input
                       ref={ref}
                       type="file"
@@ -343,9 +341,9 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                   </div>
                 )}
                 {lnb === "explorer" && (
-                  <div style={{ paddingLeft: 50 }}>
+                  <div className="lnb-scm">
                     <div>
-                      <h3 style={{ paddingLeft: 10 }}>Source Code List</h3>
+                      <h3 className="list-title">Source Code List</h3>
                       <Accordion defaultExpanded={true}>
                         <AccordionSummary
                           expandIcon={<ExpandMoreIcon />}

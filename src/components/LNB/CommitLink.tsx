@@ -10,7 +10,7 @@ export const CommitLink: React.FC<CommitLinkProps> = ({
   const onCommitinkClick = async () => {
     const commitSocket = new WebSocket(wsUrl);
     const commitSocketRequest = setRequest(
-      setService("commit","DetailService"),
+      setService("commit", "DetailService"),
       {
         commit_id: commitData.commitId,
       }
@@ -20,19 +20,17 @@ export const CommitLink: React.FC<CommitLinkProps> = ({
     };
 
     commitSocket.onmessage = (event) => {
-      WorkspaceStore.updateSourceCodeListAction(
-        JSON.parse(event.data).data
-      );
+      WorkspaceStore.updateSourceCodeListAction(JSON.parse(event.data).data);
     };
   };
 
   return (
-    <div style={{ paddingLeft: 15 }}>
+    <div className="commit-link">
       <Button
         size="small"
         variant="text"
         color="inherit"
-        style={{ textTransform: "none" }}
+        className="commit-btn"
         onClick={onCommitinkClick}
       >
         {commitData.message}

@@ -16,7 +16,7 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
   const onProjectLinkClick = async () => {
     setSelectedProject(projectData);
     const projectSocket = new WebSocket(wsUrl);
-    const request = setRequest(setService("project","DetailService"), {
+    const request = setRequest(setService("project", "DetailService"), {
       proj_name: projectData.name,
     });
     projectSocket.onopen = (event) => {
@@ -33,7 +33,7 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
     };
     const referenceSocket = new WebSocket(wsUrl);
     const referenceRequest = setRequest(
-      setService("reference","ListService"),
+      setService("reference", "ListService"),
       {
         proj_name: projectData.name,
       }
@@ -50,7 +50,7 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
       WorkspaceStore.updateReferenceAction(mainReference);
       const commitSocket = new WebSocket(wsUrl);
       const commitSocketRequest = setRequest(
-        setService("commit","ListService"),
+        setService("commit", "ListService"),
         {
           proj_name: projectData.name,
           ref_name: mainReference.name,
@@ -70,7 +70,7 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
         if (commitId) {
           const commitSocket = new WebSocket(wsUrl);
           const commitSocketRequest = setRequest(
-            setService("commit","DetailService"),
+            setService("commit", "DetailService"),
             {
               commit_id: commitId,
             }
@@ -93,7 +93,7 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
   };
   const onDeleteClick = () => {
     const projectSocket = new WebSocket(wsUrl);
-    const request = setRequest(setService("project","DeleteService"), {
+    const request = setRequest(setService("project", "DeleteService"), {
       proj_name: projectData.name,
     });
     projectSocket.onopen = (event) => {
@@ -111,12 +111,12 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
   };
 
   return (
-    <div style={{ paddingLeft: 15 }}>
+    <div className="commit-link">
       <Button
         size="small"
         variant="text"
         color="inherit"
-        style={{ textTransform: "none" }}
+        className="commit-btn"
         onClick={onProjectLinkClick}
       >
         {projectData.name}

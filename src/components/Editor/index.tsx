@@ -126,7 +126,7 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
         nonModifiedSrc.push({ src_path: s.srcPath, content: s.content });
       }
     });
-    const request = setRequest(setService("commit","InsertService"), {
+    const request = setRequest(setService("commit", "InsertService"), {
       proj_id: WorkspaceStore.reference.projId,
       ref_id: WorkspaceStore.reference.refId,
       commit: { message: commitMessage, is_commit: true },
@@ -148,7 +148,7 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
   };
 
   return (
-    <div style={{ height: "80%", display: "flex", flexDirection: "column" }}>
+    <div className="editor-flex">
       {useObserver(() => (
         <>
           <div ref={assignRef} className="editor-container"></div>
