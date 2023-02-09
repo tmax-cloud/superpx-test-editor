@@ -5,7 +5,11 @@ import { CharStreams, CommonTokenStream } from "antlr4ts";
 // import { Java9Lexer } from "../../ANTLR/Java9Lexer";
 import { JavaLexer } from "../../ANTLR/java/JavaLexer";
 // import { BlockContext, Java9Parser } from "../../ANTLR/Java9Parser";
-import { BlockContext, JavaParser } from "../../ANTLR/java/JavaParser";
+import {
+  BlockContext,
+  CompilationUnitContext,
+  JavaParser,
+} from "../../ANTLR/java/JavaParser";
 import { TranscodeJava9Visitor } from "./TranscodeJava9Visitor";
 import { Java9AstVisitor } from "./Java9AstVisitor";
 import JavaErrorListener, { IJavaError } from "./JavaErrorListener";
@@ -34,6 +38,19 @@ export class JavaService extends LanguageService<BlockContext> {
     // const syntaxErrors = parseAndGetSyntaxErrors(code);
     //Later we will append semantic errors
     return errors;
+  }
+  convertCodeToCompilationUnit(code): CompilationUnitContext {
+    const ast = parse(code);
+    const inputStream = CharStreams.fromString(code);
+    const lexer = new JavaLexer(inputStream);
+    lexer.removeErrorListeners();
+    const javaErrorListener = new JavaErrorListener();
+    lexer.addErrorListener(javaErrorListener);
+    const tokenStream = new CommonTokenStream(lexer);
+    const parser = new JavaParser(tokenStream);
+    parser.removeErrorListeners();
+    parser.addErrorListener(javaErrorListener);
+    return parser.compilationUnit();
   }
   convertCodeToAntlr(code: string): BlockContext {
     const ast = parse(code);
