@@ -28,8 +28,9 @@ import SearchIcon from "@mui/icons-material/Search";
 import CommitIcon from "@mui/icons-material/Commit";
 import BugReportIcon from "@mui/icons-material/BugReport";
 import ExtensionIcon from "@mui/icons-material/Extension";
-import { Counter } from "../Counter";
 import { SourceCodeTree } from "./SourceCodeTree";
+// import Uploady from "@rpldy/uploady";
+// import UploadDropZone from "@rpldy/upload-drop-zone";
 
 const drawerWidth = 240;
 
@@ -94,7 +95,6 @@ export const LNB: React.FC<LNBProps> = ({}) => {
     projectSocket.onopen = (event) => {
       projectSocket.send(JSON.stringify(request));
     };
-    
 
     projectSocket.onmessage = (event) => {
       const wsdata = JSON.parse(event.data).data;
@@ -135,17 +135,27 @@ export const LNB: React.FC<LNBProps> = ({}) => {
     EditorContentsStore.updateContentAction(newFilePath, "");
   };
 
+  const ref = React.useRef<HTMLInputElement>(null);
+
+  React.useEffect(() => {
+    if (ref.current !== null) {
+      ref.current.setAttribute("webkitdirectory", "");
+    }
+  }, [ref]);
+
   const onFileChange = (e) => {
-    let file = e.target.files[0];
-    let fileReader = new FileReader();
-    fileReader.onload = () => {
-      EditorContentsStore.pushContentAction(
-        file.name,
-        fileReader.result as string
-      );
-      console.log(fileReader.result);
-    };
-    fileReader.readAsText(file);
+    const files = e.target.files;
+    for (const file of files) {
+      const fileReader = new FileReader();
+      fileReader.onload = () => {
+        EditorContentsStore.pushContentAction(
+          file.webkitRelativePath,
+          fileReader.result as string
+        );
+        console.log(fileReader.result);
+      };
+      fileReader.readAsText(file);
+    }
   };
 
   return (
@@ -162,13 +172,13 @@ export const LNB: React.FC<LNBProps> = ({}) => {
         }}
         // className="sidebar"
       >
-        <div style={{ height: 50 }}></div>
+        <div className="white-block"></div>
         {(["explorer", "search", "scm", "debug", "extension"] as const).map(
           (lnb) => (
             <Button
               id={`lnb-${lnb}`}
               onClick={toggleDrawer(lnb, true)}
-              style={{ zIndex: 1800 }}
+              className="btn-front"
             >
               {lnbIcon[lnb]}
             </Button>
@@ -192,17 +202,15 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                 onClose={toggleDrawer(lnb, false)}
                 variant="persistent"
               >
-                <div style={{ height: 40 }}></div>
+                <div className="white-block"></div>
                 <Button onClick={toggleDrawer(lnb, false)}>
-                  <CloseIcon
-                    style={{ position: "absolute", right: 0, top: 0 }}
-                  />
+                  <CloseIcon className="lnb-close-icon" />
                 </Button>
 
                 {lnb === "scm" && (
-                  <div style={{ paddingLeft: 50 }}>
+                  <div className="lnb-scm">
                     <div>
-                      <h3 style={{ paddingLeft: 10 }}>Project List</h3>
+                      <h3 className="list-title">Project List</h3>
                       <Accordion defaultExpanded={true}>
                         <AccordionSummary
                           expandIcon={<ExpandMoreIcon />}
@@ -236,7 +244,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                     </div>
                     <Divider />
                     <div>
-                      <h3 style={{ paddingLeft: 10 }}>Reference List</h3>
+                      <h3 className="list-title">Reference List</h3>
                       <Accordion defaultExpanded={true}>
                         <AccordionSummary
                           expandIcon={<ExpandMoreIcon />}
@@ -272,7 +280,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                     </div>
                     <Divider />
                     <div>
-                      <h3 style={{ paddingLeft: 10 }}>Commit List</h3>
+                      <h3 className="list-title">Commit List</h3>
                       <Accordion defaultExpanded={true}>
                         <AccordionSummary
                           expandIcon={<ExpandMoreIcon />}
@@ -298,25 +306,44 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                     </div>
                   </div>
                 )}
-                {lnb === "extension" && (
-                  <div style={{ paddingLeft: 50 }}>
-                  
-                  </div>
-                )}
+                {lnb === "extension" && <div className="lnb-scm"></div>}
                 {lnb === "debug" && (
-                  <div style={{ paddingLeft: 50 }}>
+                  <div className="lnb-scm">
                     <input
+                      ref={ref}
                       type="file"
                       onChange={onFileChange}
                       multiple={true}
                       accept=".java"
                     />
+                    {/* <Uploady>
+                      <UploadDropZone
+                        onDragOverClassName="drag-over"
+                        grouped
+                        maxGroupSize={3}
+                        dropHandler={() => {
+                          return new Promise((resolveInner) => {
+                            setTimeout(resolveInner, 1000);
+                          });
+                        }}
+                      >
+                        <Box
+                          style={{
+                            height: 150,
+                            width: 180,
+                            border: "2px solid",
+                          }}
+                        >
+                          <span>Drag&Drop File(s) Here</span>
+                        </Box>
+                      </UploadDropZone>
+                    </Uploady> */}
                   </div>
                 )}
                 {lnb === "explorer" && (
-                  <div style={{ paddingLeft: 50 }}>
+                  <div className="lnb-scm">
                     <div>
-                      <h3 style={{ paddingLeft: 10 }}>Source Code List</h3>
+                      <h3 className="list-title">Source Code List</h3>
                       <Accordion defaultExpanded={true}>
                         <AccordionSummary
                           expandIcon={<ExpandMoreIcon />}
@@ -351,12 +378,9 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                             </Button>
                           </>
                         )}
-                        {useObserver(
-                          () =>
-                            (
-                              <SourceCodeTree/>
-                            )
-                        )}
+                        {useObserver(() => (
+                          <SourceCodeTree />
+                        ))}
                       </Accordion>
                     </div>
                   </div>

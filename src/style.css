@@ -50,3 +50,54 @@ body,
 .monaco-editor {
   height: 100% !important;
 }
+
+.height-full {
+  height: 100%;
+}
+
+.parental-full {
+  height: 100%;
+  width: 100%;
+}
+
+.editor-flex {
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+}
+
+.gnb {
+  position: sticky;
+  z-index: 2400;
+  background: white;
+  height: 40;
+  border-bottom: 1px solid black;
+  overflow: auto;
+}
+
+.commit-link {
+  padding-left: 15px;
+}
+
+.white-block {
+  height: 50px;
+}
+
+.btn-front {
+  z-index: 1800;
+}
+.lnb-close-icon {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+.list-title {
+  padding-left: 10px;
+}
+
+.lnb-scm {
+  padding-left: 50px;
+}
+.commit-btn {
+  text-transform: none !important;
+}

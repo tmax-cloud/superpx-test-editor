@@ -13,7 +13,7 @@ export const ReferenceLink: React.FC<ReferenceLinkProps> = ({
     WorkspaceStore.updateReferenceAction(referenceData);
     const referenceSocket = new WebSocket(wsUrl);
     const referenceRequest = setRequest(
-      setService("reference","DetailService"),
+      setService("reference", "DetailService"),
       {
         proj_id: referenceData.projId,
         ref_id: referenceData.refId,
@@ -25,10 +25,14 @@ export const ReferenceLink: React.FC<ReferenceLinkProps> = ({
 
     referenceSocket.onmessage = (event) => {
       const wsdata = JSON.parse(event.data).data;
-      setAlert("Get Commit", `Get Commit List from Reference ${wsdata.name}.`, "success");
+      setAlert(
+        "Get Commit",
+        `Get Commit List from Reference ${wsdata.name}.`,
+        "success"
+      );
       const commitSocket = new WebSocket(wsUrl);
       const commitSocketRequest = setRequest(
-        setService("commit","ListService"),
+        setService("commit", "ListService"),
         {
           ref_id: referenceData.refId,
         }
@@ -47,7 +51,7 @@ export const ReferenceLink: React.FC<ReferenceLinkProps> = ({
         if (commitId) {
           const commitSocket = new WebSocket(wsUrl);
           const commitSocketRequest = setRequest(
-            setService("commit","DetailService"),
+            setService("commit", "DetailService"),
             {
               commit_id: commitId,
             }
@@ -69,12 +73,12 @@ export const ReferenceLink: React.FC<ReferenceLinkProps> = ({
   };
 
   return (
-    <div style={{ paddingLeft: 15 }}>
+    <div className="commit-link">
       <Button
         size="small"
         variant="text"
         color="inherit"
-        style={{ textTransform: "none" }}
+        className="commit-btn"
         onClick={onRefereneLinkClick}
       >
         {referenceData.name}
