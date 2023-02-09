@@ -1823,6 +1823,90 @@
     estree-walker "^1.0.1"
     picomatch "^2.2.2"
 
+"@rpldy/abort@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@rpldy/abort/-/abort-1.3.1.tgz#84ab135e949660a9191393b985227e246f4365e4"
+  integrity sha512-/H+aGSszZ8I7xhlxAvQBbRbUYJSdSC6RgpbniyZf8gra1jCOv4QszN6lqmBOtheaR1v/QOAyJIAZxV/b75MY8A==
+  dependencies:
+    "@rpldy/raw-uploader" "^1.3.1"
+    "@rpldy/shared" "^1.3.1"
+    "@rpldy/simple-state" "^1.3.1"
+
+"@rpldy/life-events@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@rpldy/life-events/-/life-events-1.3.1.tgz#eac8aad9ddca92bf783932da807c1ccc1f5d7eac"
+  integrity sha512-Nii3joJxIwSA/7381wS1AlvWlAJJbmqsTPJIbXQn8MMvTVRn54YWf+/gH5ZaK7wutZHnGd+Sr63khoFBJ2BCUQ==
+  dependencies:
+    "@rpldy/shared" "^1.3.1"
+
+"@rpldy/raw-uploader@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@rpldy/raw-uploader/-/raw-uploader-1.3.1.tgz#3bd9aa295c3f9cfbab625834592e04c2f8deae72"
+  integrity sha512-W2xuWslm32d/EyRckdcBpLTHrY1cPObofG+53Xf7O/cUwl2hDr2qECOPh504dpMvZKlndbFEuSOUOdwJUepVDw==
+  dependencies:
+    "@rpldy/life-events" "^1.3.1"
+    "@rpldy/shared" "^1.3.1"
+
+"@rpldy/sender@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@rpldy/sender/-/sender-1.3.1.tgz#35049c3b597fa3a9276585a033dffa5aa3bb383c"
+  integrity sha512-0TuRNHTBaCAjVd7MxyQ39eQCsK0TCqBqHzu8UFBbMLOwZ7GKMRTZrMiOqnr/SNM4sHZuTY9fTQ1c+OFY0Y3f/A==
+  dependencies:
+    "@rpldy/shared" "^1.3.1"
+
+"@rpldy/shared-ui@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@rpldy/shared-ui/-/shared-ui-1.3.1.tgz#43214aa78be7019057238c44fe1da8a90bf33552"
+  integrity sha512-4HBj51xmvrTPR/8YE7CFCKy6vjKDA7foYDNNHfqtCpPapgBcnyZ1Go+5M/a/PfLTd4Z1Taw8xuDFtg1N0bu9QA==
+  dependencies:
+    "@rpldy/shared" "^1.3.1"
+    "@rpldy/uploader" "^1.3.1"
+
+"@rpldy/shared@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@rpldy/shared/-/shared-1.3.1.tgz#b0cef634849c3904dc8baf21b39416e34b1c1e96"
+  integrity sha512-I/GwS0SPRmiCvaYVn7DVCixWkdCIofDzU2IRsehpHnzg7OvB0PGYIfnlhk4STkKkpfVCSeT4qiiI59TvxrjKqQ==
+  dependencies:
+    invariant "^2.2.4"
+    just-throttle "^1.1.0"
+
+"@rpldy/simple-state@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@rpldy/simple-state/-/simple-state-1.3.1.tgz#eeedb0f184ed898e113d101033a6fdb7f150cf0c"
+  integrity sha512-thpHeUs0qgU5gyUs1y1shHbjUfWNlOX//vD2wNJ46HlJHOLBALNDbm3DiZWng2cj8ZMO5XLTiU0TUjp1YfEyTw==
+  dependencies:
+    "@rpldy/shared" "^1.3.1"
+
+"@rpldy/upload-drop-zone@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@rpldy/upload-drop-zone/-/upload-drop-zone-1.3.1.tgz#ffaae7f22380ffb493d6a89c70e943bea29a0929"
+  integrity sha512-ykyvrOY3/CFOueH0phunVq54pED+tuceChzNKiUe+rRObcySUrO+l+2mtNJUIOVT3hcrNVuP6KQdu02Fl1QvkQ==
+  dependencies:
+    "@rpldy/shared-ui" "^1.3.1"
+    html-dir-content "^0.3.2"
+
+"@rpldy/uploader@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@rpldy/uploader/-/uploader-1.3.1.tgz#90573f6e1b2aa44cc9daaab297b9cfdb97e54471"
+  integrity sha512-Z556LfSjSt5FYEmSJkB9u5cqR3b5vR7n7x7gl6zxpApiC7Zk3O64DwCEonhRmaw1otGLDYS25NNYuHYxriQYtg==
+  dependencies:
+    "@rpldy/abort" "^1.3.1"
+    "@rpldy/life-events" "^1.3.1"
+    "@rpldy/raw-uploader" "^1.3.1"
+    "@rpldy/sender" "^1.3.1"
+    "@rpldy/shared" "^1.3.1"
+    "@rpldy/simple-state" "^1.3.1"
+
+"@rpldy/uploady@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@rpldy/uploady/-/uploady-1.3.1.tgz#264feb7ec77b7fca36f4e0ce5f8193ba03234d27"
+  integrity sha512-WaTzuvA7YjmM7fHKBoKoQ7FHas9zPeYSBNlObHytcHiQe679TksA8SMJ99UvUK8GhSeEGnhuzjDgNrzeTD8GKQ==
+  dependencies:
+    "@rpldy/life-events" "^1.3.1"
+    "@rpldy/shared" "^1.3.1"
+    "@rpldy/shared-ui" "^1.3.1"
+    "@rpldy/uploader" "^1.3.1"
+
 "@sinclair/typebox@^0.24.1":
   version "0.24.47"
   resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.24.47.tgz#530b67163714356f93e82bdb871e7db4b7bc564e"
@@ -6672,6 +6756,11 @@ hsla-regex@^1.0.0:
   resolved "https://registry.yarnpkg.com/hsla-regex/-/hsla-regex-1.0.0.tgz#c1ce7a3168c8c6614033a4b5f7877f3b225f9c38"
   integrity sha512-7Wn5GMLuHBjZCb2bTmnDOycho0p/7UVaAeqXZGbHrBCl6Yd/xDhQJAXe6Ga9AXJH2I5zY1dEdYw2u1UptnSBJA==
 
+html-dir-content@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/html-dir-content/-/html-dir-content-0.3.2.tgz#3fed73cf7b6c11e882fcfda38b32a2e9c58d1339"
+  integrity sha512-a1EJZbvBGmmFwk9VxFhEgaHkyXUXKTkw0jr0FCvXKCqgzO1H0wbFQbbzRA6FhR3twxAyjqVc80bzGHEmKrYsSw==
+
 html-encoding-sniffer@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/html-encoding-sniffer/-/html-encoding-sniffer-2.0.1.tgz#42a6dc4fd33f00281176e8b23759ca4e4fa185f3"
@@ -8236,6 +8325,11 @@ jsonfile@^6.0.1:
   dependencies:
     array-includes "^3.1.5"
     object.assign "^4.1.3"
+
+just-throttle@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/just-throttle/-/just-throttle-1.1.0.tgz#178d305ece9876a8a0759abd8d403aafcc6e4849"
+  integrity sha512-iePC/13XYX1Tyn9C6jY+DG3UEejkDvrKsw5xxgGhtGUwYWmoJm4CoKexscBKELOu3FTyCDzjr21ZJ67AXnz+bg==
 
 killable@^1.0.1:
   version "1.0.1"
