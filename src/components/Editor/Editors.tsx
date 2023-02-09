@@ -14,6 +14,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import "../../style.css";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -31,10 +32,10 @@ function TabPanel(props: TabPanelProps) {
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
       {...other}
-      style={{ height: "100%" }}
+      className="height-full"
     >
       {EditorContentsStore.veiwIndex === index && (
-        <Box sx={{ p: 3 }} style={{ height: "100%" }}>
+        <Box sx={{ p: 3 }} className="height-full">
           {children}
         </Box>
       )}
@@ -88,7 +89,7 @@ export const Editors = () => {
     setInputValue(event.target.value);
   };
   return (
-    <Box sx={{ bgcolor: "background.paper" }} style={{ height: "100%" }}>
+    <Box sx={{ bgcolor: "background.paper" }} className="height-full">
       <Tabs
         value={EditorContentsStore.veiwIndex}
         onChange={handleChange}

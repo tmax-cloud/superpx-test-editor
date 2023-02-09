@@ -59,16 +59,7 @@ export const GNB = () => {
     setAnchorEl(null);
   };
   return (
-    <div
-      style={{
-        position: "sticky",
-        zIndex: 2400,
-        background: "white",
-        height: 40,
-        borderBottom: "1px solid black",
-        overflow: "auto",
-      }}
-    >
+    <div className="gnb">
       <span>
         <Link to="/">
           <HomeIcon />
