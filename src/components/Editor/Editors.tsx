@@ -87,7 +87,7 @@ export const Editors = () => {
     setInputValue(event.target.value);
   };
   return (
-    <Box sx={{ bgcolor: 'background.paper' }} className="height-full">
+    <div className="height-full">
       <Tabs
         value={EditorContentsStore.veiwIndex}
         onChange={handleChange}
@@ -134,6 +134,6 @@ export const Editors = () => {
           </TabPanel>
         )),
       )}
-    </Box>
+    </div>
   );
 };
