@@ -62,7 +62,6 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
   const assignRef = React.useCallback((node) => {
     // On mount get the ref of the div and assign it the divNode
     divNode = node;
-    divNode.style.width = "100%";
   }, []);
   React.useEffect(() => {
     if (divNode) {
