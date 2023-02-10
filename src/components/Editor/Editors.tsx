@@ -1,20 +1,18 @@
-import * as React from "react";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Box from "@mui/material/Box";
-import CloseIcon from "@mui/icons-material/Close";
-import Button from "@mui/material/Button";
-import { Editor } from "./index";
-import { useObserver } from "mobx-react";
-import EditorContentsStore from "../../stores/editorContentsStore";
-import CustomTab from "./CustomTab";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import "../../style.css";
+import * as React from 'react';
+import Tabs from '@mui/material/Tabs';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import { Editor } from './index';
+import { useObserver } from 'mobx-react';
+import EditorContentsStore from '../../stores/editorContentsStore';
+import CustomTab from './CustomTab';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import '../../style.css';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -70,20 +68,20 @@ export const Editors = () => {
   };
 
   const [showModal, setShowModal] = React.useState(false);
-  const [inputValue, setInputValue] = React.useState("");
+  const [inputValue, setInputValue] = React.useState('');
 
   const handleOpenModal = () => {
     setShowModal(true);
   };
 
   const handleCreateModal = () => {
-    EditorContentsStore.pushContentAction(inputValue, "");
+    EditorContentsStore.pushContentAction(inputValue, '');
     setShowModal(false);
-    setInputValue("");
+    setInputValue('');
   };
   const handleCancelModal = () => {
     setShowModal(false);
-    setInputValue("");
+    setInputValue('');
   };
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
@@ -100,7 +98,7 @@ export const Editors = () => {
         {useObserver(() =>
           EditorContentsStore.contents.map((content, index) => (
             <CustomTab content={content} index={index} />
-          ))
+          )),
         )}
         <Button variant="outlined" onClick={handleOpenModal}>
           +
@@ -134,7 +132,7 @@ export const Editors = () => {
           <TabPanel value={EditorContentsStore.veiwIndex} index={index}>
             <Editor language="java" contentsIndex={index} />
           </TabPanel>
-        ))
+        )),
       )}
     </div>
   );

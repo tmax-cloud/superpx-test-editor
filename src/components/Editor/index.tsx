@@ -78,6 +78,7 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
         // model,
       });
       divNode.style.height = "100%";
+      divNode.style.width = "100%";
       // validate(model);
       // model.onDidChangeContent(() => {
       //   // validate(model);
