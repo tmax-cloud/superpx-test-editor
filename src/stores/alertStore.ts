@@ -10,27 +10,6 @@ type AlertInfo = {
 const AlertStore = observable({
   // state
   alertList: [] as AlertInfo[],
-  // title: "Title",
-  // message: "Message",
-  // isAlert: false,
-  // type: "info" as AlertColor,
-
-  // action
-  // setTitleAction(title) {
-  //   this.title = title;
-  // },
-
-  // setMessageAction(message) {
-  //   this.message = message;
-  // },
-
-  // setTypeAction(type) {
-  //   this.type = type;
-  // },
-
-  // setIsAlertAction(isAlert) {
-  //   this.isAlert = isAlert;
-  // },
 
   resetAlertInfo() {
     this.alertList = [] as AlertInfo[];
