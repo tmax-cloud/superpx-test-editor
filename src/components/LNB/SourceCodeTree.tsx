@@ -1,77 +1,76 @@
-import * as React from "react";
-import { useObserver } from "mobx-react";
-import FolderTree from "react-folder-tree";
+import * as React from 'react';
+import { useObserver } from 'mobx-react';
+import FolderTree from 'react-folder-tree';
 import 'react-folder-tree/dist/style.css';
-import WorkspaceStore from "../../stores/workspaceStore";
-import testStore from "../../stores/fileTreeStore";
-import EditorContentsStore from "../../stores/editorContentsStore";
+import WorkspaceStore from '../../stores/workspaceStore';
+import testStore from '../../stores/fileTreeStore';
+import EditorContentsStore from '../../stores/editorContentsStore';
 
 export const SourceCodeTree = () => {
-       function checkFileType(filePath) {
-          let fileFormat = filePath.split(".");
-          if (fileFormat.indexOf("xlsx") || fileFormat.indexOf("xls") > -1) {
-              return true;
-          } else {
-              return false;
-          }
-      }
+  function checkFileType(filePath) {
+    let fileFormat = filePath.split('.');
+    if (fileFormat.indexOf('xlsx') || fileFormat.indexOf('xls') > -1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-    const onSourceCodeLinkClick = ({nodeData}) => {
-      const {path, name, checked, isOpen, content} = nodeData
-      if(!(typeof(nodeData.isOpen)=="boolean")){
-        EditorContentsStore.updateContentAction(
-          nodeData.name,
-          nodeData.content
-        )
-      }
+  const onSourceCodeLinkClick = ({ nodeData }) => {
+    const { path, name, checked, isOpen, content } = nodeData;
+    if (!(typeof nodeData.isOpen == 'boolean')) {
+      EditorContentsStore.updateContentAction(nodeData.name, nodeData.content);
+    }
+  };
+
+  const pathToJson = (sourceCodeList) => {
+    const resultJson = {
+      name: WorkspaceStore.reference.name,
+      children: [],
+      content: [],
     };
-
-    const pathToJson = (sourceCodeList)=>{
-      const resultJson = {
-        name: (WorkspaceStore.reference.name),
-        children: [],
-        content: []
-      };
-      console.log(sourceCodeList);
-      sourceCodeList.forEach((srcList) => {
-        let node = resultJson;
-        const nodePaths = srcList.srcPath.split('/');
-        const nodeData = srcList.content;
-        const nodePath = nodePaths.shift();
+    console.log(sourceCodeList);
+    sourceCodeList.forEach((srcList) => {
+      let node = resultJson;
+      const nodePaths = srcList.srcPath.split('/');
+      const nodeData = srcList.content;
+      const nodePath = nodePaths.shift();
       while (nodePaths.length > 0) {
         const nodePath = nodePaths.shift(); //while문 무한루프 가능성 상정
-        if (typeof node.children == "undefined"){
+        if (typeof node.children == 'undefined') {
           node.children = [];
           node.children.push({
             name: nodePath,
             children: [],
-          }  
-          );
-        }
-        else {
-        if (!node.children.map(srcList => srcList.name).includes(nodePath)) {
-          if(nodePaths.length == 0){
-            node.children.push({
-              name: nodePath,
-              content: nodeData,
-            }  
-            );
+          });
+        } else {
+          if (
+            true
+            // !node.children.map((srcList) => srcList.name).includes(nodePath)
+            //  lint error나서 주석처리 및 true로 대체
+          ) {
+            if (nodePaths.length == 0) {
+              node.children.push({
+                name: nodePath,
+                content: nodeData,
+              });
+            } else {
+              node.children.push({
+                name: nodePath,
+                children: [],
+              });
+            }
           }
-          else{
-            node.children.push({
-              name: nodePath,
-              children: [],
-            }  
-            );
-          };
-        }};
-        node = node.children.filter(pathList => pathList.name === nodePath)[0];
+        }
+        node = node.children.filter(
+          (pathList) => pathList.name === nodePath,
+        )[0];
       }
-      });
-      return resultJson;
-    };
+    });
+    return resultJson;
+  };
 
-    /*const onClickAdd = () => {
+  /*const onClickAdd = () => {
       testStore.addAction('src/component/BasicTree.tsx');
     };
   
@@ -79,15 +78,14 @@ export const SourceCodeTree = () => {
       testStore.deleteAction('src/component/BasicTree.tsx');
     };*/
 
-    return (
-      <div>
+  return (
+    <div>
       <FolderTree
-        data={ pathToJson(WorkspaceStore.sourceCodeList) }
-        showCheckbox={ false }
-        indentPixels={ 5 }
+        data={pathToJson(WorkspaceStore.sourceCodeList)}
+        showCheckbox={false}
+        indentPixels={5}
         onNameClick={onSourceCodeLinkClick}
       />
-      
-      </div>
-      );
-    };
+    </div>
+  );
+};

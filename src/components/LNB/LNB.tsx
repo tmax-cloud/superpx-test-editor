@@ -1,47 +1,47 @@
-import * as React from "react";
-import * as _ from "lodash-es";
-import { setRequest, setService } from "../../utils/service-utils";
-import { ProjectLink } from "./ProjectLink";
-import { ReferenceLink } from "./ReferenceLink";
-import { SourceCodeLink } from "./SourceCodeLink";
-import { CommitLink } from "./CommitLink";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Divider from "@mui/material/Divider";
-import { CreateProjectForm } from "../Form/CreateProjectForm";
-import { CreateReferenceForm } from "../Form/CreateReferenceForm";
-import Button from "@mui/material/Button";
-import AddIcon from "@mui/icons-material/Add";
-import CloseIcon from "@mui/icons-material/Close";
-import TextField from "@mui/material/TextField";
-import { setAlert } from "../../utils/alert-utiles";
-import EditorContentsStore from "../../stores/editorContentsStore";
-import WorkspaceStore from "../../stores/workspaceStore";
-import { useObserver } from "mobx-react";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
-import SearchIcon from "@mui/icons-material/Search";
-import CommitIcon from "@mui/icons-material/Commit";
-import BugReportIcon from "@mui/icons-material/BugReport";
-import ExtensionIcon from "@mui/icons-material/Extension";
-import { SourceCodeTree } from "./SourceCodeTree";
+import * as React from 'react';
+import * as _ from 'lodash';
+import { setRequest, setService } from '../../utils/service-utils';
+import { ProjectLink } from './ProjectLink';
+import { ReferenceLink } from './ReferenceLink';
+import { SourceCodeLink } from './SourceCodeLink';
+import { CommitLink } from './CommitLink';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Divider from '@mui/material/Divider';
+import { CreateProjectForm } from '../Form/CreateProjectForm';
+import { CreateReferenceForm } from '../Form/CreateReferenceForm';
+import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
+import CloseIcon from '@mui/icons-material/Close';
+import TextField from '@mui/material/TextField';
+import { setAlert } from '../../utils/alert-utiles';
+import EditorContentsStore from '../../stores/editorContentsStore';
+import WorkspaceStore from '../../stores/workspaceStore';
+import { useObserver } from 'mobx-react';
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import SearchIcon from '@mui/icons-material/Search';
+import CommitIcon from '@mui/icons-material/Commit';
+import BugReportIcon from '@mui/icons-material/BugReport';
+import ExtensionIcon from '@mui/icons-material/Extension';
+import { SourceCodeTree } from './SourceCodeTree';
 // import Uploady from "@rpldy/uploady";
 // import UploadDropZone from "@rpldy/upload-drop-zone";
 
 const drawerWidth = 240;
 
-type Lnb = "explorer" | "search" | "scm" | "debug" | "extension";
+type Lnb = 'explorer' | 'search' | 'scm' | 'debug' | 'extension';
 
 export const LNB: React.FC<LNBProps> = ({}) => {
   const [projectList, setProjectList] = React.useState([]);
   const [referenceList, setReferenceList] = React.useState([]);
   const [commitList, setCommitList] = React.useState([]);
   const [selectedProject, setSelectedProject] = React.useState({
-    name: "",
+    name: '',
     projId: 0,
   });
   const [openCreateProjectForm, setOpenCreateProjectForm] =
@@ -67,9 +67,9 @@ export const LNB: React.FC<LNBProps> = ({}) => {
     (lnb: Lnb, open: boolean) =>
     (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
-        event.type === "keydown" &&
-        ((event as React.KeyboardEvent).key === "Tab" ||
-          (event as React.KeyboardEvent).key === "Shift")
+        event.type === 'keydown' &&
+        ((event as React.KeyboardEvent).key === 'Tab' ||
+          (event as React.KeyboardEvent).key === 'Shift')
       ) {
         return;
       }
@@ -84,14 +84,14 @@ export const LNB: React.FC<LNBProps> = ({}) => {
             debug: false,
             extension: false,
           },
-          { [lnb]: open }
-        )
+          { [lnb]: open },
+        ),
       );
     };
 
   React.useEffect(() => {
     const projectSocket = new WebSocket(WorkspaceStore.wsUrl);
-    const request = setRequest(setService("project", "ListService"), {});
+    const request = setRequest(setService('project', 'ListService'), {});
     projectSocket.onopen = (event) => {
       projectSocket.send(JSON.stringify(request));
     };
@@ -105,9 +105,9 @@ export const LNB: React.FC<LNBProps> = ({}) => {
 
       setProjectList(tempProjectList);
       setAlert(
-        "Get Project",
+        'Get Project',
         `Get Project List from ${WorkspaceStore.wsUrl}.`,
-        "success"
+        'success',
       );
     };
   }, []);
@@ -125,21 +125,21 @@ export const LNB: React.FC<LNBProps> = ({}) => {
     setProjectList(projectList.filter((p) => p.projId != projId));
   };
 
-  const [newFilePath, setNewFilePath] = React.useState("");
+  const [newFilePath, setNewFilePath] = React.useState('');
 
   const onSourcePathChange = (event) => {
     setNewFilePath(event.target.value);
   };
 
   const onAddSourceCodeClick = () => {
-    EditorContentsStore.updateContentAction(newFilePath, "");
+    EditorContentsStore.updateContentAction(newFilePath, '');
   };
 
   const ref = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
     if (ref.current !== null) {
-      ref.current.setAttribute("webkitdirectory", "");
+      ref.current.setAttribute('webkitdirectory', '');
     }
   }, [ref]);
 
@@ -150,7 +150,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
       fileReader.onload = () => {
         EditorContentsStore.pushContentAction(
           file.webkitRelativePath,
-          fileReader.result as string
+          fileReader.result as string,
         );
         console.log(fileReader.result);
       };
@@ -159,7 +159,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: 'flex' }}>
       <Drawer
         variant="permanent"
         sx={{
@@ -167,13 +167,13 @@ export const LNB: React.FC<LNBProps> = ({}) => {
           flexShrink: 0,
           [`& .MuiDrawer-paper`]: {
             width: 50,
-            boxSizing: "border-box",
+            boxSizing: 'border-box',
           },
         }}
         // className="sidebar"
       >
         <div className="white-block"></div>
-        {(["explorer", "search", "scm", "debug", "extension"] as const).map(
+        {(['explorer', 'search', 'scm', 'debug', 'extension'] as const).map(
           (lnb) => (
             <Button
               id={`lnb-${lnb}`}
@@ -182,9 +182,9 @@ export const LNB: React.FC<LNBProps> = ({}) => {
             >
               {lnbIcon[lnb]}
             </Button>
-          )
+          ),
         )}
-        {(["explorer", "search", "scm", "debug", "extension"] as const).map(
+        {(['explorer', 'search', 'scm', 'debug', 'extension'] as const).map(
           (lnb) => (
             <>
               <Drawer
@@ -193,7 +193,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                   flexShrink: 0,
                   [`& .MuiDrawer-paper`]: {
                     width: drawerWidth + 30,
-                    boxSizing: "border-box",
+                    boxSizing: 'border-box',
                   },
                   zIndex: 0,
                 }}
@@ -207,7 +207,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                   <CloseIcon className="lnb-close-icon" />
                 </Button>
 
-                {lnb === "scm" && (
+                {lnb === 'scm' && (
                   <div className="lnb-scm">
                     <div>
                       <h3 className="list-title">Project List</h3>
@@ -254,7 +254,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                           <Typography>
                             {selectedProject.name
                               ? selectedProject.name
-                              : "Select Project, please"}
+                              : 'Select Project, please'}
                           </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
@@ -290,7 +290,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                           <Typography>
                             {WorkspaceStore.reference.name
                               ? WorkspaceStore.reference.name
-                              : "Select Project, please"}
+                              : 'Select Project, please'}
                           </Typography>
                         </AccordionSummary>
                         {commitList.map((commitData) => {
@@ -306,8 +306,8 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                     </div>
                   </div>
                 )}
-                {lnb === "extension" && <div className="lnb-scm"></div>}
-                {lnb === "debug" && (
+                {lnb === 'extension' && <div className="lnb-scm"></div>}
+                {lnb === 'debug' && (
                   <div className="lnb-scm">
                     <input
                       ref={ref}
@@ -340,7 +340,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                     </Uploady> */}
                   </div>
                 )}
-                {lnb === "explorer" && (
+                {lnb === 'explorer' && (
                   <div className="lnb-scm">
                     <div>
                       <h3 className="list-title">Source Code List</h3>
@@ -353,7 +353,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                           <Typography>
                             {WorkspaceStore.reference.name
                               ? WorkspaceStore.reference.name
-                              : "Select Project, please"}
+                              : 'Select Project, please'}
                           </Typography>
                         </AccordionSummary>
 
@@ -387,7 +387,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                 )}
               </Drawer>
             </>
-          )
+          ),
         )}
 
         {/* <div>
