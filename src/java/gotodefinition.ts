@@ -1,7 +1,7 @@
-import * as monaco from "monaco-editor";
-import { JavaService } from "./../language-service/java/JavaService";
-import { setAlert } from "../utils/alert-utiles";
-import { TerminalNode } from "antlr4ts/tree";
+import * as monaco from 'monaco-editor';
+import { JavaService } from './../language-service/java/JavaService';
+import { setAlert } from '../utils/alert-utiles';
+import { TerminalNode } from 'antlr4ts/tree';
 import {
   TypeIdentifierContext,
   VariableDeclaratorIdContext,
@@ -9,10 +9,10 @@ import {
   IdentifierContext,
   MethodCallContext,
   TypeTypeOrVoidContext,
-} from "../ANTLR/java/JavaParser";
+} from '../ANTLR/java/JavaParser';
 
 export const setGoToDefinitionProvdier = () => {
-  monaco.languages.registerDefinitionProvider("java", {
+  monaco.languages.registerDefinitionProvider('java', {
     provideDefinition: (model, position, token) => {
       const { defUri, defRange } = getDefinitionByApi(model, position);
       return {
@@ -29,7 +29,7 @@ const getCompilationUnit = (model) => {
 };
 
 const getNodeData = (compilationUnit, position, word) => {
-  let nodeType = "";
+  let nodeType = '';
   const getNodeType = (node) => {
     if (
       node.text === word &&
@@ -40,20 +40,19 @@ const getNodeData = (compilationUnit, position, word) => {
       node._start._charPositionInLine + node._start.stop - node._start.start >=
         position.column
     ) {
-      console.log(node);
       if (node instanceof VariableDeclaratorIdContext) {
-        nodeType = "VariableDeclaratorIdContext";
+        nodeType = 'VariableDeclaratorIdContext';
       } else if (node instanceof TypeIdentifierContext) {
-        nodeType = "TypeIdentifierContext";
+        nodeType = 'TypeIdentifierContext';
       } else if (node instanceof ClassOrInterfaceModifierContext) {
-        nodeType = "ClassOrInterfaceModifierContext";
+        nodeType = 'ClassOrInterfaceModifierContext';
       } else if (node instanceof IdentifierContext) {
-        nodeType = "IdentifierContext";
+        nodeType = 'IdentifierContext';
         if (node._parent instanceof MethodCallContext) {
-          nodeType = "IdentifierContext and Parent is MethodCallContext";
+          nodeType = 'IdentifierContext and Parent is MethodCallContext';
         }
       } else if (node instanceof TypeTypeOrVoidContext) {
-        nodeType = "TypeTypeOrVoidContext";
+        nodeType = 'TypeTypeOrVoidContext';
       }
     }
     node.children?.map((child) => getNodeType(child));
@@ -86,7 +85,7 @@ const getDefinition = (model, position, nodeData) => {
   setAlert(
     nodeData.type,
     `${nodeData.word}'s node type is ${nodeData.type}`,
-    "info"
+    'info',
   );
 
   return {
