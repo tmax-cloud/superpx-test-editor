@@ -200,7 +200,6 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                 onClose={toggleDrawer(lnb, false)}
                 variant="persistent"
               >
-                <div className="white-block"></div>
                 <Button onClick={toggleDrawer(lnb, false)}>
                   <CloseIcon className="lnb-close-icon" />
                 </Button>

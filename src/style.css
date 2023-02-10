@@ -128,8 +128,9 @@ body,
 
 .lnb-close-icon {
   position: absolute;
-  right: 0px;
-  top: 0px;
+  right: 5px;
+  top: 5px;
+  color :#070e26c4 !important;
 }
 .list-title {
   padding-left: 10px;
