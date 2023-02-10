@@ -60,47 +60,50 @@ export const GNB = () => {
   };
   return (
     <div className="gnb">
-      <span>
-        <Link to="/">
-          <HomeIcon />
-        </Link>
-      </span>
-      {menus.map((menu) => {
-        return (
-          <span key={`menu-${menu}`}>
-            <Button
-              id="basic-button"
-              aria-controls={open ? "basic-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-              onClick={handleClick}
-              value={menu}
-            >
-              {menu}
-            </Button>
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={openMenu[menu]}
-              onClose={handleClose}
-              MenuListProps={{
-                "aria-labelledby": "basic-button",
-              }}
-            >
-              {menusAction[menu].map((action) => {
-                return (
-                  <MenuItem
-                    key={`menuItem-${action}`}
-                    onClick={getActions(action)}
-                  >
-                    {action}
-                  </MenuItem>
-                );
-              })}
-            </Menu>
-          </span>
-        );
-      })}
+      <div className="logo">
+        <HomeIcon className="logo-icon" sx={{ color: "#FF7575" }} />
+        <p className="logo-text">SuperPX</p>
+      </div>
+      <div>
+        {menus.map((menu) => {
+          return (
+            <span key={`menu-${menu}`}>
+              <Button
+                className="gnb-menu-button"
+                id="basic-button"
+                aria-controls={open ? "basic-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
+                value={menu}
+              >
+                {menu}
+              </Button>
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={openMenu[menu]}
+                onClose={handleClose}
+                MenuListProps={{
+                  "aria-labelledby": "basic-button",
+                }}
+              >
+                {menusAction[menu].map((action) => {
+                  return (
+                    <MenuItem
+                      key={`menuItem-${action}`}
+                      onClick={getActions(action)}
+                    >
+                      {action}
+                    </MenuItem>
+                  );
+                })}
+              </Menu>
+            </span>
+          );
+        })}
+      </div>
+
       {/* <LNB /> */}
     </div>
   );

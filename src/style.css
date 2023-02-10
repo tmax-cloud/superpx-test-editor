@@ -67,12 +67,44 @@ body,
 }
 
 .gnb {
-  position: sticky;
   z-index: 2400;
-  background: white;
-  height: 40;
-  border-bottom: 1px solid black;
+  background:#070E26;
+  position: absolute;
+  height: 72;
   overflow: auto;
+  width: 100%;
+  padding: 0px 15px;
+}
+.logo{
+  display: flex;
+  height: 36px;
+ }
+.logo-icon{
+  height: 16px;
+  width: 16px;
+  left: 20px;
+  top: 10px;
+  border-radius: 2px;
+  position: absolute;
+ }
+.logo-text{
+  height: 15px;
+  left: 50px;
+  position: absolute;
+  font-size: 15px;
+  line-height: 13px;
+  color: #FFFFFF;
+}
+
+.gnb-menu-button{
+  padding: 10px 8px !important;
+  width: 76px;
+  height: 36px;
+  background: #070E26;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  line-height: 14px !important;
 }
 
 .commit-link {
