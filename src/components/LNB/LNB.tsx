@@ -159,7 +159,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <div className="lnb">
       <Drawer
         variant="permanent"
         sx={{
@@ -167,12 +167,11 @@ export const LNB: React.FC<LNBProps> = ({}) => {
           flexShrink: 0,
           [`& .MuiDrawer-paper`]: {
             width: 50,
+            top: 72,
             boxSizing: "border-box",
           },
         }}
-        // className="sidebar"
       >
-        <div className="white-block"></div>
         {(["explorer", "search", "scm", "debug", "extension"] as const).map(
           (lnb) => (
             <Button
@@ -535,7 +534,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
           </Accordion>
         </div> */}
       </Drawer>
-    </Box>
+    </div>
   );
 };
 

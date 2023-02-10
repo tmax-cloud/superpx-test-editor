@@ -2,14 +2,13 @@ html,
 body,
 #container {
   margin: 0;
-  padding: 0;
   height: 100%;
-  width: 100%;
 }
 
 .title {
   height: 50px;
 }
+
 @media only screen and (max-height: 600px) {
   .editor-container {
     height: 50%;
@@ -25,6 +24,7 @@ body,
   height: 100%;
   position: fixed;
   right: 0;
+  top :72px;
   width: calc(100% - 270px);
 }
 
@@ -35,14 +35,13 @@ body,
   transition: 0.4s ease;
   color: #202020;
   height: 95%;
-  z-index: 99;
   width: 15%;
   overflow-y: scroll;
 }
 
 .alert {
   position: absolute;
-  z-index: 4800;
+  z-index: 1;
   padding: 20px;
   right: 10px;
 }
@@ -51,8 +50,13 @@ body,
   height: 100% !important;
 }
 
-.height-full {
-  height: 100%;
+.content {
+  top : 72px;
+  position: sticky;
+  height: calc(100% - 72px);
+}
+.btn-front{
+  z-index: 3;
 }
 
 .parental-full {
@@ -67,7 +71,6 @@ body,
 }
 
 .gnb {
-  z-index: 2400;
   background:#070E26;
   position: absolute;
   height: 72;
@@ -111,13 +114,15 @@ body,
   padding-left: 15px;
 }
 
-.white-block {
-  height: 50px;
+.lnb {
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top :72px;
+  width: 270px;
 }
 
-.btn-front {
-  z-index: 1800;
-}
+
 .lnb-close-icon {
   position: absolute;
   right: 0px;
