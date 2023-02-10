@@ -32,8 +32,6 @@ import { SourceCodeTree } from "./SourceCodeTree";
 // import Uploady from "@rpldy/uploady";
 // import UploadDropZone from "@rpldy/upload-drop-zone";
 
-const drawerWidth = 240;
-
 type Lnb = "explorer" | "search" | "scm" | "debug" | "extension";
 
 export const LNB: React.FC<LNBProps> = ({}) => {
@@ -166,9 +164,10 @@ export const LNB: React.FC<LNBProps> = ({}) => {
           width: 50,
           flexShrink: 0,
           [`& .MuiDrawer-paper`]: {
-            width: 50,
-            top: 72,
+            width: 65,
             boxSizing: "border-box",
+            background: "#F5F7F9",
+            marginTop: 10,
           },
         }}
       >
@@ -177,7 +176,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
             <Button
               id={`lnb-${lnb}`}
               onClick={toggleDrawer(lnb, true)}
-              className="btn-front"
+              className="lnb-btn"
             >
               {lnbIcon[lnb]}
             </Button>
@@ -188,10 +187,10 @@ export const LNB: React.FC<LNBProps> = ({}) => {
             <>
               <Drawer
                 sx={{
-                  width: drawerWidth + 30,
+                  width: 300,
                   flexShrink: 0,
                   [`& .MuiDrawer-paper`]: {
-                    width: drawerWidth + 30,
+                    width: 300,
                     boxSizing: "border-box",
                   },
                   zIndex: 0,
