@@ -19,6 +19,7 @@ body,
   height: 100%;
   overflow: hidden;
   width: auto;
+  display: flex;
 }
 
 .editor-area {
@@ -49,6 +50,8 @@ body,
 
 .monaco-editor {
   height: 100% !important;
+  width: 100% !important;
+  display: flex;
 }
 
 .height-full {
@@ -101,3 +104,25 @@ body,
 .commit-btn {
   text-transform: none !important;
 }
+.monaco-editor .overflow-guard {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+}
+.monaco-scrollable-element {
+  width: 90% !important;
+}
+.minimap {
+  left: inherit !important;
+  right: 0px;
+}
+
+/* .minimap-decorations-layer {
+  width: 100% !important;
+}
+.minimap-slider {
+  width: 100% !important;
+}
+.minimap-slider-horizontal {
+  width: 100% !important;
+} */

@@ -62,6 +62,7 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
   const assignRef = React.useCallback((node) => {
     // On mount get the ref of the div and assign it the divNode
     divNode = node;
+    divNode.style.width = "100%";
   }, []);
   React.useEffect(() => {
     if (divNode) {
@@ -78,6 +79,7 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
         // model,
       });
       divNode.style.height = "100%";
+      divNode.style.width = "100%";
       // validate(model);
       // model.onDidChangeContent(() => {
       //   // validate(model);
