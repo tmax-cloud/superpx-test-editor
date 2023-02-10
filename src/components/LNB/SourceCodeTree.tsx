@@ -19,14 +19,13 @@ export const SourceCodeTree = () => {
       content: [],
     };
 
-    console.log(sourceCodeList);
-    sourceCodeList.forEach((srcList) => {
+    sourceCodeList.forEach((src) => {
       let node = resultJson;
-      const nodePaths = srcList.srcPath.split("/");
-      const nodeData = srcList.content;
-      const nodePath = nodePaths.shift();
-      while (nodePaths.length > 0) {
-        const nodePath = nodePaths.shift(); 
+      const nodeArray = src.srcPath.split("/");
+      const nodeData = src.content;
+      nodeArray.shift();
+      while (nodeArray.length > 0) {
+        const nodePath = nodeArray.shift();
         if (!node.children) {
           node.children = [];
           node.children.push({
@@ -35,9 +34,9 @@ export const SourceCodeTree = () => {
           });
         } else {
           if (
-            !node.children.map((srcList) => srcList.name).includes(nodePath)
+            !node.children.map((src) => src.name).includes(nodePath)
           ) {
-            if (nodePaths.length === 0) {
+            if (nodeArray.length === 0) {
               node.children.push({
                 name: nodePath,
                 content: nodeData,
@@ -58,9 +57,11 @@ export const SourceCodeTree = () => {
     return resultJson;
   };
 
+  const Treedata = pathToJson(WorkspaceStore.sourceCodeList);
+
   return (
     <FolderTree
-      data={pathToJson(WorkspaceStore.sourceCodeList)}
+      data={Treedata}
       showCheckbox={false}
       indentPixels={5}
       onNameClick={onSourceCodeLinkClick}
