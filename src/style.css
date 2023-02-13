@@ -2,14 +2,13 @@ html,
 body,
 #container {
   margin: 0;
-  padding: 0;
   height: 100%;
-  width: 100%;
 }
 
 .title {
   height: 50px;
 }
+
 @media only screen and (max-height: 600px) {
   .editor-container {
     height: 50%;
@@ -26,7 +25,8 @@ body,
   height: 100%;
   position: fixed;
   right: 0;
-  width: calc(100% - 270px);
+  top :72px;
+  width: calc(100% - 300px);
 }
 
 .sidebar {
@@ -36,14 +36,13 @@ body,
   transition: 0.4s ease;
   color: #202020;
   height: 95%;
-  z-index: 99;
   width: 15%;
   overflow-y: scroll;
 }
 
 .alert {
   position: absolute;
-  z-index: 4800;
+  z-index: 1;
   padding: 20px;
   right: 10px;
 }
@@ -54,8 +53,14 @@ body,
   display: flex;
 }
 
-.height-full {
-  height: 100%;
+.content {
+  top : 72px;
+  position: sticky;
+  height: calc(100% - 72px);
+}
+.lnb-btn{
+  z-index: 3;
+  color :#070e26c4 !important;
 }
 
 .parental-full {
@@ -70,36 +75,72 @@ body,
 }
 
 .gnb {
-  position: sticky;
-  z-index: 2400;
-  background: white;
-  height: 40;
-  border-bottom: 1px solid black;
+  background:#070E26;
+  position: absolute;
+  height: 72;
   overflow: auto;
+  width: 100%;
+  padding: 0px 15px;
+}
+.logo{
+  display: flex;
+  height: 36px;
+ }
+.logo-icon{
+  height: 16px;
+  width: 16px;
+  left: 20px;
+  top: 10px;
+  border-radius: 2px;
+  position: absolute;
+ }
+.logo-text{
+  height: 15px;
+  left: 50px;
+  position: absolute;
+  font-size: 15px;
+  line-height: 13px;
+  color: #FFFFFF;
+}
+
+.gnb-menu-button{
+  padding: 10px 8px !important;
+  width: 76px;
+  height: 36px;
+  background: #070E26;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  line-height: 14px !important;
 }
 
 .commit-link {
   padding-left: 15px;
 }
-
-.white-block {
-  height: 50px;
+.height-full{
+  height:100%
+}
+.lnb {
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top :72px;
+  width: 300px;
 }
 
-.btn-front {
-  z-index: 1800;
-}
+
 .lnb-close-icon {
   position: absolute;
-  right: 0px;
-  top: 0px;
+  right: 5px;
+  top: 5px;
+  color :#070e26c4 !important;
 }
 .list-title {
   padding-left: 10px;
 }
 
 .lnb-scm {
-  padding-left: 50px;
+  padding-left: 65px;
 }
 .commit-btn {
   text-transform: none !important;

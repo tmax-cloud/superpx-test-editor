@@ -32,9 +32,8 @@ import { SourceCodeTree } from './SourceCodeTree';
 // import Uploady from "@rpldy/uploady";
 // import UploadDropZone from "@rpldy/upload-drop-zone";
 
-const drawerWidth = 240;
 
-type Lnb = 'explorer' | 'search' | 'scm' | 'debug' | 'extension';
+type Lnb = "explorer" | "search" | "scm" | "debug" | "extension";
 
 export const LNB: React.FC<LNBProps> = ({}) => {
   const [projectList, setProjectList] = React.useState([]);
@@ -159,26 +158,27 @@ export const LNB: React.FC<LNBProps> = ({}) => {
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <div className="lnb">
       <Drawer
         variant="permanent"
         sx={{
           width: 50,
           flexShrink: 0,
           [`& .MuiDrawer-paper`]: {
-            width: 50,
-            boxSizing: 'border-box',
+            width: 65,
+            boxSizing: "border-box",
+            background: "#F5F7F9",
+            marginTop: 10,
           },
         }}
-        // className="sidebar"
       >
-        <div className="white-block"></div>
-        {(['explorer', 'search', 'scm', 'debug', 'extension'] as const).map(
+        {(["explorer", "search", "scm", "debug", "extension"] as const).map(
+
           (lnb) => (
             <Button
               id={`lnb-${lnb}`}
               onClick={toggleDrawer(lnb, true)}
-              className="btn-front"
+              className="lnb-btn"
             >
               {lnbIcon[lnb]}
             </Button>
@@ -189,11 +189,11 @@ export const LNB: React.FC<LNBProps> = ({}) => {
             <>
               <Drawer
                 sx={{
-                  width: drawerWidth + 30,
+                  width: 300,
                   flexShrink: 0,
                   [`& .MuiDrawer-paper`]: {
-                    width: drawerWidth + 30,
-                    boxSizing: 'border-box',
+                    width: 300,
+                    boxSizing: "border-box",
                   },
                   zIndex: 0,
                 }}
@@ -202,7 +202,6 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                 onClose={toggleDrawer(lnb, false)}
                 variant="persistent"
               >
-                <div className="white-block"></div>
                 <Button onClick={toggleDrawer(lnb, false)}>
                   <CloseIcon className="lnb-close-icon" />
                 </Button>
@@ -535,7 +534,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
           </Accordion>
         </div> */}
       </Drawer>
-    </Box>
+    </div>
   );
 };
 
