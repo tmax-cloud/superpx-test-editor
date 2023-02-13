@@ -1,9 +1,8 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import { setRequest, setService } from '../../utils/service-utils';
+import { setRequest } from '../../utils/service-utils';
 import { ProjectLink } from './ProjectLink';
 import { ReferenceLink } from './ReferenceLink';
-import { SourceCodeLink } from './SourceCodeLink';
 import { CommitLink } from './CommitLink';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -21,7 +20,6 @@ import { setAlert } from '../../utils/alert-utiles';
 import EditorContentsStore from '../../stores/editorContentsStore';
 import WorkspaceStore from '../../stores/workspaceStore';
 import { useObserver } from 'mobx-react';
-import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import SearchIcon from '@mui/icons-material/Search';
@@ -29,12 +27,10 @@ import CommitIcon from '@mui/icons-material/Commit';
 import BugReportIcon from '@mui/icons-material/BugReport';
 import ExtensionIcon from '@mui/icons-material/Extension';
 import { SourceCodeTree } from './SourceCodeTree';
-// import Uploady from "@rpldy/uploady";
-// import UploadDropZone from "@rpldy/upload-drop-zone";
 
 type Lnb = 'explorer' | 'search' | 'scm' | 'debug' | 'extension';
 
-export const LNB: React.FC<LNBProps> = ({}) => {
+export const LNB: React.FC = () => {
   const [projectList, setProjectList] = React.useState([]);
   const [referenceList, setReferenceList] = React.useState([]);
   const [commitList, setCommitList] = React.useState([]);
@@ -77,8 +73,6 @@ export const LNB: React.FC<LNBProps> = ({}) => {
       ) {
         return;
       }
-      _.merge;
-
       setLnbOpenState(
         _.merge(
           {
@@ -95,7 +89,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
 
   React.useEffect(() => {
     const projectSocket = new WebSocket(WorkspaceStore.wsUrl);
-    const request = setRequest(setService('project', 'ListService'), {});
+    const request = setRequest('project', 'ListService', {});
     projectSocket.onopen = (event) => {
       projectSocket.send(JSON.stringify(request));
     };
@@ -126,7 +120,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
     setReferenceList(tempReferenceList);
   };
   const deleteProjectList = (projId) => {
-    setProjectList(projectList.filter((p) => p.projId != projId));
+    setProjectList(projectList.filter((p) => p.projId !== projId));
   };
 
   const [newFilePath, setNewFilePath] = React.useState('');
@@ -156,7 +150,6 @@ export const LNB: React.FC<LNBProps> = ({}) => {
           file.webkitRelativePath,
           fileReader.result as string,
         );
-        console.log(fileReader.result);
       };
       fileReader.readAsText(file);
     }
@@ -319,28 +312,6 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                       multiple={true}
                       accept=".java"
                     />
-                    {/* <Uploady>
-                      <UploadDropZone
-                        onDragOverClassName="drag-over"
-                        grouped
-                        maxGroupSize={3}
-                        dropHandler={() => {
-                          return new Promise((resolveInner) => {
-                            setTimeout(resolveInner, 1000);
-                          });
-                        }}
-                      >
-                        <Box
-                          style={{
-                            height: 150,
-                            width: 180,
-                            border: "2px solid",
-                          }}
-                        >
-                          <span>Drag&Drop File(s) Here</span>
-                        </Box>
-                      </UploadDropZone>
-                    </Uploady> */}
                   </div>
                 )}
                 {lnb === 'explorer' && (
@@ -392,154 +363,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
             </>
           ),
         )}
-
-        {/* <div>
-          <Divider />
-          <h3 style={{ paddingLeft: 10 }}>Project List</h3>
-          <Accordion defaultExpanded={true}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-            >
-              <Typography>{WorkspaceStore.wsUrl}</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <CreateProjectForm
-                wsUrl={WorkspaceStore.wsUrl}
-                open={openCreateProjectForm}
-                setOpen={setOpenCreateProjectForm}
-                updateProjectList={updateProjectList}
-              />
-            </AccordionDetails>
-            {projectList.map((projectData) => {
-              return (
-                <ProjectLink
-                  key={`project-${projectData.projId}`}
-                  wsUrl={WorkspaceStore.wsUrl}
-                  projectData={projectData}
-                  setReferenceList={setReferenceList}
-                  deleteProjectList={deleteProjectList}
-                  setSelectedProject={setSelectedProject}
-                  setCommitList={setCommitList}
-                />
-              );
-            })}
-          </Accordion>
-        </div>
-        <Divider />
-        <div>
-          <h3 style={{ paddingLeft: 10 }}>Reference List</h3>
-          <Accordion defaultExpanded={true}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-            >
-              <Typography>
-                {selectedProject.name
-                  ? selectedProject.name
-                  : "Select Project, please"}
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <CreateReferenceForm
-                wsUrl={WorkspaceStore.wsUrl}
-                open={openCreateReferenceForm}
-                selectedProject={selectedProject}
-                setOpen={setOpenCreateReferenceForm}
-                updateReferenceList={updateReferenceList}
-              />
-            </AccordionDetails>
-            {referenceList.map((referenceData) => {
-              return (
-                <ReferenceLink
-                  key={`project-${referenceData.refId}`}
-                  wsUrl={WorkspaceStore.wsUrl}
-                  referenceData={referenceData}
-                  setCommitList={setCommitList}
-                />
-              );
-            })}
-          </Accordion>
-        </div>
-        <Divider />
-        <div>
-          <h3 style={{ paddingLeft: 10 }}>Commit List</h3>
-          <Accordion defaultExpanded={true}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-            >
-              <Typography>
-                {WorkspaceStore.reference.name
-                  ? WorkspaceStore.reference.name
-                  : "Select Project, please"}
-              </Typography>
-            </AccordionSummary>
-            {commitList.map((commitData) => {
-              return (
-                <CommitLink
-                  key={`commit-${commitData.commitId}`}
-                  wsUrl={WorkspaceStore.wsUrl}
-                  commitData={commitData}
-                />
-              );
-            })}
-          </Accordion>
-        </div> */}
-        {/* <Divider /> */}
-        {/* <div>
-          <h3 style={{ paddingLeft: 10 }}>Source Code List</h3>
-          <Accordion defaultExpanded={true}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-            >
-              <Typography>
-                {WorkspaceStore.reference.name
-                  ? WorkspaceStore.reference.name
-                  : "Select Project, please"}
-              </Typography>
-            </AccordionSummary>
-
-            {WorkspaceStore.sourceCodeList.length > 0 && (
-              <>
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  id="name"
-                  label="Source Code Path"
-                  type="text"
-                  fullWidth
-                  variant="standard"
-                  onChange={onSourcePathChange}
-                />
-                <Button variant="outlined" onClick={onAddSourceCodeClick}>
-                  Add Source Code
-                  <AddIcon />
-                </Button>
-              </>
-            )}
-            {useObserver(
-              () =>
-                WorkspaceStore.sourceCodeList.length > 0 &&
-                WorkspaceStore.sourceCodeList.map((sourceCodeData) => {
-                  return (
-                    <SourceCodeLink
-                      key={`sourceCodeD-${sourceCodeData.srcPath}`}
-                      sourceCodeData={sourceCodeData}
-                    />
-                  );
-                })
-            )}
-          </Accordion>
-        </div> */}
       </Drawer>
     </div>
   );
 };
-
-type LNBProps = {};

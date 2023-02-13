@@ -1,18 +1,18 @@
-const servicePrefix = "super-px-0.1.4/com.tmax.scm.service";
+const servicePrefix = 'super-px-0.1.4/com.tmax.scm.service';
 
-type ServiceCategory = "project" | "reference" | "commit" | "merge";
+type ServiceCategory = 'project' | 'reference' | 'commit' | 'merge';
 
-export const setService = (category: ServiceCategory, service: string) => {
-  return `${servicePrefix}.${category}.${service}`;
-};
-
-export const setRequest = (targetServiceName: string, body: object) => {
+export const setRequest = (
+  category: ServiceCategory,
+  service: string,
+  body: object,
+) => {
   return {
     header: {
-      targetServiceName,
-      messageType: "REQUEST",
-      contentType: "TEXT",
+      targetServiceName: `${servicePrefix}.${category}.${service}`,
+      messageType: 'REQUEST',
+      contentType: 'TEXT',
     },
-    body: body,
+    body,
   };
 };

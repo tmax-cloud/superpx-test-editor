@@ -1,7 +1,7 @@
-import * as React from "react";
-import { setRequest, setService } from "../../utils/service-utils";
-import WorkspaceStore from "../../stores/workspaceStore";
-import { Button } from "@mui/material";
+import * as React from 'react';
+import { setRequest } from '../../utils/service-utils';
+import WorkspaceStore from '../../stores/workspaceStore';
+import { Button } from '@mui/material';
 
 export const CommitLink: React.FC<CommitLinkProps> = ({
   wsUrl,
@@ -9,12 +9,9 @@ export const CommitLink: React.FC<CommitLinkProps> = ({
 }) => {
   const onCommitinkClick = async () => {
     const commitSocket = new WebSocket(wsUrl);
-    const commitSocketRequest = setRequest(
-      setService("commit", "DetailService"),
-      {
-        commit_id: commitData.commitId,
-      }
-    );
+    const commitSocketRequest = setRequest('commit', 'DetailService', {
+      commit_id: commitData.commitId,
+    });
     commitSocket.onopen = (event) => {
       commitSocket.send(JSON.stringify(commitSocketRequest));
     };
