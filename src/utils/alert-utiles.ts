@@ -6,15 +6,12 @@ export const setAlert = (
   message?: string,
   type?: AlertColor
 ) => {
-  // alertStore.setTitleAction(title);
-  // alertStore.setMessageAction(message);
-  // if (type) {
-  //   alertStore.setTypeAction(type);
-  // }
-  // alertStore.setIsAlertAction(true);
   alertStore.addAlertInfo({
     title,
     message,
     type,
   });
+  setTimeout(() => {
+    alertStore.deleteAlertInfo(0);
+  }, 10000);
 };
