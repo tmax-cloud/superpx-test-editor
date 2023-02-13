@@ -29,6 +29,7 @@ import CommitIcon from '@mui/icons-material/Commit';
 import BugReportIcon from '@mui/icons-material/BugReport';
 import ExtensionIcon from '@mui/icons-material/Extension';
 import { SourceCodeTree } from './SourceCodeTree';
+import { styled } from '@mui/material/styles';
 // import Uploady from "@rpldy/uploady";
 // import UploadDropZone from "@rpldy/upload-drop-zone";
 
@@ -162,9 +163,15 @@ export const LNB: React.FC<LNBProps> = ({}) => {
     }
   };
 
+  const MyDrawer = styled(Drawer)(({ theme }) => ({
+    '& .MuiPaper-root': {
+      overflowX: 'hidden',
+    },
+  }));
+
   return (
     <div className="lnb">
-      <Drawer
+      <MyDrawer
         variant="permanent"
         sx={{
           width: 50,
@@ -537,7 +544,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
             )}
           </Accordion>
         </div> */}
-      </Drawer>
+      </MyDrawer>
     </div>
   );
 };
