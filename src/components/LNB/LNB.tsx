@@ -27,6 +27,7 @@ import CommitIcon from '@mui/icons-material/Commit';
 import BugReportIcon from '@mui/icons-material/BugReport';
 import ExtensionIcon from '@mui/icons-material/Extension';
 import { SourceCodeTree } from './SourceCodeTree';
+import { styled } from '@mui/material/styles';
 
 type Lnb = 'explorer' | 'search' | 'scm' | 'debug' | 'extension';
 
@@ -155,9 +156,15 @@ export const LNB: React.FC = () => {
     }
   };
 
+  const MyDrawer = styled(Drawer)(({ theme }) => ({
+    '& .MuiPaper-root': {
+      overflowX: 'hidden',
+    },
+  }));
+
   return (
     <div className="lnb">
-      <Drawer
+      <MyDrawer
         variant="permanent"
         sx={{
           width: 50,
@@ -363,7 +370,7 @@ export const LNB: React.FC = () => {
             </>
           ),
         )}
-      </Drawer>
+      </MyDrawer>
     </div>
   );
 };
