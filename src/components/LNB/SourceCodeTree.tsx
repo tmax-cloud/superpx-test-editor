@@ -7,12 +7,12 @@ import EditorContentsStore from '../../stores/editorContentsStore';
 export const SourceCodeTree = () => {
   const onSourceCodeLinkClick = ({ nodeData }) => {
     const { name, isOpen } = nodeData;
-    const content = contentStore(name);
+    const content = getContent(name);
     if (!isOpen) {
       EditorContentsStore.updateContentAction(name, content);
     }
   };
-  const contentStore = (name) => {
+  const getContent = (name) => {
     let content = '';
     WorkspaceStore.sourceCodeList.forEach((src) => {
       const srcPathArray = src.srcPath.split('/');
