@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import { setRequest, setService } from '../../utils/service-utils';
+import { setRequest } from '../../utils/service-utils';
 import { ProjectLink } from './ProjectLink';
 import { ReferenceLink } from './ReferenceLink';
 import { SourceCodeLink } from './SourceCodeLink';
@@ -95,7 +95,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
 
   React.useEffect(() => {
     const projectSocket = new WebSocket(WorkspaceStore.wsUrl);
-    const request = setRequest(setService('project', 'ListService'), {});
+    const request = setRequest('project', 'ListService', {});
     projectSocket.onopen = (event) => {
       projectSocket.send(JSON.stringify(request));
     };

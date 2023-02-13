@@ -1,14 +1,14 @@
-import * as React from "react";
-import * as monaco from "monaco-editor";
-import Button from "@mui/material/Button";
-import AddIcon from "@mui/icons-material/Add";
-import TextField from "@mui/material/TextField";
-import { setRequest, setService } from "../../utils/service-utils";
-import { useObserver } from "mobx-react";
-import EditorContentsStore from "../../stores/editorContentsStore";
-import WorkspaceStore from "../../stores/workspaceStore";
-import { setAlert } from "../../utils/alert-utiles";
-import { flexbox } from "@mui/system";
+import * as React from 'react';
+import * as monaco from 'monaco-editor';
+import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
+import TextField from '@mui/material/TextField';
+import { setRequest } from '../../utils/service-utils';
+import { useObserver } from 'mobx-react';
+import EditorContentsStore from '../../stores/editorContentsStore';
+import WorkspaceStore from '../../stores/workspaceStore';
+import { setAlert } from '../../utils/alert-utiles';
+import { flexbox } from '@mui/system';
 // import parseAndGetASTRoot from "../../language-service/parser";
 
 // function validate(model) {
@@ -53,10 +53,10 @@ interface IEditorProps {
 
 const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
   const [token, setToken] = React.useState([]);
-  const [text, setText] = React.useState("");
+  const [text, setText] = React.useState('');
   const [position, setPosition] = React.useState(new monaco.Position(0, 0));
   const [keyPosition, setKeyPosition] = React.useState(
-    new monaco.Position(0, 0)
+    new monaco.Position(0, 0),
   );
   let divNode;
   const assignRef = React.useCallback((node) => {
@@ -69,16 +69,16 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
       const codeEditor = monaco.editor.create(divNode, {
         language: props.language,
         minimap: { enabled: true },
-        autoIndent: "full",
-        theme: "vs-dark",
+        autoIndent: 'full',
+        theme: 'vs-dark',
         mouseWheelZoom: true,
         fontSize: 20,
         value:
           EditorContentsStore.contents[EditorContentsStore.veiwIndex].content,
         // model,
       });
-      divNode.style.height = "100%";
-      divNode.style.width = "100%";
+      divNode.style.height = '100%';
+      divNode.style.width = '100%';
       // validate(model);
       // model.onDidChangeContent(() => {
       //   // validate(model);
@@ -97,7 +97,7 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
     // console.log(ast);
   }, [assignRef]);
   React.useEffect(() => {
-    const tempToken = monaco.editor.tokenize(text, "java");
+    const tempToken = monaco.editor.tokenize(text, 'java');
     setToken(tempToken);
     text &&
       (EditorContentsStore.contents[EditorContentsStore.veiwIndex].content =
@@ -109,12 +109,12 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
       [EditorContentsStore.veiwIndex]?.getModel();
     model &&
       model.setValue(
-        EditorContentsStore.contents[EditorContentsStore.veiwIndex]?.content
+        EditorContentsStore.contents[EditorContentsStore.veiwIndex]?.content,
       );
   }, [EditorContentsStore.contents[EditorContentsStore.veiwIndex].content]);
 
   const [commitMessage, setCommitMessage] = React.useState(
-    "Enter Commit Message"
+    'Enter Commit Message',
   );
   const onReferenceNameChange = (event) => {
     setCommitMessage(event.target.value);
@@ -129,10 +129,10 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
     });
 
     const nonModifiedSrc = WorkspaceStore.sourceCodeList.filter(
-      (s) => !modifiedSrc.find((c) => c.src_path === s.srcPath)
+      (s) => !modifiedSrc.find((c) => c.src_path === s.srcPath),
     );
 
-    const request = setRequest(setService("commit", "InsertService"), {
+    const request = setRequest('commit', 'InsertService', {
       proj_id: WorkspaceStore.reference.projId,
       ref_id: WorkspaceStore.reference.refId,
       commit: { message: commitMessage, is_commit: true },
@@ -146,9 +146,9 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
     commitSocket.onmessage = (event) => {
       const wsdata = JSON.parse(event.data).data;
       setAlert(
-        "Commit",
+        'Commit',
         `${wsdata.message}(${wsdata.commitId}) is done`,
-        "success"
+        'success',
       );
     };
   };
