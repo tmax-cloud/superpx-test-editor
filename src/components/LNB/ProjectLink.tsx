@@ -43,7 +43,7 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
       const referenceList = JSON.parse(event.data).data;
       setReferenceList(referenceList);
       const mainReference =
-        referenceList.filter((r) => r.name == 'main')[0] || referenceList[0];
+        referenceList.filter((r) => r.name === 'main')[0] || referenceList[0];
       WorkspaceStore.updateReferenceAction(mainReference);
       const commitSocket = new WebSocket(wsUrl);
       const commitSocketRequest = setRequest('commit', 'ListService', {
