@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -60,7 +59,7 @@ export const GNB = () => {
   return (
     <div className="gnb">
       <div className="logo">
-        <HomeIcon className="logo-icon" sx={{ color: "#FF7575" }} />
+        <HomeIcon className="logo-icon" sx={{ color: '#FF7575' }} />
         <p className="logo-text">SuperPX</p>
       </div>
       <div>
@@ -70,9 +69,9 @@ export const GNB = () => {
               <Button
                 className="gnb-menu-button"
                 id="basic-button"
-                aria-controls={open ? "basic-menu" : undefined}
+                aria-controls={open ? 'basic-menu' : undefined}
                 aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
+                aria-expanded={open ? 'true' : undefined}
                 onClick={handleClick}
                 value={menu}
               >
@@ -84,7 +83,7 @@ export const GNB = () => {
                 open={openMenu[menu]}
                 onClose={handleClose}
                 MenuListProps={{
-                  "aria-labelledby": "basic-button",
+                  'aria-labelledby': 'basic-button',
                 }}
               >
                 {menusAction[menu].map((action) => {
@@ -102,7 +101,6 @@ export const GNB = () => {
           );
         })}
       </div>
-      {/* <LNB /> */}
     </div>
   );
 };
