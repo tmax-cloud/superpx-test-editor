@@ -1,4 +1,4 @@
-import { observable } from "mobx";
+import { observable } from 'mobx';
 
 const testCode = `public class CurrentDateTime {
 
@@ -13,11 +13,9 @@ const testCode = `public class CurrentDateTime {
 }`;
 const EditorContentsStore = observable({
   // state
-  contents: [
-    { path: "testcode.java", content: testCode },
-  ],
+  contents: [{ path: 'testcode.java', content: testCode }],
   veiwIndex: 0,
-
+  isFull: false,
   // action
   updateContentAction(path: string, content: string) {
     if (
@@ -48,6 +46,10 @@ const EditorContentsStore = observable({
 
   updateVeiwIndex(index: number) {
     this.veiwIndex = index;
+  },
+
+  updateIsFull(to: boolean) {
+    this.isFull = to;
   },
 });
 
