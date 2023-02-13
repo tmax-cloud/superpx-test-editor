@@ -99,6 +99,9 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
   React.useEffect(() => {
     const tempToken = monaco.editor.tokenize(text, "java");
     setToken(tempToken);
+    text &&
+      (EditorContentsStore.contents[EditorContentsStore.veiwIndex].content =
+        text);
   }, [text]);
   React.useEffect(() => {
     const model = monaco.editor
@@ -118,15 +121,17 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
   };
   const onCommitClick = () => {
     const commitSocket = new WebSocket(WorkspaceStore.wsUrl);
-    const modifiedSrc = [
-      { src_path: EditorContentsStore.contents[0].path, content: text },
-    ];
-    const nonModifiedSrc = [];
-    WorkspaceStore.sourceCodeList.map((s) => {
-      if (s.srcPath != EditorContentsStore.contents[0].path) {
-        nonModifiedSrc.push({ src_path: s.srcPath, content: s.content });
-      }
+    const modifiedSrc = [...EditorContentsStore.contents].map((item) => {
+      return {
+        ...item,
+        src_path: item.path,
+      };
     });
+
+    const nonModifiedSrc = WorkspaceStore.sourceCodeList.filter(
+      (s) => !modifiedSrc.find((c) => c.src_path === s.srcPath)
+    );
+
     const request = setRequest(setService("commit", "InsertService"), {
       proj_id: WorkspaceStore.reference.projId,
       ref_id: WorkspaceStore.reference.refId,
