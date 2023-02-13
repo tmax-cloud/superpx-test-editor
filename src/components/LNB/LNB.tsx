@@ -32,8 +32,7 @@ import { SourceCodeTree } from './SourceCodeTree';
 // import Uploady from "@rpldy/uploady";
 // import UploadDropZone from "@rpldy/upload-drop-zone";
 
-
-type Lnb = "explorer" | "search" | "scm" | "debug" | "extension";
+type Lnb = 'explorer' | 'search' | 'scm' | 'debug' | 'extension';
 
 export const LNB: React.FC<LNBProps> = ({}) => {
   const [projectList, setProjectList] = React.useState([]);
@@ -55,6 +54,12 @@ export const LNB: React.FC<LNBProps> = ({}) => {
     debug: false,
     extension: false,
   });
+  React.useEffect(() => {
+    Object.keys(lnbOpenState).every((key) => lnbOpenState[key] === false)
+      ? EditorContentsStore.updateIsFull(true)
+      : EditorContentsStore.isFull && EditorContentsStore.updateIsFull(false);
+  }, [lnbOpenState]);
+
   const lnbIcon = {
     explorer: <LibraryBooksIcon />,
     search: <SearchIcon />,
@@ -166,14 +171,13 @@ export const LNB: React.FC<LNBProps> = ({}) => {
           flexShrink: 0,
           [`& .MuiDrawer-paper`]: {
             width: 65,
-            boxSizing: "border-box",
-            background: "#F5F7F9",
+            boxSizing: 'border-box',
+            background: '#F5F7F9',
             marginTop: 10,
           },
         }}
       >
-        {(["explorer", "search", "scm", "debug", "extension"] as const).map(
-
+        {(['explorer', 'search', 'scm', 'debug', 'extension'] as const).map(
           (lnb) => (
             <Button
               id={`lnb-${lnb}`}
@@ -193,7 +197,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                   flexShrink: 0,
                   [`& .MuiDrawer-paper`]: {
                     width: 300,
-                    boxSizing: "border-box",
+                    boxSizing: 'border-box',
                   },
                   zIndex: 0,
                 }}
