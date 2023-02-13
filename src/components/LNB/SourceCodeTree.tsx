@@ -6,17 +6,16 @@ import EditorContentsStore from '../../stores/editorContentsStore';
 
 export const SourceCodeTree = () => {
   const onSourceCodeLinkClick = ({ nodeData }) => {
-    const { name, isOpen } = nodeData;
-    const content = getContent(name);
+    const { name, isOpen, content } = nodeData;
+    const code = getContent(content);
     if (!isOpen) {
-      EditorContentsStore.updateContentAction(name, content);
+      EditorContentsStore.updateContentAction(name, code);
     }
   };
-  const getContent = (name) => {
+  const getContent = (path) => {
     let content = '';
     WorkspaceStore.sourceCodeList.forEach((src) => {
-      const srcPathArray = src.srcPath.split('/');
-      if (srcPathArray.includes(name)) {
+      if (path === src.srcPath) {
         content = src.content;
       }
     });
@@ -32,18 +31,25 @@ export const SourceCodeTree = () => {
     sourceCodeList.forEach((src) => {
       let node = resultJson;
       const pathArray = src.srcPath.split('/');
+      const pathString = src.srcPath;
       let nodeArray = pathArray.filter((nodePath, index) => {
         return index > 0;
       });
-      nodeArray.forEach((nodePath) => {
+      nodeArray.forEach((nodePath, index) => {
         if (!node.children) {
           node.children = [];
         }
-        let nameArray = node.children.map((src) => src.name);
+        let nameArray = node.children.map((children) => children.name);
         if (!nameArray.includes(nodePath)) {
-          node.children.push({
-            name: nodePath,
-          });
+          if (index === nodeArray.length - 1)
+            node.children.push({
+              name: nodePath,
+              content: pathString,
+            });
+          else
+            node.children.push({
+              name: nodePath,
+            });
         }
         node = node.children.filter(
           (pathList) => pathList.name === nodePath,
