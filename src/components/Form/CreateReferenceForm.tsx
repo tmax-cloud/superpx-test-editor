@@ -1,14 +1,14 @@
-import * as React from "react";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import AddIcon from "@mui/icons-material/Add";
-import { setRequest, setService } from "../../utils/service-utils";
-import { setAlert } from "../../utils/alert-utiles";
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import AddIcon from '@mui/icons-material/Add';
+import { setRequest } from '../../utils/service-utils';
+import { setAlert } from '../../utils/alert-utiles';
 
 export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
   wsUrl,
@@ -27,7 +27,7 @@ export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
 
   const onClickCreate = () => {
     const referenceSocket = new WebSocket(wsUrl);
-    const request = setRequest(setService("reference","InsertService"), {
+    const request = setRequest('reference', 'InsertService', {
       reference: {
         proj_name: selectedProject.name,
         name: referenceName,
@@ -47,14 +47,14 @@ export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
         type: wsdata.type,
       });
       setAlert(
-        "Add Reference",
+        'Add Reference',
         `Add Reference to ${selectedProject.name}(${selectedProject.projId}).`,
-        "success"
+        'success',
       );
     };
     setOpen(false);
   };
-  const [referenceName, setReferenceName] = React.useState("");
+  const [referenceName, setReferenceName] = React.useState('');
   const [referenceType, setReferenceType] = React.useState(0);
   const onReferenceNameChange = (event) => {
     setReferenceName(event.target.value);

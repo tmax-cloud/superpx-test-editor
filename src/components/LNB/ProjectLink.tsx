@@ -1,9 +1,9 @@
-import * as React from "react";
-import { setRequest, setService } from "../../utils/service-utils";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { setAlert } from "../../utils/alert-utiles";
-import WorkspaceStore from "../../stores/workspaceStore";
-import { Button, IconButton } from "@mui/material";
+import * as React from 'react';
+import { setRequest } from '../../utils/service-utils';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { setAlert } from '../../utils/alert-utiles';
+import WorkspaceStore from '../../stores/workspaceStore';
+import { Button, IconButton } from '@mui/material';
 
 export const ProjectLink: React.FC<ProjectLinkProps> = ({
   wsUrl,
@@ -16,7 +16,7 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
   const onProjectLinkClick = async () => {
     setSelectedProject(projectData);
     const projectSocket = new WebSocket(wsUrl);
-    const request = setRequest(setService("project", "DetailService"), {
+    const request = setRequest('project', 'DetailService', {
       proj_name: projectData.name,
     });
     projectSocket.onopen = (event) => {
@@ -26,18 +26,15 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
     projectSocket.onmessage = (event) => {
       const wsdata = JSON.parse(event.data).data;
       setAlert(
-        "Get Reference",
+        'Get Reference',
         `Get Reference List from Project ${wsdata.name}.`,
-        "success"
+        'success',
       );
     };
     const referenceSocket = new WebSocket(wsUrl);
-    const referenceRequest = setRequest(
-      setService("reference", "ListService"),
-      {
-        proj_name: projectData.name,
-      }
-    );
+    const referenceRequest = setRequest('reference', 'ListService', {
+      proj_name: projectData.name,
+    });
     referenceSocket.onopen = (event) => {
       referenceSocket.send(JSON.stringify(referenceRequest));
     };
@@ -46,16 +43,13 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
       const referenceList = JSON.parse(event.data).data;
       setReferenceList(referenceList);
       const mainReference =
-        referenceList.filter((r) => r.name == "main")[0] || referenceList[0];
+        referenceList.filter((r) => r.name === 'main')[0] || referenceList[0];
       WorkspaceStore.updateReferenceAction(mainReference);
       const commitSocket = new WebSocket(wsUrl);
-      const commitSocketRequest = setRequest(
-        setService("commit", "ListService"),
-        {
-          proj_name: projectData.name,
-          ref_name: mainReference.name,
-        }
-      );
+      const commitSocketRequest = setRequest('commit', 'ListService', {
+        proj_name: projectData.name,
+        ref_name: mainReference.name,
+      });
       commitSocket.onopen = (event) => {
         commitSocket.send(JSON.stringify(commitSocketRequest));
       };
@@ -69,19 +63,16 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
           : null;
         if (commitId) {
           const commitSocket = new WebSocket(wsUrl);
-          const commitSocketRequest = setRequest(
-            setService("commit", "DetailService"),
-            {
-              commit_id: commitId,
-            }
-          );
+          const commitSocketRequest = setRequest('commit', 'DetailService', {
+            commit_id: commitId,
+          });
           commitSocket.onopen = (event) => {
             commitSocket.send(JSON.stringify(commitSocketRequest));
           };
 
           commitSocket.onmessage = (event) => {
             WorkspaceStore.updateSourceCodeListAction(
-              JSON.parse(event.data).data
+              JSON.parse(event.data).data,
             );
           };
         } else {
@@ -93,7 +84,7 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
   };
   const onDeleteClick = () => {
     const projectSocket = new WebSocket(wsUrl);
-    const request = setRequest(setService("project", "DeleteService"), {
+    const request = setRequest('project', 'DeleteService', {
       proj_name: projectData.name,
     });
     projectSocket.onopen = (event) => {
@@ -102,9 +93,9 @@ export const ProjectLink: React.FC<ProjectLinkProps> = ({
 
     projectSocket.onmessage = (event) => {
       setAlert(
-        "Delete Reference",
+        'Delete Reference',
         `Delete Project List from ${projectData.name}.`,
-        "success"
+        'success',
       );
     };
     deleteProjectList(projectData.projId);

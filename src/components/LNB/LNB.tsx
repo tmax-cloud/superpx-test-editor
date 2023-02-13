@@ -1,9 +1,8 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import { setRequest, setService } from '../../utils/service-utils';
+import { setRequest } from '../../utils/service-utils';
 import { ProjectLink } from './ProjectLink';
 import { ReferenceLink } from './ReferenceLink';
-import { SourceCodeLink } from './SourceCodeLink';
 import { CommitLink } from './CommitLink';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -21,7 +20,6 @@ import { setAlert } from '../../utils/alert-utiles';
 import EditorContentsStore from '../../stores/editorContentsStore';
 import WorkspaceStore from '../../stores/workspaceStore';
 import { useObserver } from 'mobx-react';
-import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import SearchIcon from '@mui/icons-material/Search';
@@ -29,13 +27,16 @@ import CommitIcon from '@mui/icons-material/Commit';
 import BugReportIcon from '@mui/icons-material/BugReport';
 import ExtensionIcon from '@mui/icons-material/Extension';
 import { SourceCodeTree } from './SourceCodeTree';
+<<<<<<< HEAD
 import { styled } from '@mui/material/styles';
 // import Uploady from "@rpldy/uploady";
 // import UploadDropZone from "@rpldy/upload-drop-zone";
+=======
+>>>>>>> e52fe1af3e45311498869a632688559f058e175b
 
 type Lnb = 'explorer' | 'search' | 'scm' | 'debug' | 'extension';
 
-export const LNB: React.FC<LNBProps> = ({}) => {
+export const LNB: React.FC = () => {
   const [projectList, setProjectList] = React.useState([]);
   const [referenceList, setReferenceList] = React.useState([]);
   const [commitList, setCommitList] = React.useState([]);
@@ -78,8 +79,6 @@ export const LNB: React.FC<LNBProps> = ({}) => {
       ) {
         return;
       }
-      _.merge;
-
       setLnbOpenState(
         _.merge(
           {
@@ -96,7 +95,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
 
   React.useEffect(() => {
     const projectSocket = new WebSocket(WorkspaceStore.wsUrl);
-    const request = setRequest(setService('project', 'ListService'), {});
+    const request = setRequest('project', 'ListService', {});
     projectSocket.onopen = (event) => {
       projectSocket.send(JSON.stringify(request));
     };
@@ -127,7 +126,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
     setReferenceList(tempReferenceList);
   };
   const deleteProjectList = (projId) => {
-    setProjectList(projectList.filter((p) => p.projId != projId));
+    setProjectList(projectList.filter((p) => p.projId !== projId));
   };
 
   const [newFilePath, setNewFilePath] = React.useState('');
@@ -157,7 +156,6 @@ export const LNB: React.FC<LNBProps> = ({}) => {
           file.webkitRelativePath,
           fileReader.result as string,
         );
-        console.log(fileReader.result);
       };
       fileReader.readAsText(file);
     }
@@ -326,28 +324,6 @@ export const LNB: React.FC<LNBProps> = ({}) => {
                       multiple={true}
                       accept=".java"
                     />
-                    {/* <Uploady>
-                      <UploadDropZone
-                        onDragOverClassName="drag-over"
-                        grouped
-                        maxGroupSize={3}
-                        dropHandler={() => {
-                          return new Promise((resolveInner) => {
-                            setTimeout(resolveInner, 1000);
-                          });
-                        }}
-                      >
-                        <Box
-                          style={{
-                            height: 150,
-                            width: 180,
-                            border: "2px solid",
-                          }}
-                        >
-                          <span>Drag&Drop File(s) Here</span>
-                        </Box>
-                      </UploadDropZone>
-                    </Uploady> */}
                   </div>
                 )}
                 {lnb === 'explorer' && (
@@ -399,6 +375,7 @@ export const LNB: React.FC<LNBProps> = ({}) => {
             </>
           ),
         )}
+<<<<<<< HEAD
 
         {/* <div>
           <Divider />
@@ -545,8 +522,9 @@ export const LNB: React.FC<LNBProps> = ({}) => {
           </Accordion>
         </div> */}
       </MyDrawer>
+=======
+      </Drawer>
+>>>>>>> e52fe1af3e45311498869a632688559f058e175b
     </div>
   );
 };
-
-type LNBProps = {};

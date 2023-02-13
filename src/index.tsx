@@ -1,11 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Editors } from './components/Editor/Editors';
 import './style.css';
 import { setupLanguage } from './java/setup';
-import { languageID } from './java/config';
 import { GNB } from './components/GNB/GNB';
-import { LNB } from './components/LNB/LNB';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { BaseAlert } from './components/Alert/Alert';
 import Main from './components/Main';
