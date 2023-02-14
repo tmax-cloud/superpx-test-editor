@@ -30,11 +30,8 @@ export const SourceCodeTree = () => {
 
     sourceCodeList.forEach((src) => {
       let node = resultJson;
-      const pathArray = src.srcPath.split('/');
+      const nodeArray = src.srcPath.split('/');
       const pathString = src.srcPath;
-      let nodeArray = pathArray.filter((nodePath, index) => {
-        return index > 0;
-      });
       nodeArray.forEach((nodePath, index) => {
         if (!node.children) {
           node.children = [];
