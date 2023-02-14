@@ -1,13 +1,15 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import './style.css';
+import './404.scss';
 import { setupLanguage } from './java/setup';
 import { GNB } from './components/GNB/GNB';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { BaseAlert } from './components/Alert/Alert';
 import Main from './components/Main';
-
+import { NotFound } from './components/ErrorPage/404';
 export const defaultWsUrl = 'ws://172.22.11.2:38080';
+
 setupLanguage();
 const App = () => {
   return (
@@ -22,10 +24,6 @@ const App = () => {
       </div>
     </>
   );
-};
-
-const NotFound = () => {
-  return <div>404 Error</div>;
 };
 
 ReactDOM.render(
