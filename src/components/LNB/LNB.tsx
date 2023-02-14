@@ -19,7 +19,6 @@ import TextField from '@mui/material/TextField';
 import { setAlert } from '../../utils/alert-utiles';
 import EditorContentsStore from '../../stores/editorContentsStore';
 import WorkspaceStore from '../../stores/workspaceStore';
-import { useObserver } from 'mobx-react';
 import Drawer from '@mui/material/Drawer';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import SearchIcon from '@mui/icons-material/Search';
@@ -359,9 +358,7 @@ export const LNB: React.FC = () => {
                             </Button>
                           </>
                         )}
-                        {useObserver(() => (
-                          <SourceCodeTree />
-                        ))}
+                        <SourceCodeTree />
                       </Accordion>
                     </div>
                   </div>

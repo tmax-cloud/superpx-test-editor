@@ -3,6 +3,7 @@ import FolderTree from 'react-folder-tree';
 import 'react-folder-tree/dist/style.css';
 import WorkspaceStore from '../../stores/workspaceStore';
 import EditorContentsStore from '../../stores/editorContentsStore';
+import { useObserver } from 'mobx-react';
 
 export const SourceCodeTree = () => {
   const onSourceCodeLinkClick = ({ nodeData }) => {
@@ -58,12 +59,12 @@ export const SourceCodeTree = () => {
 
   const Treedata = pathToJson(WorkspaceStore.sourceCodeList);
 
-  return (
+  return useObserver(() => (
     <FolderTree
       data={Treedata}
       showCheckbox={false}
       indentPixels={5}
       onNameClick={onSourceCodeLinkClick}
     />
-  );
+  ));
 };
