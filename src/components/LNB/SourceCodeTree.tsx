@@ -6,8 +6,8 @@ import EditorContentsStore from '../../stores/editorContentsStore';
 
 export const SourceCodeTree = () => {
   const onSourceCodeLinkClick = ({ nodeData }) => {
-    const { name, isOpen, content } = nodeData;
-    const code = getContent(content);
+    const { name, isOpen, srcPath } = nodeData;
+    const code = getContent(srcPath);
     if (!isOpen) {
       EditorContentsStore.updateContentAction(name, code);
     }
@@ -39,12 +39,12 @@ export const SourceCodeTree = () => {
         if (!node.children) {
           node.children = [];
         }
-        let nameArray = node.children.map((children) => children.name);
+        let nameArray = node.children.map((child) => child.name);
         if (!nameArray.includes(nodePath)) {
           if (index === nodeArray.length - 1)
             node.children.push({
               name: nodePath,
-              content: pathString,
+              srcPath: pathString,
             });
           else
             node.children.push({
