@@ -2,6 +2,7 @@ import * as React from 'react';
 import { setRequest } from '../../utils/service-utils';
 import WorkspaceStore from '../../stores/workspaceStore';
 import { Button } from '@mui/material';
+import EditorContentsStore from '../../stores/editorContentsStore';
 
 export const CommitLink: React.FC<CommitLinkProps> = ({
   wsUrl,
@@ -14,6 +15,7 @@ export const CommitLink: React.FC<CommitLinkProps> = ({
     });
     commitSocket.onopen = (event) => {
       commitSocket.send(JSON.stringify(commitSocketRequest));
+      EditorContentsStore.initContentAction();
     };
 
     commitSocket.onmessage = (event) => {

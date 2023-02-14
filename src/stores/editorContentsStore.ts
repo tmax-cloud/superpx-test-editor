@@ -44,6 +44,11 @@ const EditorContentsStore = observable({
     });
   },
 
+  initContentAction() {
+    this.contents = [{ path: 'testcode.java', content: testCode }];
+    this.veiwIndex = 0;
+  },
+
   updateVeiwIndex(index: number) {
     this.veiwIndex = index;
   },
