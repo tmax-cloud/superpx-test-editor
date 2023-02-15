@@ -38,7 +38,8 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
   }, [assignRef]);
   React.useEffect(() => {
     const model = monaco.editor
-      .getEditors()[EditorContentsStore.veiwIndex]?.getModel();
+      .getEditors()
+      [EditorContentsStore.veiwIndex]?.getModel();
     model &&
       model.setValue(
         EditorContentsStore.contents[EditorContentsStore.veiwIndex]?.content,

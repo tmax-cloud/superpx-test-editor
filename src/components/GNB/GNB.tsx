@@ -4,6 +4,14 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import HomeIcon from '@mui/icons-material/Home';
 
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
+
 export const GNB = () => {
   const menus = [
     'file',
@@ -27,28 +35,42 @@ export const GNB = () => {
   };
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [openMenu, setOpenMenu] = React.useState({});
+  const [actionState, setActionState] = React.useState('');
+
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setOpenMenu({ [event.currentTarget.value]: true });
     setAnchorEl(event.currentTarget);
   };
   const getActions = (action) => {
+    setActionState(action);
     switch (action) {
       case 'Import Directory':
-        return handleImportDiretory;
+        handleImportDiretory();
+        break;
       case 'Import File':
-        return handleImportFile;
+        handleImportFile();
+        break;
       default:
-        return handleClose;
+        handleClose();
+        break;
     }
   };
+  const [openDialog, setOpenDialog] = React.useState(false);
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
   const handleImportDiretory = () => {
-    alert('Import Directory');
+    setOpenDialog(true);
     setOpenMenu({});
     setAnchorEl(null);
   };
+
   const handleImportFile = () => {
-    alert('Import File');
+    setOpenDialog(true);
     setOpenMenu({});
     setAnchorEl(null);
   };
@@ -90,7 +112,7 @@ export const GNB = () => {
                   return (
                     <MenuItem
                       key={`menuItem-${action}`}
-                      onClick={getActions(action)}
+                      onClick={() => getActions(action)}
                     >
                       {action}
                     </MenuItem>
@@ -101,6 +123,25 @@ export const GNB = () => {
           );
         })}
       </div>
+      <Dialog
+        fullScreen={fullScreen}
+        open={openDialog}
+        onClose={handleCloseDialog}
+        aria-labelledby="responsive-dialog-title"
+      >
+        <DialogTitle id="responsive-dialog-title">{actionState}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>{actionState}</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleCloseDialog}>
+            Cancle
+          </Button>
+          <Button onClick={handleCloseDialog} autoFocus>
+            Import
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
