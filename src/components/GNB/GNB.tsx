@@ -11,6 +11,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
+import DialogGNB from './DialogGNB';
 
 export const GNB = () => {
   const menus = [
@@ -123,25 +124,12 @@ export const GNB = () => {
           );
         })}
       </div>
-      <Dialog
+      <DialogGNB
         fullScreen={fullScreen}
-        open={openDialog}
-        onClose={handleCloseDialog}
-        aria-labelledby="responsive-dialog-title"
-      >
-        <DialogTitle id="responsive-dialog-title">{actionState}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>{actionState}</DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleCloseDialog}>
-            Cancle
-          </Button>
-          <Button onClick={handleCloseDialog} autoFocus>
-            Import
-          </Button>
-        </DialogActions>
-      </Dialog>
+        openDialog={openDialog}
+        handleCloseDialog={handleCloseDialog}
+        actionState={actionState}
+      />
     </div>
   );
 };
