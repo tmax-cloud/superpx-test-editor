@@ -2,6 +2,11 @@ import { observable } from 'mobx';
 import { setAlert } from '../utils/alert-utils';
 import { services } from '../utils/service-utils';
 
+type Project = {
+  projId: number;
+  name: string;
+};
+
 type Reference = {
   name: string;
   refId: number;
@@ -15,6 +20,7 @@ const WorkspaceStore = observable({
   // state
   wsUrl: defaultWsUrl,
   superPxWs: {} as WebSocket,
+  projectList: [] as Project[],
   projectId: 0,
   reference: {
     name: '',
@@ -42,6 +48,18 @@ const WorkspaceStore = observable({
   resetWsUrlAction() {
     this.superPxWs.close();
     this.setupWsAction();
+  },
+
+  updateProjectListAction(projectList: Project[]) {
+    this.projectList = projectList;
+  },
+  addProjectAction(project) {
+    this.projectList.push(project);
+  },
+  deleteProjectAction(projId: number) {
+    this.projectList = this.projectList.filter(
+      (p: Project) => p.projId !== projId,
+    );
   },
 
   updateProjectIdAction(projectId: number) {

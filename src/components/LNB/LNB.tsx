@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import { setRequest } from '../../utils/service-utils';
 import { ProjectLink } from './ProjectLink';
 import { ReferenceLink } from './ReferenceLink';
 import { CommitLink } from './CommitLink';
@@ -16,7 +15,6 @@ import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import TextField from '@mui/material/TextField';
-import { setAlert } from '../../utils/alert-utils';
 import EditorContentsStore from '../../stores/editorContentsStore';
 import WorkspaceStore from '../../stores/workspaceStore';
 import Drawer from '@mui/material/Drawer';
@@ -28,11 +26,11 @@ import ExtensionIcon from '@mui/icons-material/Extension';
 import { SourceCodeTree } from './SourceCodeTree';
 import { styled } from '@mui/material/styles';
 import { sendMessage } from '../../utils/service-utils';
+import { Observer } from 'mobx-react';
 
 type Lnb = 'explorer' | 'search' | 'scm' | 'debug' | 'extension';
 
 export const LNB: React.FC = () => {
-  const [projectList, setProjectList] = React.useState([]);
   const [referenceList, setReferenceList] = React.useState([]);
   const [commitList, setCommitList] = React.useState([]);
   const [selectedProject, setSelectedProject] = React.useState({
@@ -90,40 +88,17 @@ export const LNB: React.FC = () => {
 
   React.useEffect(() => {
     sendMessage('project', 'ListService', {});
-
-    const projectSocket = new WebSocket(WorkspaceStore.wsUrl);
-    const request = setRequest('project', 'ListService', {});
-    projectSocket.onopen = (event) => {
-      projectSocket.send(JSON.stringify(request));
-    };
-
-    projectSocket.onmessage = (event) => {
-      const wsdata = JSON.parse(event.data).data;
-      const tempProjectList = [];
-      wsdata.forEach((d) => {
-        tempProjectList.push(d);
-      });
-
-      setProjectList(tempProjectList);
-      setAlert(
-        'Get Project',
-        `Get Project List from ${WorkspaceStore.wsUrl}.`,
-        'success',
-      );
-    };
   }, []);
-  const updateProjectList = (project) => {
-    const tempProjectList = projectList;
-    tempProjectList.push(project);
-    setProjectList(tempProjectList);
-  };
   const updateReferenceList = (reference) => {
     const tempReferenceList = referenceList;
     tempReferenceList.push(reference);
     setReferenceList(tempReferenceList);
   };
+  const addProjectList = (project) => {
+    WorkspaceStore.addProjectAction(project);
+  };
   const deleteProjectList = (projId) => {
-    setProjectList(projectList.filter((p) => p.projId !== projId));
+    WorkspaceStore.deleteProjectAction(projId);
   };
 
   const [newFilePath, setNewFilePath] = React.useState('');
@@ -229,22 +204,28 @@ export const LNB: React.FC = () => {
                             wsUrl={WorkspaceStore.wsUrl}
                             open={openCreateProjectForm}
                             setOpen={setOpenCreateProjectForm}
-                            updateProjectList={updateProjectList}
+                            updateProjectList={addProjectList}
                           />
                         </AccordionDetails>
-                        {projectList.map((projectData) => {
-                          return (
-                            <ProjectLink
-                              key={`project-${projectData.projId}`}
-                              wsUrl={WorkspaceStore.wsUrl}
-                              projectData={projectData}
-                              setReferenceList={setReferenceList}
-                              deleteProjectList={deleteProjectList}
-                              setSelectedProject={setSelectedProject}
-                              setCommitList={setCommitList}
-                            />
-                          );
-                        })}
+                        <Observer>
+                          {() => (
+                            <>
+                              {WorkspaceStore.projectList.map((project) => {
+                                return (
+                                  <ProjectLink
+                                    key={`project-${project.projId}`}
+                                    wsUrl={WorkspaceStore.wsUrl}
+                                    projectData={project}
+                                    setReferenceList={setReferenceList}
+                                    deleteProjectList={deleteProjectList}
+                                    setSelectedProject={setSelectedProject}
+                                    setCommitList={setCommitList}
+                                  />
+                                );
+                              })}
+                            </>
+                          )}
+                        </Observer>
                       </Accordion>
                     </div>
                     <Divider />

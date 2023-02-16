@@ -55,8 +55,14 @@ const projectInsertService = (data) => {
   );
 };
 const projectListService = (data) => {
-  setAlert('Project List Service Call', `Project List Service Call`, 'success');
+  WorkspaceStore.updateProjectListAction(data);
+  setAlert(
+    'Project List Service Call',
+    `Get Project List from ${WorkspaceStore.wsUrl}.`,
+    'success',
+  );
 };
+
 const projectDetailService = (data) => {
   setAlert(
     'Project Detail Service Call',
