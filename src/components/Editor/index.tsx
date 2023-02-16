@@ -8,6 +8,7 @@ import { useObserver } from 'mobx-react';
 import EditorContentsStore from '../../stores/editorContentsStore';
 import WorkspaceStore from '../../stores/workspaceStore';
 import { setAlert } from '../../utils/alert-utils';
+import { wsUrl } from '../../utils/constants';
 
 interface IEditorProps {
   language: string;
@@ -53,7 +54,7 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
     setCommitMessage(event.target.value);
   };
   const onCommitClick = () => {
-    const commitSocket = new WebSocket(WorkspaceStore.wsUrl);
+    const commitSocket = new WebSocket(wsUrl);
     const modifiedSrc = [...EditorContentsStore.contents].map((item) => {
       return {
         ...item,
