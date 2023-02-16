@@ -67,8 +67,8 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
     );
 
     const request = setRequest('commit', 'InsertService', {
-      proj_id: WorkspaceStore.reference.projId,
-      ref_id: WorkspaceStore.reference.refId,
+      proj_id: WorkspaceStore.currentReference.projId,
+      ref_id: WorkspaceStore.currentReference.refId,
       commit: { message: commitMessage, is_commit: true },
       modified_src: modifiedSrc,
       non_modified_src: nonModifiedSrc,
