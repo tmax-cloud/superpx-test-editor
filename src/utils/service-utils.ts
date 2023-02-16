@@ -1,7 +1,6 @@
 import WorkspaceStore from '../stores/workspaceStore';
 import { setAlert } from './alert-utils';
-
-const servicePrefix = 'super-px-0.1.4/com.tmax.scm.service';
+import { wsUrl, servicePrefix } from '../utils/constants';
 
 type ServiceCategory = 'project' | 'reference' | 'commit' | 'merge';
 
@@ -58,7 +57,7 @@ const projectListService = (data) => {
   WorkspaceStore.updateProjectListAction(data);
   setAlert(
     'Project List Service Call',
-    `Get Project List from ${WorkspaceStore.wsUrl}.`,
+    `Get Project List from ${wsUrl}.`,
     'success',
   );
 };

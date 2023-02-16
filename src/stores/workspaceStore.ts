@@ -1,6 +1,7 @@
 import { observable } from 'mobx';
 import { setAlert } from '../utils/alert-utils';
 import { services } from '../utils/service-utils';
+import { wsUrl } from '../utils/constants';
 
 type Project = {
   projId: number;
@@ -14,11 +15,8 @@ type Reference = {
   type: number;
 };
 
-const defaultWsUrl = 'ws://172.22.11.2:38080';
-
 const WorkspaceStore = observable({
   // state
-  wsUrl: defaultWsUrl,
   superPxWs: {} as WebSocket,
   projectList: [] as Project[],
   projectId: 0,
@@ -33,9 +31,9 @@ const WorkspaceStore = observable({
 
   // action
   setupWsAction() {
-    this.superPxWs = new WebSocket(this.wsUrl);
+    this.superPxWs = new WebSocket(wsUrl);
     this.superPxWs.onopen = (event) => {
-      setAlert('Open WebSocket', `Open WebSocket ${this.wsUrl}`, 'success');
+      setAlert('Open WebSocket', `Open WebSocket ${wsUrl}`, 'success');
     };
     this.superPxWs.onmessage = (event) => {
       const { data, path, message } = JSON.parse(event.data);

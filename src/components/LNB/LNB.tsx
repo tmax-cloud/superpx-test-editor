@@ -27,6 +27,7 @@ import { SourceCodeTree } from './SourceCodeTree';
 import { styled } from '@mui/material/styles';
 import { sendMessage } from '../../utils/service-utils';
 import { Observer } from 'mobx-react';
+import { wsUrl } from '../../utils/constants';
 
 type Lnb = 'explorer' | 'search' | 'scm' | 'debug' | 'extension';
 
@@ -197,11 +198,11 @@ export const LNB: React.FC = () => {
                           aria-controls="panel1a-content"
                           id="panel1a-header"
                         >
-                          <Typography>{WorkspaceStore.wsUrl}</Typography>
+                          <Typography>{wsUrl}</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                           <CreateProjectForm
-                            wsUrl={WorkspaceStore.wsUrl}
+                            wsUrl={wsUrl}
                             open={openCreateProjectForm}
                             setOpen={setOpenCreateProjectForm}
                             updateProjectList={addProjectList}
@@ -214,7 +215,7 @@ export const LNB: React.FC = () => {
                                 return (
                                   <ProjectLink
                                     key={`project-${project.projId}`}
-                                    wsUrl={WorkspaceStore.wsUrl}
+                                    wsUrl={wsUrl}
                                     projectData={project}
                                     setReferenceList={setReferenceList}
                                     deleteProjectList={deleteProjectList}
@@ -245,7 +246,7 @@ export const LNB: React.FC = () => {
                         </AccordionSummary>
                         <AccordionDetails>
                           <CreateReferenceForm
-                            wsUrl={WorkspaceStore.wsUrl}
+                            wsUrl={wsUrl}
                             open={openCreateReferenceForm}
                             selectedProject={selectedProject}
                             setOpen={setOpenCreateReferenceForm}
@@ -256,7 +257,7 @@ export const LNB: React.FC = () => {
                           return (
                             <ReferenceLink
                               key={`project-${referenceData.refId}`}
-                              wsUrl={WorkspaceStore.wsUrl}
+                              wsUrl={wsUrl}
                               referenceData={referenceData}
                               setCommitList={setCommitList}
                             />
@@ -283,7 +284,7 @@ export const LNB: React.FC = () => {
                           return (
                             <CommitLink
                               key={`commit-${commitData.commitId}`}
-                              wsUrl={WorkspaceStore.wsUrl}
+                              wsUrl={wsUrl}
                               commitData={commitData}
                             />
                           );
