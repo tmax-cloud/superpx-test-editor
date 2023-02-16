@@ -2,32 +2,18 @@ import { observable } from 'mobx';
 import { setAlert } from '../utils/alert-utils';
 import { services } from '../utils/service-utils';
 import { wsUrl } from '../utils/constants';
-
-type Project = {
-  projId: number;
-  name: string;
-};
-
-type Reference = {
-  name: string;
-  refId: number;
-  projId: number;
-  type: number;
-};
+import { Project, Reference, Commit, SourceCode } from '../utils/types';
 
 const WorkspaceStore = observable({
   // state
   superPxWs: {} as WebSocket,
   projectList: [] as Project[],
   projectId: 0,
-  reference: {
-    name: '',
-    refId: 0,
-    projId: 0,
-    type: 0,
-  } as Reference,
+  referenceList: [] as Reference[],
+  reference: {} as Reference,
+  commitList: [] as Commit[],
   commitId: 0,
-  sourceCodeList: [],
+  sourceCodeList: [] as SourceCode[],
 
   // action
   setupWsAction() {
