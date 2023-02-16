@@ -37,7 +37,7 @@ const WorkspaceStore = observable({
   updateProjectListAction(projectList: Project[]) {
     this.projectList = projectList;
   },
-  addProjectAction(project) {
+  addProjectAction(project: Project) {
     this.projectList.push(project);
   },
   deleteProjectAction(projId: number) {
@@ -50,7 +50,7 @@ const WorkspaceStore = observable({
     this.projectId = projectId;
   },
 
-  updateReferenceAction(reference) {
+  updateReferenceAction(reference: Reference) {
     this.reference = reference;
   },
 
@@ -58,7 +58,7 @@ const WorkspaceStore = observable({
     this.commitId = commitId;
   },
 
-  updateSourceCodeListAction(sourceCodeList: []) {
+  updateSourceCodeListAction(sourceCodeList: SourceCode[]) {
     this.sourceCodeList = sourceCodeList;
   },
 });
