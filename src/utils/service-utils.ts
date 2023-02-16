@@ -101,9 +101,12 @@ const referenceListService = (data) => {
 const referenceDetailService = (data) => {
   setAlert(
     'Reference Detail Service Call',
-    `Reference Detail Service Call`,
+    `Get Commit List from Reference ${data.name}.`,
     'success',
   );
+  sendMessage('commit', 'ListService', {
+    ref_id: data.refId,
+  });
 };
 
 const commitInsertService = (data) => {

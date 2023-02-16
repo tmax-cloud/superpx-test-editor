@@ -33,7 +33,6 @@ type Lnb = 'explorer' | 'search' | 'scm' | 'debug' | 'extension';
 
 export const LNB: React.FC = () => {
   const [referenceList, setReferenceList] = React.useState([]);
-  const [commitList, setCommitList] = React.useState([]);
   const [openCreateProjectForm, setOpenCreateProjectForm] =
     React.useState(false);
   const [openCreateReferenceForm, setOpenCreateReferenceForm] =
@@ -238,18 +237,14 @@ export const LNB: React.FC = () => {
                                 updateReferenceList={updateReferenceList}
                               />
                             </AccordionDetails>
-                            {WorkspaceStore.referenceList.map(
-                              (referenceData) => {
-                                return (
-                                  <ReferenceLink
-                                    key={`project-${referenceData.refId}`}
-                                    wsUrl={wsUrl}
-                                    referenceData={referenceData}
-                                    setCommitList={setCommitList}
-                                  />
-                                );
-                              },
-                            )}
+                            {WorkspaceStore.referenceList.map((reference) => {
+                              return (
+                                <ReferenceLink
+                                  key={`project-${reference.refId}`}
+                                  reference={reference}
+                                />
+                              );
+                            })}
                           </Accordion>
                         )}
                       </Observer>
