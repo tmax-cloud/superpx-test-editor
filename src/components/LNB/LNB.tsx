@@ -32,7 +32,6 @@ import { wsUrl } from '../../utils/constants';
 type Lnb = 'explorer' | 'search' | 'scm' | 'debug' | 'extension';
 
 export const LNB: React.FC = () => {
-  const [referenceList, setReferenceList] = React.useState([]);
   const [openCreateProjectForm, setOpenCreateProjectForm] =
     React.useState(false);
   const [openCreateReferenceForm, setOpenCreateReferenceForm] =
@@ -85,11 +84,6 @@ export const LNB: React.FC = () => {
   React.useEffect(() => {
     sendMessage('project', 'ListService', {});
   }, []);
-  const updateReferenceList = (reference) => {
-    const tempReferenceList = referenceList;
-    tempReferenceList.push(reference);
-    setReferenceList(tempReferenceList);
-  };
 
   const [newFilePath, setNewFilePath] = React.useState('');
 
@@ -230,11 +224,8 @@ export const LNB: React.FC = () => {
                             </AccordionSummary>
                             <AccordionDetails>
                               <CreateReferenceForm
-                                wsUrl={wsUrl}
                                 open={openCreateReferenceForm}
-                                selectedProject={WorkspaceStore.currentProject}
                                 setOpen={setOpenCreateReferenceForm}
-                                updateReferenceList={updateReferenceList}
                               />
                             </AccordionDetails>
                             {WorkspaceStore.referenceList.map((reference) => {
@@ -266,12 +257,11 @@ export const LNB: React.FC = () => {
                                   : 'Select Project, please'}
                               </Typography>
                             </AccordionSummary>
-                            {WorkspaceStore.commitList.map((commitData) => {
+                            {WorkspaceStore.commitList.map((commit) => {
                               return (
                                 <CommitLink
-                                  key={`commit-${commitData.commitId}`}
-                                  wsUrl={wsUrl}
-                                  commitData={commitData}
+                                  key={`commit-${commit.commitId}`}
+                                  commit={commit}
                                 />
                               );
                             })}

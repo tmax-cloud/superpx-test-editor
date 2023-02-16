@@ -1,26 +1,15 @@
 import * as React from 'react';
-import { setRequest } from '../../utils/service-utils';
-import WorkspaceStore from '../../stores/workspaceStore';
+import { sendMessage } from '../../utils/service-utils';
 import { Button } from '@mui/material';
 import EditorContentsStore from '../../stores/editorContentsStore';
+import { Commit } from '../../utils/types';
 
-export const CommitLink: React.FC<CommitLinkProps> = ({
-  wsUrl,
-  commitData,
-}) => {
+export const CommitLink: React.FC<CommitLinkProps> = ({ commit }) => {
   const onCommitinkClick = async () => {
-    const commitSocket = new WebSocket(wsUrl);
-    const commitSocketRequest = setRequest('commit', 'DetailService', {
-      commit_id: commitData.commitId,
+    sendMessage('commit', 'DetailService', {
+      commit_id: commit.commitId,
     });
-    commitSocket.onopen = (event) => {
-      commitSocket.send(JSON.stringify(commitSocketRequest));
-      EditorContentsStore.initContentAction();
-    };
-
-    commitSocket.onmessage = (event) => {
-      WorkspaceStore.updateSourceCodeListAction(JSON.parse(event.data).data);
-    };
+    EditorContentsStore.initContentAction();
   };
 
   return (
@@ -32,18 +21,12 @@ export const CommitLink: React.FC<CommitLinkProps> = ({
         className="commit-btn"
         onClick={onCommitinkClick}
       >
-        {commitData.message}
+        {commit.message}
       </Button>
     </div>
   );
 };
 
 type CommitLinkProps = {
-  wsUrl: string;
-  commitData?: {
-    commitId: number;
-    message: string;
-    preCommitId: number;
-    isCommit: boolean;
-  };
+  commit: Commit;
 };

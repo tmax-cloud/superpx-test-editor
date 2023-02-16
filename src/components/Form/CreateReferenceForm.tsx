@@ -7,15 +7,12 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import AddIcon from '@mui/icons-material/Add';
-import { setRequest } from '../../utils/service-utils';
-import { setAlert } from '../../utils/alert-utils';
+import { sendMessage } from '../../utils/service-utils';
+import WorkspaceStore from '../../stores/workspaceStore';
 
 export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
-  wsUrl,
   open,
   setOpen,
-  selectedProject,
-  updateReferenceList,
 }) => {
   const handleClickOpen = () => {
     setOpen(true);
@@ -26,32 +23,13 @@ export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
   };
 
   const onClickCreate = () => {
-    const referenceSocket = new WebSocket(wsUrl);
-    const request = setRequest('reference', 'InsertService', {
+    sendMessage('reference', 'InsertService', {
       reference: {
-        proj_name: selectedProject.name,
+        proj_name: WorkspaceStore.currentProject.name,
         name: referenceName,
         type: referenceType,
       },
     });
-    referenceSocket.onopen = (event) => {
-      referenceSocket.send(JSON.stringify(request));
-    };
-
-    referenceSocket.onmessage = (event) => {
-      const wsdata = JSON.parse(event.data).data;
-      updateReferenceList({
-        name: wsdata.name,
-        projId: wsdata.projId,
-        refId: wsdata.refId,
-        type: wsdata.type,
-      });
-      setAlert(
-        'Add Reference',
-        `Add Reference to ${selectedProject.name}(${selectedProject.projId}).`,
-        'success',
-      );
-    };
     setOpen(false);
   };
   const [referenceName, setReferenceName] = React.useState('');
@@ -104,12 +82,6 @@ export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
 };
 
 type CreateReferenceFormProps = {
-  wsUrl: string;
   open: boolean;
   setOpen: Function;
-  selectedProject: {
-    name: string;
-    projId: number;
-  };
-  updateReferenceList: Function;
 };

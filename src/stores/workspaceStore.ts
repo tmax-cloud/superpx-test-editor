@@ -58,7 +58,7 @@ const WorkspaceStore = observable({
   updateReferenceListAction(referenceList: Reference[]) {
     this.referenceList = referenceList;
   },
-  updateReferenceAction(reference: Reference) {
+  updateCurrentReferenceAction(reference: Reference) {
     this.currentReference = reference;
   },
 

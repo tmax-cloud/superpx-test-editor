@@ -6,7 +6,7 @@ import { Reference } from '../../utils/types';
 
 export const ReferenceLink: React.FC<ReferenceLinkProps> = ({ reference }) => {
   const onRefereneLinkClick = async () => {
-    WorkspaceStore.updateReferenceAction(reference);
+    WorkspaceStore.updateCurrentReferenceAction(reference);
     sendMessage('reference', 'DetailService', {
       proj_id: reference.projId,
       ref_id: reference.refId,
