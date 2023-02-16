@@ -16,7 +16,7 @@ import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import TextField from '@mui/material/TextField';
-import { setAlert } from '../../utils/alert-utiles';
+import { setAlert } from '../../utils/alert-utils';
 import EditorContentsStore from '../../stores/editorContentsStore';
 import WorkspaceStore from '../../stores/workspaceStore';
 import Drawer from '@mui/material/Drawer';
@@ -27,6 +27,7 @@ import BugReportIcon from '@mui/icons-material/BugReport';
 import ExtensionIcon from '@mui/icons-material/Extension';
 import { SourceCodeTree } from './SourceCodeTree';
 import { styled } from '@mui/material/styles';
+import { sendMessage } from '../../utils/service-utils';
 
 type Lnb = 'explorer' | 'search' | 'scm' | 'debug' | 'extension';
 
@@ -88,6 +89,8 @@ export const LNB: React.FC = () => {
     };
 
   React.useEffect(() => {
+    sendMessage('project', 'ListService', {});
+
     const projectSocket = new WebSocket(WorkspaceStore.wsUrl);
     const request = setRequest('project', 'ListService', {});
     projectSocket.onopen = (event) => {
