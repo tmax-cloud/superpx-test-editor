@@ -118,7 +118,7 @@ const referenceDetailService = (data) => {
 const commitInsertService = (data) => {
   setAlert(
     'Commit Insert Service Call',
-    `Commit Insert Service Call`,
+    `${data.message}(${data.commitId}) is done`,
     'success',
   );
 };

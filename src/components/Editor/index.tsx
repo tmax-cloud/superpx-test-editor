@@ -3,12 +3,10 @@ import * as monaco from 'monaco-editor';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import TextField from '@mui/material/TextField';
-import { setRequest } from '../../utils/service-utils';
+import { sendMessage } from '../../utils/service-utils';
 import { useObserver } from 'mobx-react';
 import EditorContentsStore from '../../stores/editorContentsStore';
 import WorkspaceStore from '../../stores/workspaceStore';
-import { setAlert } from '../../utils/alert-utils';
-import { wsUrl } from '../../utils/constants';
 
 interface IEditorProps {
   language: string;
@@ -54,7 +52,6 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
     setCommitMessage(event.target.value);
   };
   const onCommitClick = () => {
-    const commitSocket = new WebSocket(wsUrl);
     const modifiedSrc = [...EditorContentsStore.contents].map((item) => {
       return {
         ...item,
@@ -66,25 +63,13 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
       (s) => !modifiedSrc.find((c) => c.src_path === s.srcPath),
     );
 
-    const request = setRequest('commit', 'InsertService', {
+    sendMessage('commit', 'InsertService', {
       proj_id: WorkspaceStore.currentReference.projId,
       ref_id: WorkspaceStore.currentReference.refId,
       commit: { message: commitMessage, is_commit: true },
       modified_src: modifiedSrc,
       non_modified_src: nonModifiedSrc,
     });
-    commitSocket.onopen = (event) => {
-      commitSocket.send(JSON.stringify(request));
-    };
-
-    commitSocket.onmessage = (event) => {
-      const wsdata = JSON.parse(event.data).data;
-      setAlert(
-        'Commit',
-        `${wsdata.message}(${wsdata.commitId}) is done`,
-        'success',
-      );
-    };
   };
 
   return (
