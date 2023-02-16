@@ -7,7 +7,7 @@ import { setRequest } from '../../utils/service-utils';
 import { useObserver } from 'mobx-react';
 import EditorContentsStore from '../../stores/editorContentsStore';
 import WorkspaceStore from '../../stores/workspaceStore';
-import { setAlert } from '../../utils/alert-utiles';
+import { setAlert } from '../../utils/alert-utils';
 
 interface IEditorProps {
   language: string;

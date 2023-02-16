@@ -1,6 +1,6 @@
 import * as monaco from 'monaco-editor';
 import { JavaService } from './../language-service/java/JavaService';
-import { setAlert } from '../utils/alert-utiles';
+import { setAlert } from '../utils/alert-utils';
 import { TerminalNode } from 'antlr4ts/tree';
 import {
   TypeIdentifierContext,

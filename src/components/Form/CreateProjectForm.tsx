@@ -8,7 +8,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import AddIcon from '@mui/icons-material/Add';
 import { setRequest } from '../../utils/service-utils';
-import { setAlert } from '../../utils/alert-utiles';
+import { setAlert } from '../../utils/alert-utils';
 
 export const CreateProjectForm: React.FC<CreateProjectFormProps> = ({
   wsUrl,

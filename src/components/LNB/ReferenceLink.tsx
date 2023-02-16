@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { setRequest } from '../../utils/service-utils';
-import { setAlert } from '../../utils/alert-utiles';
+import { setAlert } from '../../utils/alert-utils';
 import WorkspaceStore from '../../stores/workspaceStore';
 import { Button } from '@mui/material';
 
