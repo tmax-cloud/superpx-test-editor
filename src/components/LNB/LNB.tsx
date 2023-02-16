@@ -95,9 +95,6 @@ export const LNB: React.FC = () => {
     tempReferenceList.push(reference);
     setReferenceList(tempReferenceList);
   };
-  const addProjectList = (project) => {
-    WorkspaceStore.addProjectAction(project);
-  };
   const deleteProjectList = (projId) => {
     WorkspaceStore.deleteProjectAction(projId);
   };
@@ -202,10 +199,8 @@ export const LNB: React.FC = () => {
                         </AccordionSummary>
                         <AccordionDetails>
                           <CreateProjectForm
-                            wsUrl={wsUrl}
                             open={openCreateProjectForm}
                             setOpen={setOpenCreateProjectForm}
-                            updateProjectList={addProjectList}
                           />
                         </AccordionDetails>
                         <Observer>

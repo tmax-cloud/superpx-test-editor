@@ -39,17 +39,22 @@ export const sendMessage = (
   service: string,
   body: object,
 ) => {
-  WorkspaceStore.superPxWs.onopen = function (event) {
-    WorkspaceStore.superPxWs.send(
-      JSON.stringify(createRequest(category, service, body)),
-    );
-  };
+  WorkspaceStore.superPxWs.readyState === 0
+    ? (WorkspaceStore.superPxWs.onopen = (event) => {
+        WorkspaceStore.superPxWs.send(
+          JSON.stringify(createRequest(category, service, body)),
+        );
+      })
+    : WorkspaceStore.superPxWs.send(
+        JSON.stringify(createRequest(category, service, body)),
+      );
 };
 
 const projectInsertService = (data) => {
+  WorkspaceStore.addProjectAction({ name: data.name, projId: data.projId });
   setAlert(
     'Project Insert Service Call',
-    `Project Insert Service Call`,
+    `Add Project to ${wsUrl}.`,
     'success',
   );
 };
