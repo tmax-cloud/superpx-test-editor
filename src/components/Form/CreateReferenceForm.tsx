@@ -26,7 +26,7 @@ export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
     sendMessage('reference', 'InsertService', {
       reference: {
         proj_name: WorkspaceStore.currentProject.name,
-        name: referenceName,
+        ref_name: referenceName,
         type: referenceType,
       },
     });
