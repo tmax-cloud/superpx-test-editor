@@ -25,7 +25,7 @@ export const SourceCodeTree = () => {
 
   const pathToJson = (sourceCodeList) => {
     const resultJson = {
-      name: WorkspaceStore.reference.name,
+      name: WorkspaceStore.currentReference.name,
       children: [],
     };
 

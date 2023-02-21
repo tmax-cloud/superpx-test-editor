@@ -8,8 +8,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { BaseAlert } from './components/Alert/Alert';
 import Main from './components/Main';
 import { NotFound } from './components/ErrorPage/404';
-export const defaultWsUrl = 'ws://172.22.11.2:38080';
+import WorkspaceStore from './stores/workspaceStore';
 
+WorkspaceStore.setupWsAction();
 setupLanguage();
 const App = () => {
   return (

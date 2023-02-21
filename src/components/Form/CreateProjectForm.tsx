@@ -7,14 +7,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import AddIcon from '@mui/icons-material/Add';
-import { setRequest } from '../../utils/service-utils';
-import { setAlert } from '../../utils/alert-utiles';
+import { sendMessage } from '../../utils/service-utils';
 
 export const CreateProjectForm: React.FC<CreateProjectFormProps> = ({
-  wsUrl,
   open,
   setOpen,
-  updateProjectList,
 }) => {
   const handleClickOpen = () => {
     setOpen(true);
@@ -25,20 +22,10 @@ export const CreateProjectForm: React.FC<CreateProjectFormProps> = ({
   };
 
   const onClickCreate = () => {
-    const projectSocket = new WebSocket(wsUrl);
-    const request = setRequest('project', 'InsertService', {
+    sendMessage('project', 'InsertService', {
       project: { name: projectName },
       reference: { name: 'main', type: 0 },
     });
-    projectSocket.onopen = (event) => {
-      projectSocket.send(JSON.stringify(request));
-    };
-
-    projectSocket.onmessage = (event) => {
-      const wsdata = JSON.parse(event.data).data;
-      updateProjectList({ name: wsdata.name, projId: wsdata.projId });
-      setAlert('Add Project', `Add Project to ${wsUrl}.`, 'success');
-    };
     setOpen(false);
   };
   const [projectName, setProjectName] = React.useState('');
@@ -77,8 +64,6 @@ export const CreateProjectForm: React.FC<CreateProjectFormProps> = ({
 };
 
 type CreateProjectFormProps = {
-  wsUrl: string;
   open: boolean;
   setOpen: Function;
-  updateProjectList: Function;
 };

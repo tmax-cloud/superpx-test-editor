@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import { setRequest } from '../../utils/service-utils';
 import { ProjectLink } from './ProjectLink';
 import { ReferenceLink } from './ReferenceLink';
 import { CommitLink } from './CommitLink';
@@ -16,7 +15,6 @@ import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import TextField from '@mui/material/TextField';
-import { setAlert } from '../../utils/alert-utiles';
 import EditorContentsStore from '../../stores/editorContentsStore';
 import WorkspaceStore from '../../stores/workspaceStore';
 import Drawer from '@mui/material/Drawer';
@@ -27,17 +25,13 @@ import BugReportIcon from '@mui/icons-material/BugReport';
 import ExtensionIcon from '@mui/icons-material/Extension';
 import { SourceCodeTree } from './SourceCodeTree';
 import { styled } from '@mui/material/styles';
+import { sendMessage } from '../../utils/service-utils';
+import { Observer } from 'mobx-react';
+import { wsUrl } from '../../utils/constants';
 
 type Lnb = 'explorer' | 'search' | 'scm' | 'debug' | 'extension';
 
 export const LNB: React.FC = () => {
-  const [projectList, setProjectList] = React.useState([]);
-  const [referenceList, setReferenceList] = React.useState([]);
-  const [commitList, setCommitList] = React.useState([]);
-  const [selectedProject, setSelectedProject] = React.useState({
-    name: '',
-    projId: 0,
-  });
   const [openCreateProjectForm, setOpenCreateProjectForm] =
     React.useState(false);
   const [openCreateReferenceForm, setOpenCreateReferenceForm] =
@@ -88,40 +82,8 @@ export const LNB: React.FC = () => {
     };
 
   React.useEffect(() => {
-    const projectSocket = new WebSocket(WorkspaceStore.wsUrl);
-    const request = setRequest('project', 'ListService', {});
-    projectSocket.onopen = (event) => {
-      projectSocket.send(JSON.stringify(request));
-    };
-
-    projectSocket.onmessage = (event) => {
-      const wsdata = JSON.parse(event.data).data;
-      const tempProjectList = [];
-      wsdata.forEach((d) => {
-        tempProjectList.push(d);
-      });
-
-      setProjectList(tempProjectList);
-      setAlert(
-        'Get Project',
-        `Get Project List from ${WorkspaceStore.wsUrl}.`,
-        'success',
-      );
-    };
+    sendMessage('project', 'ListService', {});
   }, []);
-  const updateProjectList = (project) => {
-    const tempProjectList = projectList;
-    tempProjectList.push(project);
-    setProjectList(tempProjectList);
-  };
-  const updateReferenceList = (reference) => {
-    const tempReferenceList = referenceList;
-    tempReferenceList.push(reference);
-    setReferenceList(tempReferenceList);
-  };
-  const deleteProjectList = (projId) => {
-    setProjectList(projectList.filter((p) => p.projId !== projId));
-  };
 
   const [newFilePath, setNewFilePath] = React.useState('');
 
@@ -219,92 +181,93 @@ export const LNB: React.FC = () => {
                           aria-controls="panel1a-content"
                           id="panel1a-header"
                         >
-                          <Typography>{WorkspaceStore.wsUrl}</Typography>
+                          <Typography>{wsUrl}</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                           <CreateProjectForm
-                            wsUrl={WorkspaceStore.wsUrl}
                             open={openCreateProjectForm}
                             setOpen={setOpenCreateProjectForm}
-                            updateProjectList={updateProjectList}
                           />
                         </AccordionDetails>
-                        {projectList.map((projectData) => {
-                          return (
-                            <ProjectLink
-                              key={`project-${projectData.projId}`}
-                              wsUrl={WorkspaceStore.wsUrl}
-                              projectData={projectData}
-                              setReferenceList={setReferenceList}
-                              deleteProjectList={deleteProjectList}
-                              setSelectedProject={setSelectedProject}
-                              setCommitList={setCommitList}
-                            />
-                          );
-                        })}
+                        <Observer>
+                          {() => (
+                            <>
+                              {WorkspaceStore.projectList.map((project) => {
+                                return (
+                                  <ProjectLink
+                                    key={`project-${project.projId}`}
+                                    project={project}
+                                  />
+                                );
+                              })}
+                            </>
+                          )}
+                        </Observer>
                       </Accordion>
                     </div>
                     <Divider />
                     <div>
                       <h3 className="list-title">Reference List</h3>
-                      <Accordion defaultExpanded={true}>
-                        <AccordionSummary
-                          expandIcon={<ExpandMoreIcon />}
-                          aria-controls="panel1a-content"
-                          id="panel1a-header"
-                        >
-                          <Typography>
-                            {selectedProject.name
-                              ? selectedProject.name
-                              : 'Select Project, please'}
-                          </Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <CreateReferenceForm
-                            wsUrl={WorkspaceStore.wsUrl}
-                            open={openCreateReferenceForm}
-                            selectedProject={selectedProject}
-                            setOpen={setOpenCreateReferenceForm}
-                            updateReferenceList={updateReferenceList}
-                          />
-                        </AccordionDetails>
-                        {referenceList.map((referenceData) => {
-                          return (
-                            <ReferenceLink
-                              key={`project-${referenceData.refId}`}
-                              wsUrl={WorkspaceStore.wsUrl}
-                              referenceData={referenceData}
-                              setCommitList={setCommitList}
-                            />
-                          );
-                        })}
-                      </Accordion>
+                      <Observer>
+                        {() => (
+                          <Accordion defaultExpanded={true}>
+                            <AccordionSummary
+                              expandIcon={<ExpandMoreIcon />}
+                              aria-controls="panel1a-content"
+                              id="panel1a-header"
+                            >
+                              <Typography>
+                                {WorkspaceStore.currentProject.name
+                                  ? WorkspaceStore.currentProject.name
+                                  : 'Select Project, please'}
+                              </Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                              <CreateReferenceForm
+                                open={openCreateReferenceForm}
+                                setOpen={setOpenCreateReferenceForm}
+                              />
+                            </AccordionDetails>
+                            {WorkspaceStore.referenceList.map((reference) => {
+                              return (
+                                <ReferenceLink
+                                  key={`project-${reference.refId}`}
+                                  reference={reference}
+                                />
+                              );
+                            })}
+                          </Accordion>
+                        )}
+                      </Observer>
                     </div>
                     <Divider />
                     <div>
                       <h3 className="list-title">Commit List</h3>
-                      <Accordion defaultExpanded={true}>
-                        <AccordionSummary
-                          expandIcon={<ExpandMoreIcon />}
-                          aria-controls="panel1a-content"
-                          id="panel1a-header"
-                        >
-                          <Typography>
-                            {WorkspaceStore.reference.name
-                              ? WorkspaceStore.reference.name
-                              : 'Select Project, please'}
-                          </Typography>
-                        </AccordionSummary>
-                        {commitList.map((commitData) => {
-                          return (
-                            <CommitLink
-                              key={`commit-${commitData.commitId}`}
-                              wsUrl={WorkspaceStore.wsUrl}
-                              commitData={commitData}
-                            />
-                          );
-                        })}
-                      </Accordion>
+                      <Observer>
+                        {() => (
+                          <Accordion defaultExpanded={true}>
+                            <AccordionSummary
+                              expandIcon={<ExpandMoreIcon />}
+                              aria-controls="panel1a-content"
+                              id="panel1a-header"
+                            >
+                              <Typography>
+                                {WorkspaceStore.currentReference.name
+                                  ? WorkspaceStore.currentReference.name
+                                  : 'Select Project, please'}
+                              </Typography>
+                            </AccordionSummary>
+                            {WorkspaceStore.commitList.map((commit) => {
+                              return (
+                                <CommitLink
+                                  key={`commit-${commit.commitId}`}
+                                  commit={commit}
+                                />
+                              );
+                            })}
+                          </Accordion>
+                        )}
+                      </Observer>
                     </div>
                   </div>
                 )}
@@ -331,8 +294,8 @@ export const LNB: React.FC = () => {
                           id="panel1a-header"
                         >
                           <Typography>
-                            {WorkspaceStore.reference.name
-                              ? WorkspaceStore.reference.name
+                            {WorkspaceStore.currentReference.name
+                              ? WorkspaceStore.currentReference.name
                               : 'Select Project, please'}
                           </Typography>
                         </AccordionSummary>
