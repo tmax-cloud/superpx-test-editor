@@ -5,7 +5,7 @@ import WorkspaceStore from '../../stores/workspaceStore';
 import EditorContentsStore from '../../stores/editorContentsStore';
 import { useObserver } from 'mobx-react';
 
-export const SourceCodeTree: React.FC<SourceCodeTreeProps> = () => {
+export const SourceCodeTree: React.FC = () => {
   const onSourceCodeLinkClick = ({ nodeData }) => {
     const { name, isOpen, srcPath} = nodeData;
     if (!isOpen) {
@@ -57,15 +57,4 @@ export const SourceCodeTree: React.FC<SourceCodeTreeProps> = () => {
       onNameClick={onSourceCodeLinkClick}
     />
   ));
-};
-
-type SourceCodeTreeProps = {
-  nodeData?: {
-    commitId: number;
-    content: string;
-    createdTime: string;
-    srcHistId: number;
-    srcId: number;
-    srcPath: string;
-  };
 };
