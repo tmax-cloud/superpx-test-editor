@@ -21,8 +21,8 @@ export const SourceCodeTree: React.FC = () => {
 
     sourceCodeList.forEach((src) => {
       let node = resultJson;
-      const nodeArray = src.srcPath.split('/');
       const pathString = src.srcPath;
+      const nodeArray = pathString.split('/');
       nodeArray.forEach((nodePath, index) => {
         if (!node.children) {
           node.children = [];
