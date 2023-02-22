@@ -5,22 +5,12 @@ import WorkspaceStore from '../../stores/workspaceStore';
 import EditorContentsStore from '../../stores/editorContentsStore';
 import { useObserver } from 'mobx-react';
 
-export const SourceCodeTree = () => {
+export const SourceCodeTree: React.FC<SourceCodeTreeProps> = () => {
   const onSourceCodeLinkClick = ({ nodeData }) => {
-    const { name, isOpen, srcPath } = nodeData;
-    const code = getContent(srcPath);
+    const { name, isOpen, srcPath} = nodeData;
     if (!isOpen) {
-      EditorContentsStore.updateContentAction(name, code);
+      EditorContentsStore.updateContentAction(name, srcPath);
     }
-  };
-  const getContent = (path) => {
-    let content = '';
-    WorkspaceStore.sourceCodeList.forEach((src) => {
-      if (path === src.srcPath) {
-        content = src.content;
-      }
-    });
-    return content;
   };
 
   const pathToJson = (sourceCodeList) => {
@@ -37,7 +27,7 @@ export const SourceCodeTree = () => {
         if (!node.children) {
           node.children = [];
         }
-        let nameArray = node.children.map((child) => child.name);
+        let nameArray: Array<String> = node.children.map((child) => child.name);
         if (!nameArray.includes(nodePath)) {
           if (index === nodeArray.length - 1)
             node.children.push({
@@ -67,4 +57,15 @@ export const SourceCodeTree = () => {
       onNameClick={onSourceCodeLinkClick}
     />
   ));
+};
+
+type SourceCodeTreeProps = {
+  nodeData?: {
+    commitId: number;
+    content: string;
+    createdTime: string;
+    srcHistId: number;
+    srcId: number;
+    srcPath: string;
+  };
 };
