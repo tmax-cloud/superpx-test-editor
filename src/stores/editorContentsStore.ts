@@ -1,4 +1,5 @@
 import { observable } from 'mobx';
+import WorkspaceStore from './workspaceStore';
 
 const testCode = `public class CurrentDateTime {
 
@@ -11,18 +12,29 @@ const testCode = `public class CurrentDateTime {
         System.out.println("Current Date and Time is: " + formatted);
     }
 }`;
+const getContent = (path) => {
+  let content = '';
+  WorkspaceStore.sourceCodeList.forEach((src) => {
+    if (path === src.srcPath) {
+      content = src.content;
+    }
+  });
+  return content;
+};
+
 const EditorContentsStore = observable({
   // state
   contents: [{ path: 'testcode.java', content: testCode }],
   veiwIndex: 0,
   isFull: false,
   // action
-  updateContentAction(path: string, content: string) {
+  updateContentAction(path: string, srcpath: string) {
     if (
       !this.contents.some((c) => {
         if (c.path === path) return true;
       })
     ) {
+      const content = getContent(srcpath)
       this.contents.unshift({ path, content });
       this.veiwIndex = 0;
     }

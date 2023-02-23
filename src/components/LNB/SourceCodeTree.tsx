@@ -5,22 +5,12 @@ import WorkspaceStore from '../../stores/workspaceStore';
 import EditorContentsStore from '../../stores/editorContentsStore';
 import { useObserver } from 'mobx-react';
 
-export const SourceCodeTree = () => {
+export const SourceCodeTree: React.FC = () => {
   const onSourceCodeLinkClick = ({ nodeData }) => {
-    const { name, isOpen, srcPath } = nodeData;
-    const code = getContent(srcPath);
+    const { name, isOpen, srcPath} = nodeData;
     if (!isOpen) {
-      EditorContentsStore.updateContentAction(name, code);
+      EditorContentsStore.updateContentAction(name, srcPath);
     }
-  };
-  const getContent = (path) => {
-    let content = '';
-    WorkspaceStore.sourceCodeList.forEach((src) => {
-      if (path === src.srcPath) {
-        content = src.content;
-      }
-    });
-    return content;
   };
 
   const pathToJson = (sourceCodeList) => {
@@ -31,13 +21,13 @@ export const SourceCodeTree = () => {
 
     sourceCodeList.forEach((src) => {
       let node = resultJson;
-      const nodeArray = src.srcPath.split('/');
       const pathString = src.srcPath;
+      const nodeArray = pathString.split('/');
       nodeArray.forEach((nodePath, index) => {
         if (!node.children) {
           node.children = [];
         }
-        let nameArray = node.children.map((child) => child.name);
+        let nameArray: Array<String> = node.children.map((child) => child.name);
         if (!nameArray.includes(nodePath)) {
           if (index === nodeArray.length - 1)
             node.children.push({
