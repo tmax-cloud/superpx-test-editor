@@ -24,7 +24,7 @@ const WorkspaceStore = observable({
       setAlert('Open WebSocket', `Open WebSocket ${wsUrl}`, 'success');
     };
     this.superPxWs.onmessage = (event) => {
-      const { data, path, message } = JSON.parse(event.data);
+      const { data, path, message } = JSON.parse(event.data).body;
       const service = services[path];
       service
         ? service(data)
