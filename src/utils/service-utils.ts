@@ -1,8 +1,9 @@
 import WorkspaceStore from '../stores/workspaceStore';
 import { setAlert } from './alert-utils';
 import { wsUrl, servicePrefix } from '../utils/constants';
+import EditorContentsStore from '../stores/editorContentsStore';
 
-type ServiceCategory = 'project' | 'reference' | 'commit' | 'merge';
+type ServiceCategory = 'project' | 'reference' | 'commit' | 'merge' | 'source';
 
 const createRequest = (
   category: ServiceCategory,
@@ -136,6 +137,16 @@ const commitDetailService = (data) => {
     'success',
   );
 };
+const sourceDetailService = (data) => {
+  const srcCode = WorkspaceStore.sourceCodeList.filter((c)=>{return c.srcId === data.srcId;})[0];
+  const srcPath = srcCode.srcPath
+  EditorContentsStore.updateContentAction( srcPath , data.content );
+  setAlert(
+    'Source Detail Service Call',
+    `Source Detail Service Call`,
+    'success',
+  );
+};
 
 export const services = {
   ProjectInsertService: projectInsertService,
@@ -148,4 +159,5 @@ export const services = {
   CommitInsertService: commitInsertService,
   CommitListService: commitListService,
   CommitDetailService: commitDetailService,
+  SourceDetailService: sourceDetailService,
 };
