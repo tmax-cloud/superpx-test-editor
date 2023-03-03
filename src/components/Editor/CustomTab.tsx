@@ -11,12 +11,18 @@ interface CustomTabProps {
   index?: number;
 }
 
+const getFileName = (path) => {
+  const pathArray: Array<String> = path.split('/');
+  const fileName = pathArray[pathArray.length - 1]
+  return fileName;
+};
+
 export default function CustomTab(props: CustomTabProps) {
   const { content, index } = props;
   return (
     <div>
       <Tab
-        label={content.path}
+        label={getFileName(content.path)}
         onClick={() => {
           EditorContentsStore.updateVeiwIndex(index);
         }}

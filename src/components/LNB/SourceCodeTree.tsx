@@ -1,14 +1,17 @@
 import * as React from 'react';
 import FolderTree from 'react-folder-tree';
 import WorkspaceStore from '../../stores/workspaceStore';
-import EditorContentsStore from '../../stores/editorContentsStore';
 import { useObserver } from 'mobx-react';
+import { sendMessage } from '../../utils/service-utils';
+import 'react-folder-tree/dist/style.css';
 
 export const SourceCodeTree: React.FC = () => {
   const onSourceCodeLinkClick = ({ nodeData }) => {
-    const { name, isOpen, srcPath} = nodeData;
-    if (!isOpen) {
-      EditorContentsStore.updateContentAction(name, srcPath);
+    const {isFile, srcId} = nodeData;
+    if (isFile) {
+      sendMessage('source', 'DetailService', {
+        src_id: srcId
+      });
     }
   };
 
@@ -20,8 +23,8 @@ export const SourceCodeTree: React.FC = () => {
 
     sourceCodeList.forEach((src) => {
       let node = resultJson;
-      const pathString = src.srcPath;
-      const nodeArray = pathString.split('/');
+      const srcId = src.srcId;
+      const nodeArray = src.srcPath.split('/');
       nodeArray.forEach((nodePath, index) => {
         if (!node.children) {
           node.children = [];
@@ -31,7 +34,8 @@ export const SourceCodeTree: React.FC = () => {
           if (index === nodeArray.length - 1)
             node.children.push({
               name: nodePath,
-              srcPath: pathString,
+              srcId: srcId,
+              isFile: 1,
             });
           else
             node.children.push({
