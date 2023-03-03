@@ -35,7 +35,7 @@ export const SourceCodeTree: React.FC = () => {
             node.children.push({
               name: nodePath,
               srcId: srcId,
-              isFile: 1,
+              isFile: true,
             });
           else
             node.children.push({
