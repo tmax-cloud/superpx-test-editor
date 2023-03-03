@@ -7,10 +7,10 @@ import 'react-folder-tree/dist/style.css';
 
 export const SourceCodeTree: React.FC = () => {
   const onSourceCodeLinkClick = ({ nodeData }) => {
-    const {isFile, srcId} = nodeData;
+    const { isFile, srcId } = nodeData;
     if (isFile) {
       sendMessage('source', 'DetailService', {
-        src_id: srcId
+        src_id: srcId,
       });
     }
   };
