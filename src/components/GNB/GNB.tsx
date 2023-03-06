@@ -6,6 +6,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import DialogGNB from './DialogGNB';
+import { Link } from 'react-router-dom';
 
 export const GNB = () => {
   const menus = [
@@ -76,7 +77,9 @@ export const GNB = () => {
   return (
     <div className="gnb">
       <div className="logo">
-        <HomeIcon className="logo-icon" sx={{ color: '#FF7575' }} />
+        <Link to="/">
+          <HomeIcon className="logo-icon" sx={{ color: '#FF7575' }} />
+        </Link>
         <p className="logo-text">SuperPX</p>
       </div>
       <div>

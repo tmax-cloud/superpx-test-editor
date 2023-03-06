@@ -3,6 +3,7 @@ import { Editors } from './Editor/Editors';
 import { LNB } from './LNB/LNB';
 import { useObserver } from 'mobx-react';
 import EditorContentsStore from '../stores/editorContentsStore';
+import { Outlet } from 'react-router-dom';
 
 export default function Main() {
   return useObserver(() => (
@@ -14,6 +15,7 @@ export default function Main() {
         }
       >
         <Editors />
+        <Outlet />
       </div>
     </>
   ));

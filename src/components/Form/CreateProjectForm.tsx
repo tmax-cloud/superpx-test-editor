@@ -36,13 +36,13 @@ export const CreateProjectForm: React.FC<CreateProjectFormProps> = ({
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>
-        Add Project
+        Create Project
         <AddIcon />
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Add Project</DialogTitle>
+        <DialogTitle>Create Project</DialogTitle>
         <DialogContent>
-          <DialogContentText>Add Project</DialogContentText>
+          <DialogContentText>Create Project</DialogContentText>
           <TextField
             autoFocus
             margin="dense"
