@@ -7,7 +7,7 @@ const AboutPage: React.FC = () => {
       {() => (
         <div
           className={
-            EditorContentsStore.isFull ? 'editor-area-full' : 'editor-area'
+            EditorContentsStore.isFull ? 'center-area-full' : 'center-area'
           }
         >
           <h1>About</h1>

@@ -18,6 +18,14 @@ const EditorContentsStore = observable({
   contents: [{ path: 'testcode.java', content: testCode }],
   veiwIndex: 0,
   isFull: false,
+  isEditorView: true,
+  lnbInitState: {
+    explorer: true,
+    search: false,
+    scm: false,
+    debug: false,
+    extension: false,
+  },
   // action
   updateContentAction(path: string, content: string) {
     if (
@@ -57,6 +65,9 @@ const EditorContentsStore = observable({
 
   updateIsFull(to: boolean) {
     this.isFull = to;
+  },
+  updateIsEditorView(to: boolean) {
+    this.isEditorView = to;
   },
 });
 

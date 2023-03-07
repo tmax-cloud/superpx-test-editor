@@ -5,7 +5,7 @@ const GroupDetailPage: React.FC = () => {
   const { groupName } = useParams();
 
   return (
-    <div className="editor-area">
+    <div className="center-area">
       {groupName} 그룹 상세페이지입니다.
     </div>
   );
