@@ -17,7 +17,9 @@ import { SCM } from './SCM/SCM';
 type Lnb = 'explorer' | 'search' | 'scm' | 'debug' | 'extension';
 
 export const EditorLNB: React.FC = () => {
-  const [lnbOpenState, setLnbOpenState] = React.useState(EditorContentsStore.lnbInitState);
+  const [lnbOpenState, setLnbOpenState] = React.useState(
+    EditorContentsStore.lnbInitState,
+  );
   React.useEffect(() => {
     Object.keys(lnbOpenState).every((key) => lnbOpenState[key] === false)
       ? EditorContentsStore.updateIsFull(true)
@@ -98,7 +100,7 @@ export const EditorLNB: React.FC = () => {
             width: 65,
             boxSizing: 'border-box',
             background: '#F5F7F9',
-            marginTop: 10,
+            marginTop: '72px',
           },
         }}
       >
