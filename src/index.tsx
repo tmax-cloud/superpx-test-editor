@@ -6,7 +6,7 @@ import { setupLanguage } from './java/setup';
 import { GNB } from './components/GNB/GNB';
 import { createHashRouter, Outlet, RouterProvider } from 'react-router-dom';
 import { BaseAlert } from './components/Alert/Alert';
-import Main from './components/Main';
+import Main from './pages/Editor/EditorPage';
 import { NotFound } from './components/ErrorPage/404';
 import WorkspaceStore from './stores/workspaceStore';
 import AboutPage from './pages/AboutPage';

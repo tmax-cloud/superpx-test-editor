@@ -13,6 +13,7 @@ import { CreateReferenceForm } from '../../Form/CreateReferenceForm';
 import WorkspaceStore from '../../../stores/workspaceStore';
 import { Observer } from 'mobx-react';
 import { wsUrl } from '../../../utils/constants';
+import EditorContentsStore from '../../../stores/editorContentsStore';
 
 export const SCM: React.FC = () => {
   const [openCreateProjectForm, setOpenCreateProjectForm] =
@@ -22,39 +23,42 @@ export const SCM: React.FC = () => {
 
   return (
     <div className="lnb">
-      <div>
-        <h3 className="list-title">Project List</h3>
-        <Accordion defaultExpanded={true}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            <Typography>{wsUrl}</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <CreateProjectForm
-              open={openCreateProjectForm}
-              setOpen={setOpenCreateProjectForm}
-            />
-          </AccordionDetails>
-          <Observer>
-            {() => (
-              <>
-                {WorkspaceStore.projectList.map((project) => {
-                  return (
-                    <ProjectLink
-                      key={`project-${project.projId}`}
-                      project={project}
+      <Observer>
+        {() => (
+          <>
+            {EditorContentsStore.showProjectSelect && (
+              <div>
+                <h3 className="list-title">Project List</h3>
+                <Accordion defaultExpanded={true}>
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                  >
+                    <Typography>{wsUrl}</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <CreateProjectForm
+                      open={openCreateProjectForm}
+                      setOpen={setOpenCreateProjectForm}
                     />
-                  );
-                })}
-              </>
+                  </AccordionDetails>
+                  {WorkspaceStore.projectList.map((project) => {
+                    return (
+                      <ProjectLink
+                        key={`project-${project.projId}`}
+                        project={project}
+                      />
+                    );
+                  })}
+                </Accordion>
+                <Divider />
+              </div>
             )}
-          </Observer>
-        </Accordion>
-      </div>
-      <Divider />
+          </>
+        )}
+      </Observer>
+
       <div>
         <h3 className="list-title">Reference List</h3>
         <Observer>

@@ -51,7 +51,14 @@ const ProjectPage: React.FC = () => {
                 <TableBody>
                   {WorkspaceStore.projectList.map((project) => (
                     <TableRow key={`project-${project.projId}`}>
-                      <StyledTableCell>
+                      <StyledTableCell
+                        onClick={() => {
+                          WorkspaceStore.updateCurrentProjectAction(project);
+                          sendMessage('reference', 'ListService', {
+                            proj_name: project.name,
+                          });
+                        }}
+                      >
                         <Link to={`/projects/${project.name}`}>
                           <Box sx={{ p: 2 }}>
                             <Paper variant="outlined">

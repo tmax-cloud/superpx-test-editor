@@ -7,6 +7,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import DialogGNB from './DialogGNB';
 import { Link } from 'react-router-dom';
+import EditorContentsStore from '../../stores/editorContentsStore';
 
 export const GNB = () => {
   const menus = [
@@ -87,7 +88,12 @@ export const GNB = () => {
         <Link to="/groups">
           <p className="top-menu-text">Groups</p>
         </Link>
-        <Link to="/editor">
+        <Link
+          to="/editor"
+          onClick={() => {
+            EditorContentsStore.updateEditorLnbInitState('scm');
+          }}
+        >
           <p className="top-menu-text">Editor</p>
         </Link>
         <Link to="/about">
