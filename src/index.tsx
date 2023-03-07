@@ -4,7 +4,7 @@ import './style.css';
 import './404.scss';
 import { setupLanguage } from './java/setup';
 import { GNB } from './components/GNB/GNB';
-import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
+import { createHashRouter, Outlet, RouterProvider } from 'react-router-dom';
 import { BaseAlert } from './components/Alert/Alert';
 import Main from './components/Main';
 import { NotFound } from './components/ErrorPage/404';
@@ -30,7 +30,7 @@ const App = () => {
   );
 };
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: '/',
     element: <App />,
