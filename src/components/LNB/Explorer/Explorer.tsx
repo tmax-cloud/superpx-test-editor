@@ -22,7 +22,7 @@ export const Explorer: React.FC = () => {
   };
 
   return (
-    <div className="lnb-scm">
+    <div className="lnb">
       <div>
         <h3 className="list-title">Source Code List</h3>
         <Accordion defaultExpanded={true}>

@@ -21,7 +21,7 @@ export const SCM: React.FC = () => {
     React.useState(false);
 
   return (
-    <div className="lnb-scm">
+    <div className="lnb">
       <div>
         <h3 className="list-title">Project List</h3>
         <Accordion defaultExpanded={true}>

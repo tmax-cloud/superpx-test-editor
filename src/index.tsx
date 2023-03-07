@@ -4,32 +4,73 @@ import './style.css';
 import './404.scss';
 import { setupLanguage } from './java/setup';
 import { GNB } from './components/GNB/GNB';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import { BaseAlert } from './components/Alert/Alert';
 import Main from './components/Main';
 import { NotFound } from './components/ErrorPage/404';
 import WorkspaceStore from './stores/workspaceStore';
+import AboutPage from './pages/AboutPage';
+import ProjectPage from './pages/Project/ProjectPage';
+import ProjectDetailPage from './pages/Project/ProjectDetailPage';
+import GroupPage from './pages/Group/GroupPage';
+import GroupDetailPage from './pages/Group/GroupDetailPage';
 
 WorkspaceStore.setupWsAction();
 setupLanguage();
+
 const App = () => {
   return (
     <>
       <BaseAlert />
       <GNB />
       <div className="content">
-        <Routes>
-          <Route path="/" element={<Main />}></Route>
-          <Route path="*" element={<NotFound />}></Route>
-        </Routes>
+        <Outlet />
       </div>
     </>
   );
 };
 
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />,
+    errorElement: <NotFound />,
+    children: [
+      {
+        path: 'projects',
+        element: <ProjectPage />,
+      },
+      {
+        path: 'projects/:projectName',
+        element: <ProjectDetailPage />,
+      },
+      {
+        path: 'projects/:projectName/editor',
+        element: <Main />,
+      },
+      {
+        path: 'groups',
+        element: <GroupPage />,
+      },
+      {
+        path: 'groups/:groupName',
+        element: <GroupDetailPage />,
+      },
+      {
+        path: 'editor',
+        element: <Main />,
+      },
+      {
+        path: 'about',
+        element: <AboutPage />,
+      },
+    ],
+  },
+]);
+
 ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
+  <React.StrictMode>
+    <RouterProvider router={router} />
+  </React.StrictMode>,
   document.getElementById('container'),
 );

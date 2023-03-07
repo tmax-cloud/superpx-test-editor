@@ -16,14 +16,8 @@ import { SCM } from './SCM/SCM';
 
 type Lnb = 'explorer' | 'search' | 'scm' | 'debug' | 'extension';
 
-export const LNB: React.FC = () => {
-  const [lnbOpenState, setLnbOpenState] = React.useState({
-    explorer: false,
-    search: false,
-    scm: true,
-    debug: false,
-    extension: false,
-  });
+export const EditorLNB: React.FC = () => {
+  const [lnbOpenState, setLnbOpenState] = React.useState(EditorContentsStore.lnbInitState);
   React.useEffect(() => {
     Object.keys(lnbOpenState).every((key) => lnbOpenState[key] === false)
       ? EditorContentsStore.updateIsFull(true)
@@ -141,10 +135,10 @@ export const LNB: React.FC = () => {
                   <CloseIcon className="lnb-close-icon" />
                 </Button>
                 {lnb === 'explorer' && <Explorer />}
-                {lnb === 'search' && <div className="lnb-scm"></div>}
+                {lnb === 'search' && <div className="lnb"></div>}
                 {lnb === 'scm' && <SCM />}
                 {lnb === 'debug' && (
-                  <div className="lnb-scm">
+                  <div className="lnb">
                     <input
                       ref={ref}
                       type="file"
@@ -154,7 +148,7 @@ export const LNB: React.FC = () => {
                     />
                   </div>
                 )}
-                {lnb === 'extension' && <div className="lnb-scm"></div>}
+                {lnb === 'extension' && <div className="lnb"></div>}
               </Drawer>
             </>
           ),

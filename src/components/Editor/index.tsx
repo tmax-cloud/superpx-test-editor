@@ -76,7 +76,7 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
     <div className="editor-flex">
       {useObserver(() => (
         <>
-          <div ref={assignRef} className="editor-container"></div>
+          <div ref={assignRef} className="center-container"></div>
 
           <TextField
             autoFocus

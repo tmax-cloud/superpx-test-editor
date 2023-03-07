@@ -10,25 +10,25 @@ body,
 }
 
 @media only screen and (max-height: 600px) {
-  .editor-container {
+  .center-container {
     height: 50%;
   }
 }
-.editor-container {
+.center-container {
   height: 100%;
   overflow: hidden;
   width: auto;
   display: flex;
 }
 
-.editor-area {
+.center-area {
   height: 100%;
   position: fixed;
   right: 0;
   top: 72px;
   width: calc(100% - 300px);
 }
-.editor-area-full {
+.center-area-full {
   height: 100%;
   position: fixed;
   right: 0;
@@ -109,6 +109,23 @@ body,
   line-height: 13px;
   color: #ffffff;
 }
+.top-menu-text-left {
+  height: 15px;
+  margin-left: 100px;
+  padding-left: 10px;
+  position: relative;
+  font-size: 15px;
+  line-height: 13px;
+  color: #ffffff;
+}
+.top-menu-text {
+  height: 15px;
+  padding-left: 10px;
+  position: relative;
+  font-size: 15px;
+  line-height: 13px;
+  color: #ffffff;
+}
 
 .gnb-menu-button {
   padding: 10px 8px !important;
@@ -145,7 +162,7 @@ body,
   padding-left: 10px;
 }
 
-.lnb-scm {
+.lnb {
   padding-left: 65px;
 }
 .commit-btn {
