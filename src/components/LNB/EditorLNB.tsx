@@ -18,7 +18,7 @@ type Lnb = 'explorer' | 'search' | 'scm' | 'debug' | 'extension';
 
 export const EditorLNB: React.FC = () => {
   const [lnbOpenState, setLnbOpenState] = React.useState(
-    EditorContentsStore.lnbInitState,
+    EditorContentsStore.editorLnbInitState,
   );
   React.useEffect(() => {
     Object.keys(lnbOpenState).every((key) => lnbOpenState[key] === false)

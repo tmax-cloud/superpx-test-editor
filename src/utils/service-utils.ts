@@ -109,13 +109,14 @@ const commitInsertService = (data) => {
   );
 };
 const commitListService = (data) => {
-  if (data) {
+  if (data && data.length) {
     WorkspaceStore.updateCommitListAction(data);
-    if (data[0]) {
-      WorkspaceStore.updateCurrentCommitAction(data[0]);
+    const lastCommit = data[data.length-1]
+    if (lastCommit) {
+      WorkspaceStore.updateCurrentCommitAction(lastCommit);
 
       sendMessage('commit', 'DetailService', {
-        commit_id: data[0].commitId,
+        commit_id: lastCommit.commitId,
       });
     }
   } else {

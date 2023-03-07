@@ -1,6 +1,5 @@
 import { observable } from 'mobx';
 
-
 const testCode = `public class CurrentDateTime {
 
     public static void main(String[] args) {
@@ -18,8 +17,8 @@ const EditorContentsStore = observable({
   contents: [{ path: 'testcode.java', content: testCode }],
   veiwIndex: 0,
   isFull: false,
-  isEditorView: true,
-  lnbInitState: {
+  showProjectSelect: true,
+  editorLnbInitState: {
     explorer: true,
     search: false,
     scm: false,
@@ -66,8 +65,17 @@ const EditorContentsStore = observable({
   updateIsFull(to: boolean) {
     this.isFull = to;
   },
-  updateIsEditorView(to: boolean) {
-    this.isEditorView = to;
+  updateShowProjectSelect(to: boolean) {
+    this.showProjectSelect = to;
+  },
+  updateEditorLnbInitState(initLnb: string) {
+    this.editorLnbInitState = {
+      explorer: 'explorer' === initLnb,
+      search: 'search' === initLnb,
+      scm: 'scm' === initLnb,
+      debug: 'debug' === initLnb,
+      extension: 'extension' === initLnb,
+    };
   },
 });
 
