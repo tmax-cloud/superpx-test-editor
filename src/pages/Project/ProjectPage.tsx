@@ -16,7 +16,6 @@ const ProjectPage: React.FC = () => {
     <Observer>
       {() => (
         <div>
-          <h3 className="list-title">Project List</h3>
           <CreateProjectForm
             open={openCreateProjectForm}
             setOpen={setOpenCreateProjectForm}

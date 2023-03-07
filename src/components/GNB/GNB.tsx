@@ -79,8 +79,20 @@ export const GNB = () => {
       <div className="logo">
         <Link to="/">
           <HomeIcon className="logo-icon" sx={{ color: '#FF7575' }} />
+          <p className="logo-text">SuperPX</p>
         </Link>
-        <p className="logo-text">SuperPX</p>
+        <Link to="/projects">
+          <p className="top-menu-text-left">Projects</p>
+        </Link>
+        <Link to="/groups">
+          <p className="top-menu-text">Groups</p>
+        </Link>
+        <Link to="/editor">
+          <p className="top-menu-text">Editor</p>
+        </Link>
+        <Link to="/about">
+          <p className="top-menu-text">About</p>
+        </Link>
       </div>
       <div>
         {menus.map((menu) => {
