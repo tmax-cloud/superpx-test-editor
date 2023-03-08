@@ -32,13 +32,16 @@ const EditorContentsStore = observable({
         if (c.path === path) return true;
       })
     ) {
-      this.contents.unshift({ path, content });
+      const currentContents = this.contents
+      this.contents = [{ path: path, content: content }, ...currentContents];
       this.veiwIndex = 0;
     }
   },
 
   pushContentAction(path: string, content: string) {
-    this.contents.push({ path, content });
+    const currentContents = this.contents
+    this.contents = [{ path: path, content: content }, ...currentContents];
+    this.veiwIndex = 0;
   },
 
   getContentAction(path: string) {
