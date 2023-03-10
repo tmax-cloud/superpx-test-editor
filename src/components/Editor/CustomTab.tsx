@@ -1,10 +1,8 @@
-import * as React from "react";
-import { Editor } from "./index";
-import Tab from "@mui/material/Tab";
-import CloseIcon from "@mui/icons-material/Close";
-import Button from "@mui/material/Button";
-import { useObserver } from "mobx-react";
-import EditorContentsStore from "../../stores/editorContentsStore";
+import * as React from 'react';
+import Tab from '@mui/material/Tab';
+import CloseIcon from '@mui/icons-material/Close';
+import Button from '@mui/material/Button';
+import EditorContentsStore from '../../stores/editorContentsStore';
 
 interface CustomTabProps {
   content?: any;
@@ -13,7 +11,7 @@ interface CustomTabProps {
 
 const getFileName = (path) => {
   const pathArray: Array<String> = path.split('/');
-  const fileName = pathArray[pathArray.length - 1]
+  const fileName = pathArray[pathArray.length - 1];
   return fileName;
 };
 

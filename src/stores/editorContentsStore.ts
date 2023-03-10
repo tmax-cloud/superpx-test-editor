@@ -15,7 +15,7 @@ const testCode = `public class CurrentDateTime {
 const EditorContentsStore = observable({
   // state
   contents: [{ path: 'testcode.java', content: testCode }],
-  veiwIndex: 0,
+  viewIndex: 0,
   isFull: false,
   showProjectSelect: true,
   editorLnbInitState: {
@@ -32,8 +32,8 @@ const EditorContentsStore = observable({
         if (c.path === path) return true;
       })
     ) {
-      this.contents.unshift({ path, content });
-      this.veiwIndex = 0;
+      this.contents.splice(this.viewIndex + 1, 0, { path, content });
+      this.viewIndex = this.viewIndex + 1;
     }
   },
 
@@ -55,11 +55,11 @@ const EditorContentsStore = observable({
 
   initContentAction() {
     this.contents = [{ path: 'testcode.java', content: testCode }];
-    this.veiwIndex = 0;
+    this.viewIndex = 0;
   },
 
   updateVeiwIndex(index: number) {
-    this.veiwIndex = index;
+    this.viewIndex = index;
   },
 
   updateIsFull(to: boolean) {
