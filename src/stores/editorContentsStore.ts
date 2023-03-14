@@ -34,7 +34,17 @@ const EditorContentsStore = observable({
     ) {
       this.contents.splice(this.viewIndex + 1, 0, { path, content });
       this.viewIndex = this.viewIndex + 1;
+    } else {
+      this.contents.forEach((c, index) => {
+        if (c.path === path) {
+          this.viewIndex = index;
+        }
+      });
     }
+  },
+
+  editContentAction(content: string, index: number) {
+    this.contents[index].content = content;
   },
 
   pushContentAction(path: string, content: string) {
@@ -47,10 +57,15 @@ const EditorContentsStore = observable({
     })[0];
   },
 
-  deleteContentAction(path: string) {
+  deleteContentAction(path: string, index: number) {
     this.contents = this.contents.filter((c) => {
       return c.path !== path;
     });
+    let newIndex = index - 1;
+    if (EditorContentsStore.contents.length > 0 && newIndex < 0) {
+      newIndex = 0;
+    }
+    this.viewIndex = newIndex;
   },
 
   initContentAction() {

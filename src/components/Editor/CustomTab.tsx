@@ -27,7 +27,7 @@ export default function CustomTab(props: CustomTabProps) {
       ></Tab>
       <Button
         onClick={() => {
-          EditorContentsStore.deleteContentAction(content.path);
+          EditorContentsStore.deleteContentAction(content.path, index);
         }}
       >
         <CloseIcon />

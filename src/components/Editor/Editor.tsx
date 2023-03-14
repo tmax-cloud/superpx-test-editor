@@ -37,13 +37,16 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
     }
   });
   React.useEffect(() => {
-    const viewIndex = EditorContentsStore.viewIndex;
-    const content = EditorContentsStore.contents[viewIndex]?.content;
-    const editors = monaco.editor.getEditors();
+    if (contentsIndex >= 0) {
+      const viewIndex = EditorContentsStore.viewIndex;
+      const content = EditorContentsStore.contents[viewIndex]?.content;
+      const editors = monaco.editor.getEditors();
 
-    const model = editors[0]?.getModel();
-    if (model) {
-      model.setValue(content);
+      const model = editors[viewIndex]?.getModel();
+      if (model) {
+        model.setValue(content);
+        model.onDidChangeContent(e=>{EditorContentsStore.editContentAction(model.getValue(), viewIndex)});
+      }
     }
   }, [contentsIndex]);
 
