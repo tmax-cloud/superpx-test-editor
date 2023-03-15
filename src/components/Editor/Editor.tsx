@@ -10,11 +10,9 @@ import WorkspaceStore from '../../stores/workspaceStore';
 
 interface IEditorProps {
   language: string;
-  contentsIndex?: number;
 }
 
 const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
-  const { contentsIndex } = props;
   let divNode;
   const assignRef = React.useCallback((node) => {
     // On mount get the ref of the div and assign it the divNode
@@ -22,7 +20,7 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
   }, []);
   React.useEffect(() => {
     if (divNode) {
-      monaco.editor.create(divNode, {
+      const editor = monaco.editor.create(divNode, {
         language: props.language,
         minimap: { enabled: true },
         autoIndent: 'full',
@@ -34,21 +32,15 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
       });
       divNode.style.height = '100%';
       divNode.style.width = '100%';
+      const model = editor.getModel();
+      model.onDidChangeContent((e) => {
+        EditorContentsStore.editContentAction(
+          model.getValue(),
+          EditorContentsStore.viewIndex,
+        );
+      });
     }
   });
-  React.useEffect(() => {
-    if (contentsIndex >= 0) {
-      const viewIndex = EditorContentsStore.viewIndex;
-      const content = EditorContentsStore.contents[viewIndex]?.content;
-      const editors = monaco.editor.getEditors();
-
-      const model = editors[viewIndex]?.getModel();
-      if (model) {
-        model.setValue(content);
-        model.onDidChangeContent(e=>{EditorContentsStore.editContentAction(model.getValue(), viewIndex)});
-      }
-    }
-  }, [contentsIndex]);
 
   const [commitMessage, setCommitMessage] = React.useState(
     'Enter Commit Message',
