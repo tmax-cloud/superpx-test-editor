@@ -109,7 +109,7 @@ export const Editors = () => {
 
           {EditorContentsStore.contents.map((content, index) => (
             <TabPanel value={EditorContentsStore.viewIndex} index={index}>
-              <Editor language="java" />
+              <Editor />
             </TabPanel>
           ))}
         </div>

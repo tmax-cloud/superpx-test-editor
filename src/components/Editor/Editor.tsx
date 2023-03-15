@@ -7,21 +7,20 @@ import { sendMessage } from '../../utils/service-utils';
 import { Observer } from 'mobx-react';
 import EditorContentsStore from '../../stores/editorContentsStore';
 import WorkspaceStore from '../../stores/workspaceStore';
+import { getExtensionOfFilename } from '../../utils/path-utils';
 
-interface IEditorProps {
-  language: string;
-}
-
-const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
+const Editor: React.FC = () => {
   let divNode;
   const assignRef = React.useCallback((node) => {
     // On mount get the ref of the div and assign it the divNode
     divNode = node;
   }, []);
   React.useEffect(() => {
+    const path =
+      EditorContentsStore.contents[EditorContentsStore.viewIndex].path;
     if (divNode) {
       const editor = monaco.editor.create(divNode, {
-        language: props.language,
+        language: getExtensionOfFilename(path),
         minimap: { enabled: true },
         autoIndent: 'full',
         theme: 'vs-dark',
