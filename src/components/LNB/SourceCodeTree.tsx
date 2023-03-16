@@ -53,12 +53,14 @@ export const SourceCodeTree: React.FC = () => {
   return (
     <Observer>
       {() => (
-        <FolderTree
-          data={pathToJson(WorkspaceStore.sourceCodeList)}
-          showCheckbox={false}
-          indentPixels={5}
-          onNameClick={onSourceCodeLinkClick}
-        />
+        <div className="source-code-tree">
+          <FolderTree
+            data={pathToJson(WorkspaceStore.sourceCodeList)}
+            showCheckbox={false}
+            indentPixels={5}
+            onNameClick={onSourceCodeLinkClick}
+          />
+        </div>
       )}
     </Observer>
   );

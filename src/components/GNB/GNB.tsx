@@ -8,6 +8,7 @@ import { useTheme } from '@mui/material/styles';
 import DialogGNB from './DialogGNB';
 import { Link } from 'react-router-dom';
 import EditorContentsStore from '../../stores/editorContentsStore';
+import { Observer } from 'mobx-react';
 
 export const GNB = () => {
   const menus = [
@@ -100,45 +101,49 @@ export const GNB = () => {
           <p className="top-menu-text">About</p>
         </Link>
       </div>
-      <div>
-        {menus.map((menu) => {
-          return (
-            <span key={`menu-${menu}`}>
-              <Button
-                className="gnb-menu-button"
-                id="basic-button"
-                aria-controls={open ? 'basic-menu' : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
-                onClick={handleClick}
-                value={menu}
-              >
-                {menu}
-              </Button>
-              <Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={openMenu[menu]}
-                onClose={handleClose}
-                MenuListProps={{
-                  'aria-labelledby': 'basic-button',
-                }}
-              >
-                {menusAction[menu].map((action) => {
-                  return (
-                    <MenuItem
-                      key={`menuItem-${action}`}
-                      onClick={() => getActions(action)}
-                    >
-                      {action}
-                    </MenuItem>
-                  );
-                })}
-              </Menu>
-            </span>
-          );
-        })}
-      </div>
+      <Observer>
+        {() => (EditorContentsStore.isEditorView &&
+          (<div>
+            {menus.map((menu) => {
+              return (
+                <span key={`menu-${menu}`}>
+                  <Button
+                    className="gnb-menu-button"
+                    id="basic-button"
+                    aria-controls={open ? 'basic-menu' : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? 'true' : undefined}
+                    onClick={handleClick}
+                    value={menu}
+                  >
+                    {menu}
+                  </Button>
+                  <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={openMenu[menu]}
+                    onClose={handleClose}
+                    MenuListProps={{
+                      'aria-labelledby': 'basic-button',
+                    }}
+                  >
+                    {menusAction[menu].map((action) => {
+                      return (
+                        <MenuItem
+                          key={`menuItem-${action}`}
+                          onClick={() => getActions(action)}
+                        >
+                          {action}
+                        </MenuItem>
+                      );
+                    })}
+                  </Menu>
+                </span>
+              );
+            })}
+          </div>)
+        )}
+      </Observer>
       <DialogGNB
         fullScreen={fullScreen}
         openDialog={openDialog}
