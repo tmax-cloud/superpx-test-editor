@@ -90,7 +90,7 @@ export const EditorLNB: React.FC = () => {
   }));
 
   return (
-    <div className="lnb">
+    <div className="editor-lnb">
       <MyDrawer
         variant="permanent"
         sx={{
@@ -137,10 +137,10 @@ export const EditorLNB: React.FC = () => {
                   <CloseIcon className="lnb-close-icon" />
                 </Button>
                 {lnb === 'explorer' && <Explorer />}
-                {lnb === 'search' && <div className="lnb"></div>}
+                {lnb === 'search' && <div className="editor-lnb-drawer"></div>}
                 {lnb === 'scm' && <SCM />}
                 {lnb === 'debug' && (
-                  <div className="lnb">
+                  <div className="editor-lnb-drawer">
                     <input
                       ref={ref}
                       type="file"
@@ -150,7 +150,7 @@ export const EditorLNB: React.FC = () => {
                     />
                   </div>
                 )}
-                {lnb === 'extension' && <div className="lnb"></div>}
+                {lnb === 'extension' && <div className="editor-lnb-drawer"></div>}
               </Drawer>
             </>
           ),

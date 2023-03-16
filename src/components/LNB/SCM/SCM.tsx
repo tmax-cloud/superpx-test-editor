@@ -22,7 +22,7 @@ export const SCM: React.FC = () => {
     React.useState(false);
 
   return (
-    <div className="lnb">
+    <div className="editor-lnb-drawer">
       <Observer>
         {() => (
           <>

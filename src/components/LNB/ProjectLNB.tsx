@@ -42,7 +42,7 @@ export const ProjectLNB: React.FC = () => {
   ];
   const { projectName } = useParams();
   return (
-    <div className="lnb">
+    <div className="project-lnb">
       <Box sx={{ display: 'flex' }}>
         <Box sx={{ p: 2 }}>
           <Avatar sx={{ bgcolor: 'primary.main' }}>

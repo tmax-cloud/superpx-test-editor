@@ -52,6 +52,7 @@ body,
   z-index: 1;
   padding: 20px;
   right: 10px;
+  bottom: 10px;
 }
 
 .monaco-editor {
@@ -61,9 +62,9 @@ body,
 }
 
 .content {
-  top: 72px;
+  top: 36px;
   position: sticky;
-  height: calc(100% - 72px);
+  height: calc(100% - 36px);
 }
 .lnb-btn {
   z-index: 3;
@@ -144,11 +145,18 @@ body,
 .height-full {
   height: 100%;
 }
-.lnb {
-  height: 100%;
+.editor-lnb {
+  height: calc(100% - 72px);
   position: fixed;
   left: 0;
   top: 72px;
+  width: 235px;
+}
+.project-lnb {
+  height: calc(100% - 36px);
+  position: fixed;
+  left: 0;
+  top: 36px;
   width: 235px;
 }
 
@@ -162,7 +170,8 @@ body,
   padding-left: 10px;
 }
 
-.lnb {
+.editor-lnb-drawer {
+  height: calc(100% - 72px);
   padding-left: 65px;
 }
 .commit-btn {
@@ -198,4 +207,27 @@ body,
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.source-code-tree {
+  padding: 5px;
+  height: 95%;
+  overflow: scroll;
+  scrollbar-width: thin;
+  background-color: #ffffffc4;
+}
+.source-code-tree::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.source-code-tree::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+.source-code-tree::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background-color: gray;
+}
+.source-code-tree::-webkit-scrollbar-button {
+  width: 0;
+  height: 0;
 }

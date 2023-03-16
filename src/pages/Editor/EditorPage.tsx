@@ -6,6 +6,7 @@ import EditorContentsStore from '../../stores/editorContentsStore';
 import { useParams } from 'react-router-dom';
 import { sendMessage } from '../../utils/service-utils';
 import WorkspaceStore from '../../stores/workspaceStore';
+import { EditorGNB } from '../../components/GNB/EditorGNB';
 
 export default function EditorPage() {
   const { projectName } = useParams();
@@ -14,21 +15,28 @@ export default function EditorPage() {
     sendMessage('reference', 'ListService', {
       proj_name: projectName,
     });
+    if (projectName) {
+      EditorContentsStore.updateEditorLnbInitState('explorer');
+      EditorContentsStore.updateShowProjectSelect(false);
+    }
   });
   return (
-    <Observer>
-      {() => (
-        <>
-          <EditorLNB />
-          <div
-            className={
-              EditorContentsStore.isFull ? 'center-area-full' : 'center-area'
-            }
-          >
-            <Editors />
-          </div>
-        </>
-      )}
-    </Observer>
+    <div>
+      <EditorGNB />
+      <Observer>
+        {() => (
+          <>
+            <EditorLNB />
+            <div
+              className={
+                EditorContentsStore.isFull ? 'center-area-full' : 'center-area'
+              }
+            >
+              <Editors />
+            </div>
+          </>
+        )}
+      </Observer>
+    </div>
   );
 }
