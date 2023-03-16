@@ -50,7 +50,7 @@ const EditorContentsStore = observable({
   pushContentAction(path: string, content: string) {
     const currentContents = this.contents
     this.contents = [{ path: path, content: content }, ...currentContents];
-    this.veiwIndex = 0;
+    this.viewIndex = 0;
   },
 
   getContentAction(path: string) {
