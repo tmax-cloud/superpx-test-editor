@@ -14,6 +14,11 @@ export default function EditorPage() {
     sendMessage('reference', 'ListService', {
       proj_name: projectName,
     });
+    EditorContentsStore.updateIsEditorView(true);
+    if (projectName) {
+      EditorContentsStore.updateEditorLnbInitState('explorer');
+      EditorContentsStore.updateShowProjectSelect(false);
+    }
   });
   return (
     <Observer>
