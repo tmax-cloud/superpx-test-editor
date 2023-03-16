@@ -62,9 +62,9 @@ body,
 }
 
 .content {
-  top: 72px;
+  top: 36px;
   position: sticky;
-  height: calc(100% - 72px);
+  height: calc(100% - 36px);
 }
 .lnb-btn {
   z-index: 3;
@@ -150,6 +150,13 @@ body,
   position: fixed;
   left: 0;
   top: 72px;
+  width: 235px;
+}
+.project-lnb {
+  height: calc(100% - 36px);
+  position: fixed;
+  left: 0;
+  top: 36px;
   width: 235px;
 }
 

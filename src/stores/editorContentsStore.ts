@@ -18,7 +18,6 @@ const EditorContentsStore = observable({
   viewIndex: 0,
   isFull: false,
   showProjectSelect: true,
-  isEditorView: false,
   editorLnbInitState: {
     explorer: true,
     search: false,
@@ -83,9 +82,6 @@ const EditorContentsStore = observable({
   },
   updateShowProjectSelect(to: boolean) {
     this.showProjectSelect = to;
-  },
-  updateIsEditorView(to: boolean) {
-    this.isEditorView = to;
   },
   updateEditorLnbInitState(initLnb: string) {
     this.editorLnbInitState = {
