@@ -139,9 +139,7 @@ const commitDetailService = (data) => {
   );
 };
 const sourceDetailService = (data) => {
-  const srcCode = WorkspaceStore.sourceCodeList.filter((c)=>{return c.srcId === data.srcId;})[0];
-  const srcPath = srcCode.srcPath
-  EditorContentsStore.updateContentAction( srcPath , data.content );
+  EditorContentsStore.updateContentAction( data.srcPath , data.content );
   setAlert(
     'Source Detail Service Call',
     `Source Detail Service Call`,

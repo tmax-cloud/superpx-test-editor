@@ -11,6 +11,7 @@ export const SourceCodeTree: React.FC = () => {
     if (isFile) {
       sendMessage('source', 'DetailService', {
         src_id: srcId,
+        commit_id: WorkspaceStore.currentCommit.commitId,
       });
     }
   };
