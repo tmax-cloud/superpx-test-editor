@@ -15,7 +15,7 @@ const testCode = `public class CurrentDateTime {
 const EditorContentsStore = observable({
   // state
   contents: [{ path: 'testcode.java', content: testCode }],
-  veiwIndex: 0,
+  viewIndex: 0,
   isFull: false,
   showProjectSelect: true,
   editorLnbInitState: {
@@ -32,10 +32,19 @@ const EditorContentsStore = observable({
         if (c.path === path) return true;
       })
     ) {
-      const currentContents = this.contents
-      this.contents = [{ path: path, content: content }, ...currentContents];
-      this.veiwIndex = 0;
+      this.contents.splice(this.viewIndex + 1, 0, { path, content });
+      this.viewIndex = this.viewIndex + 1;
+    } else {
+      this.contents.forEach((c, index) => {
+        if (c.path === path) {
+          this.viewIndex = index;
+        }
+      });
     }
+  },
+
+  editContentAction(content: string, index: number) {
+    this.contents[index].content = content;
   },
 
   pushContentAction(path: string, content: string) {
@@ -50,19 +59,24 @@ const EditorContentsStore = observable({
     })[0];
   },
 
-  deleteContentAction(path: string) {
+  deleteContentAction(path: string, index: number) {
     this.contents = this.contents.filter((c) => {
       return c.path !== path;
     });
+    let newIndex = index - 1;
+    if (EditorContentsStore.contents.length > 0 && newIndex < 0) {
+      newIndex = 0;
+    }
+    this.viewIndex = newIndex;
   },
 
   initContentAction() {
     this.contents = [{ path: 'testcode.java', content: testCode }];
-    this.veiwIndex = 0;
+    this.viewIndex = 0;
   },
 
   updateVeiwIndex(index: number) {
-    this.veiwIndex = index;
+    this.viewIndex = index;
   },
 
   updateIsFull(to: boolean) {

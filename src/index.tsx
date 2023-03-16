@@ -6,9 +6,10 @@ import { setupLanguage } from './java/setup';
 import { GNB } from './components/GNB/GNB';
 import { createHashRouter, Outlet, RouterProvider } from 'react-router-dom';
 import { BaseAlert } from './components/Alert/Alert';
-import Main from './pages/Editor/EditorPage';
+import EditorPage from './pages/Editor/EditorPage';
 import { NotFound } from './components/ErrorPage/404';
 import WorkspaceStore from './stores/workspaceStore';
+import WelcomePage from './pages/Welcome'
 import AboutPage from './pages/AboutPage';
 import ProjectPage from './pages/Project/ProjectPage';
 import ProjectDetailPage from './pages/Project/ProjectDetailPage';
@@ -37,6 +38,10 @@ const router = createHashRouter([
     errorElement: <NotFound />,
     children: [
       {
+        path: '',
+        element: <WelcomePage />,
+      },
+      {
         path: 'projects',
         element: <ProjectPage />,
       },
@@ -46,7 +51,7 @@ const router = createHashRouter([
       },
       {
         path: 'projects/:projectName/editor',
-        element: <Main />,
+        element: <EditorPage />,
       },
       {
         path: 'groups',
@@ -58,7 +63,7 @@ const router = createHashRouter([
       },
       {
         path: 'editor',
-        element: <Main />,
+        element: <EditorPage />,
       },
       {
         path: 'about',

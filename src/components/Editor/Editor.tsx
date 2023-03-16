@@ -4,51 +4,47 @@ import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import TextField from '@mui/material/TextField';
 import { sendMessage } from '../../utils/service-utils';
-import { useObserver } from 'mobx-react';
+import { Observer } from 'mobx-react';
 import EditorContentsStore from '../../stores/editorContentsStore';
 import WorkspaceStore from '../../stores/workspaceStore';
+import { getExtensionOfFilename } from '../../utils/path-utils';
 
-interface IEditorProps {
-  language: string;
-  contentsIndex?: number;
-}
-
-const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
+const Editor: React.FC = () => {
   let divNode;
   const assignRef = React.useCallback((node) => {
     // On mount get the ref of the div and assign it the divNode
     divNode = node;
   }, []);
   React.useEffect(() => {
+    const path =
+      EditorContentsStore.contents[EditorContentsStore.viewIndex].path;
     if (divNode) {
-      monaco.editor.create(divNode, {
-        language: props.language,
+      const editor = monaco.editor.create(divNode, {
+        language: getExtensionOfFilename(path),
         minimap: { enabled: true },
         autoIndent: 'full',
         theme: 'vs-dark',
         mouseWheelZoom: true,
         fontSize: 20,
         value:
-          EditorContentsStore.contents[EditorContentsStore.veiwIndex].content,
+          EditorContentsStore.contents[EditorContentsStore.viewIndex].content,
       });
       divNode.style.height = '100%';
       divNode.style.width = '100%';
+      const model = editor.getModel();
+      model.onDidChangeContent((e) => {
+        EditorContentsStore.editContentAction(
+          model.getValue(),
+          EditorContentsStore.viewIndex,
+        );
+      });
     }
-  }, [assignRef]);
-  React.useEffect(() => {
-    const model = monaco.editor
-      .getEditors()
-      [EditorContentsStore.veiwIndex]?.getModel();
-    model &&
-      model.setValue(
-        EditorContentsStore.contents[EditorContentsStore.veiwIndex]?.content,
-      );
-  }, [EditorContentsStore.contents[EditorContentsStore.veiwIndex].content]);
+  });
 
   const [commitMessage, setCommitMessage] = React.useState(
     'Enter Commit Message',
   );
-  const onReferenceNameChange = (event) => {
+  const onCommitMessageChange = (event) => {
     setCommitMessage(event.target.value);
   };
   const onCommitClick = () => {
@@ -73,28 +69,27 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
   };
 
   return (
-    <div className="editor-flex">
-      {useObserver(() => (
-        <>
+    <Observer>
+      {() => (
+        <div className="editor-flex">
           <div ref={assignRef} className="center-container"></div>
 
           <TextField
-            autoFocus
             margin="dense"
             id="name"
             label="Commit Message"
             type="text"
             fullWidth
             variant="standard"
-            onChange={onReferenceNameChange}
+            onChange={onCommitMessageChange}
           />
           <Button variant="outlined" onClick={onCommitClick}>
             Commit
             <AddIcon />
           </Button>
-        </>
-      ))}
-    </div>
+        </div>
+      )}
+    </Observer>
   );
 };
 

@@ -43,14 +43,16 @@ export const SCM: React.FC = () => {
                       setOpen={setOpenCreateProjectForm}
                     />
                   </AccordionDetails>
-                  {WorkspaceStore.projectList.map((project) => {
-                    return (
-                      <ProjectLink
-                        key={`project-${project.projId}`}
-                        project={project}
-                      />
-                    );
-                  })}
+                  {WorkspaceStore.projectList &&
+                    WorkspaceStore.projectList.length > 0 &&
+                    WorkspaceStore.projectList.map((project) => {
+                      return (
+                        <ProjectLink
+                          key={`project-${project.projId}`}
+                          project={project}
+                        />
+                      );
+                    })}
                 </Accordion>
                 <Divider />
               </div>
@@ -81,14 +83,16 @@ export const SCM: React.FC = () => {
                   setOpen={setOpenCreateReferenceForm}
                 />
               </AccordionDetails>
-              {WorkspaceStore.referenceList.map((reference) => {
-                return (
-                  <ReferenceLink
-                    key={`project-${reference.refId}`}
-                    reference={reference}
-                  />
-                );
-              })}
+              {WorkspaceStore.referenceList &&
+                WorkspaceStore.referenceList.length &&
+                WorkspaceStore.referenceList.map((reference) => {
+                  return (
+                    <ReferenceLink
+                      key={`project-${reference.refId}`}
+                      reference={reference}
+                    />
+                  );
+                })}
             </Accordion>
           )}
         </Observer>
@@ -110,14 +114,16 @@ export const SCM: React.FC = () => {
                     : 'Select Project, please'}
                 </Typography>
               </AccordionSummary>
-              {WorkspaceStore.commitList.map((commit) => {
-                return (
-                  <CommitLink
-                    key={`commit-${commit.commitId}`}
-                    commit={commit}
-                  />
-                );
-              })}
+              {WorkspaceStore.commitList &&
+                WorkspaceStore.commitList.length > 0 &&
+                WorkspaceStore.commitList.map((commit) => {
+                  return (
+                    <CommitLink
+                      key={`commit-${commit.commitId}`}
+                      commit={commit}
+                    />
+                  );
+                })}
             </Accordion>
           )}
         </Observer>
