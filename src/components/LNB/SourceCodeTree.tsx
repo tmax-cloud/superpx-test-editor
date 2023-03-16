@@ -1,7 +1,7 @@
 import * as React from 'react';
 import FolderTree from 'react-folder-tree';
 import WorkspaceStore from '../../stores/workspaceStore';
-import { Observer } from 'mobx-react';
+import { useObserver } from 'mobx-react';
 import { sendMessage } from '../../utils/service-utils';
 import 'react-folder-tree/dist/style.css';
 
@@ -11,6 +11,7 @@ export const SourceCodeTree: React.FC = () => {
     if (isFile) {
       sendMessage('source', 'DetailService', {
         src_id: srcId,
+        commit_id: WorkspaceStore.currentCommit.commitId,
       });
     }
   };
@@ -50,16 +51,14 @@ export const SourceCodeTree: React.FC = () => {
     return resultJson;
   };
 
-  return (
-    <Observer>
-      {() => (
-        <FolderTree
-          data={pathToJson(WorkspaceStore.sourceCodeList)}
-          showCheckbox={false}
-          indentPixels={5}
-          onNameClick={onSourceCodeLinkClick}
-        />
-      )}
-    </Observer>
-  );
+  const Treedata = pathToJson(WorkspaceStore.sourceCodeList);
+
+  return useObserver(() => (
+    <FolderTree
+      data={Treedata}
+      showCheckbox={false}
+      indentPixels={5}
+      onNameClick={onSourceCodeLinkClick}
+    />
+  ));
 };

@@ -9,12 +9,10 @@ const WorkspaceStore = observable({
   superPxWs: {} as WebSocket,
   projectList: [] as Project[],
   currentProject: {} as Project,
-  projectId: 0,
   referenceList: [] as Reference[],
   currentReference: {} as Reference,
   commitList: [] as Commit[],
   currentCommit: {} as Commit,
-  commitId: 0,
   sourceCodeList: [] as SourceCode[],
 
   // action
@@ -51,9 +49,6 @@ const WorkspaceStore = observable({
   updateCurrentProjectAction(project: Project) {
     this.currentProject = project;
   },
-  updateProjectIdAction(projectId: number) {
-    this.projectId = projectId;
-  },
 
   updateReferenceListAction(referenceList: Reference[]) {
     this.referenceList = referenceList;
@@ -66,10 +61,7 @@ const WorkspaceStore = observable({
     this.commitList = commitList;
   },
   updateCurrentCommitAction(commit: Commit) {
-    this.currentcommit = commit;
-  },
-  updateCommitIdAction(commitId: number) {
-    this.commitId = commitId;
+    this.currentCommit = commit;
   },
 
   updateSourceCodeListAction(sourceCodeList: SourceCode[]) {

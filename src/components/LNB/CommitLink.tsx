@@ -3,9 +3,11 @@ import { sendMessage } from '../../utils/service-utils';
 import { Button } from '@mui/material';
 import EditorContentsStore from '../../stores/editorContentsStore';
 import { Commit } from '../../utils/types';
+import WorkspaceStore from '../../stores/workspaceStore';
 
 export const CommitLink: React.FC<CommitLinkProps> = ({ commit }) => {
   const onCommitinkClick = async () => {
+    WorkspaceStore.updateCurrentCommitAction(commit);
     sendMessage('commit', 'DetailService', {
       commit_id: commit.commitId,
     });
