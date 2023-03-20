@@ -67,6 +67,9 @@ const WorkspaceStore = observable({
   updateSourceCodeListAction(sourceCodeList: SourceCode[]) {
     this.sourceCodeList = sourceCodeList;
   },
+  addSourceCodeAction(sourceCode: SourceCode) {
+    this.sourceCodeList.push(sourceCode);
+  },
 });
 
 export default WorkspaceStore;

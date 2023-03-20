@@ -6,7 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-export default function DialogGNB({
+export default function GNBDialog({
   fullScreen,
   openDialog,
   handleCloseDialog,

@@ -61,28 +61,6 @@ export const EditorLNB: React.FC = () => {
     sendMessage('project', 'ListService', {});
   }, []);
 
-  const ref = React.useRef<HTMLInputElement>(null);
-
-  React.useEffect(() => {
-    if (ref.current !== null) {
-      ref.current.setAttribute('webkitdirectory', '');
-    }
-  }, [ref]);
-
-  const onFileChange = (e) => {
-    const files = e.target.files;
-    for (const file of files) {
-      const fileReader = new FileReader();
-      fileReader.onload = () => {
-        EditorContentsStore.pushContentAction(
-          file.webkitRelativePath,
-          fileReader.result as string,
-        );
-      };
-      fileReader.readAsText(file);
-    }
-  };
-
   const MyDrawer = styled(Drawer)(({ theme }) => ({
     '& .MuiPaper-root': {
       overflowX: 'hidden',
@@ -139,18 +117,10 @@ export const EditorLNB: React.FC = () => {
                 {lnb === 'explorer' && <Explorer />}
                 {lnb === 'search' && <div className="editor-lnb-drawer"></div>}
                 {lnb === 'scm' && <SCM />}
-                {lnb === 'debug' && (
-                  <div className="editor-lnb-drawer">
-                    <input
-                      ref={ref}
-                      type="file"
-                      onChange={onFileChange}
-                      multiple={true}
-                      accept=".java"
-                    />
-                  </div>
+                {lnb === 'debug' && <div className="editor-lnb-drawer"></div>}
+                {lnb === 'extension' && (
+                  <div className="editor-lnb-drawer"></div>
                 )}
-                {lnb === 'extension' && <div className="editor-lnb-drawer"></div>}
               </Drawer>
             </>
           ),

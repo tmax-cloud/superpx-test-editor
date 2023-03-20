@@ -4,7 +4,9 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import DialogGNB from './DialogGNB';
+// import GNBDialog from './GNBDialog';
+import { ImportFileDialog } from './ImportFileDialog';
+import { ImportDirectoryDialog } from './ImportDirectoryDialog';
 
 export const EditorGNB = () => {
   const menus = [
@@ -18,7 +20,7 @@ export const EditorGNB = () => {
     // 'help',
   ];
   const menusAction = {
-    file: ['Import Directory', 'Import File'],
+    file: ['Import File', 'Import Directory'],
     // edit: ['editAction1', 'editAction2'],
     // select: ['selectAction1', 'selectAction2'],
     // view: ['viewAction1', 'viewAction2'],
@@ -29,7 +31,7 @@ export const EditorGNB = () => {
   };
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [openMenu, setOpenMenu] = React.useState({});
-  const [actionState, setActionState] = React.useState('');
+  // const [actionState, setActionState] = React.useState('');
 
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -37,10 +39,10 @@ export const EditorGNB = () => {
     setAnchorEl(event.currentTarget);
   };
   const getActions = (action) => {
-    setActionState(action);
+    // setActionState(action);
     switch (action) {
       case 'Import Directory':
-        handleImportDiretory();
+        handleImportDirectory();
         break;
       case 'Import File':
         handleImportFile();
@@ -50,21 +52,31 @@ export const EditorGNB = () => {
         break;
     }
   };
-  const [openDialog, setOpenDialog] = React.useState(false);
+
+  // const [openDialog, setOpenDialog] = React.useState(false);
+  const [openFileImportDialog, setOpenFileImportDialog] = React.useState(false);
+  const [openDirectoryImportDialog, setOpenDirectoryImportDialog] =
+    React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
+  // const handleCloseDialog = () => {
+  //   setOpenDialog(false);
+  // };
+  const handleCloseImportDirectoryDialog = () => {
+    setOpenDirectoryImportDialog(false);
+  };
+  const handleCloseImportFileDialog = () => {
+    setOpenFileImportDialog(false);
   };
 
-  const handleImportDiretory = () => {
-    setOpenDialog(true);
+  const handleImportDirectory = () => {
+    setOpenDirectoryImportDialog(true);
     setOpenMenu({});
     setAnchorEl(null);
   };
 
   const handleImportFile = () => {
-    setOpenDialog(true);
+    setOpenFileImportDialog(true);
     setOpenMenu({});
     setAnchorEl(null);
   };
@@ -72,6 +84,7 @@ export const EditorGNB = () => {
     setOpenMenu({});
     setAnchorEl(null);
   };
+
   return (
     <div className="gnb">
       <div>
@@ -114,11 +127,23 @@ export const EditorGNB = () => {
         })}
       </div>
 
-      <DialogGNB
+      {/* <GNBDialog
         fullScreen={fullScreen}
         openDialog={openDialog}
         handleCloseDialog={handleCloseDialog}
         actionState={actionState}
+      /> */}
+
+      <ImportFileDialog
+        fullScreen={fullScreen}
+        openDialog={openFileImportDialog}
+        handleCloseDialog={handleCloseImportFileDialog}
+      />
+
+      <ImportDirectoryDialog
+        fullScreen={fullScreen}
+        openDialog={openDirectoryImportDialog}
+        handleCloseDialog={handleCloseImportDirectoryDialog}
       />
     </div>
   );

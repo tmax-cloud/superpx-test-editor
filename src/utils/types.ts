@@ -18,10 +18,11 @@ export type Commit = {
 };
 
 export type SourceCode = {
-  srcHistId: number;
-  createdTime: string;
-  commitId: number;
+  srcHistId?: number;
+  createdTime?: string;
+  commitId?: number;
   srcPath: string;
-  srcId: number;
+  srcId?: number;
   content?: string;
+  newfile?: boolean;
 };

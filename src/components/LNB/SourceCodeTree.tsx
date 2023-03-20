@@ -4,15 +4,21 @@ import WorkspaceStore from '../../stores/workspaceStore';
 import { Observer } from 'mobx-react';
 import { sendMessage } from '../../utils/service-utils';
 import 'react-folder-tree/dist/style.css';
+import EditorContentsStore from '../../stores/editorContentsStore';
 
 export const SourceCodeTree: React.FC = () => {
   const onSourceCodeLinkClick = ({ nodeData }) => {
-    const { isFile, srcId } = nodeData;
+    const { isFile, srcId, newfile, srcPath, content } = nodeData;
     if (isFile) {
-      sendMessage('source', 'DetailService', {
-        src_id: srcId,
-        commit_id: WorkspaceStore.currentCommit.commitId,
-      });
+      if (newfile) {
+        EditorContentsStore.updateContentAction(srcPath, content)
+        
+      } else {
+        sendMessage('source', 'DetailService', {
+          src_id: srcId,
+          commit_id: WorkspaceStore.currentCommit.commitId,
+        });
+      }
     }
   };
 
@@ -37,6 +43,9 @@ export const SourceCodeTree: React.FC = () => {
               name: nodePath,
               srcId: srcId,
               isFile: true,
+              newfile: src.newfile,
+              srcPath: src.srcPath,
+              content: src.content
             });
           else
             node.children.push({
