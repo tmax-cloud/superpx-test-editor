@@ -69,6 +69,7 @@ const referenceInsertService = (data) => {
     projId: data.projId,
     refId: data.refId,
     type: data.type,
+    newReference: true,
   });
   setAlert(
     'Reference Insert Service Call',
@@ -81,11 +82,18 @@ const referenceInsertService = (data) => {
 };
 const referenceListService = (data) => {
   WorkspaceStore.updateReferenceListAction(data);
-  const mainReference = data.filter((r) => r.name === 'main')[0] || data[0];
-  WorkspaceStore.updateCurrentReferenceAction(mainReference);
+  if (WorkspaceStore.currentReference.newReference) {
+    WorkspaceStore.updateCurrentReferenceAction({
+      ...WorkspaceStore.currentReference,
+      newReference: false,
+    });
+  } else {
+    const mainReference = data.filter((r) => r.name === 'main')[0] || data[0];
+    WorkspaceStore.updateCurrentReferenceAction(mainReference);
+  }
   sendMessage('commit', 'ListService', {
     proj_name: WorkspaceStore.currentProject.name,
-    ref_name: mainReference.name,
+    ref_name: WorkspaceStore.currentReference.name,
   });
   setAlert(
     'Reference List Service Call',
