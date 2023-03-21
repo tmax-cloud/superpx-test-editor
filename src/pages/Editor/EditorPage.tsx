@@ -11,13 +11,16 @@ import { EditorGNB } from '../../components/GNB/EditorGNB';
 export default function EditorPage() {
   const { projectName } = useParams();
   React.useEffect(() => {
-    WorkspaceStore.updateCurrentProjectAction({ name: projectName });
-    sendMessage('reference', 'ListService', {
-      proj_name: projectName,
-    });
     if (projectName) {
+      WorkspaceStore.updateCurrentProjectAction({ name: projectName });
+      sendMessage('reference', 'ListService', {
+        proj_name: projectName,
+      });
       EditorContentsStore.updateEditorLnbInitState('explorer');
       EditorContentsStore.updateShowProjectSelect(false);
+    } else {
+      EditorContentsStore.updateEditorLnbInitState('scm');
+      EditorContentsStore.updateShowProjectSelect(true);
     }
   });
   return (
