@@ -75,6 +75,9 @@ const referenceInsertService = (data) => {
     `Add Reference(${data.name}) to ${WorkspaceStore.currentProject.name}(${WorkspaceStore.currentProject.projId}).`,
     'success',
   );
+  sendMessage('reference', 'ListService', {
+    proj_name: WorkspaceStore.currentProject.name,
+  });
 };
 const referenceListService = (data) => {
   WorkspaceStore.updateReferenceListAction(data);
@@ -111,7 +114,7 @@ const commitInsertService = (data) => {
 const commitListService = (data) => {
   if (data && data.length) {
     WorkspaceStore.updateCommitListAction(data);
-    const lastCommit = data[data.length-1]
+    const lastCommit = data[data.length - 1];
     if (lastCommit) {
       WorkspaceStore.updateCurrentCommitAction(lastCommit);
 
@@ -139,7 +142,7 @@ const commitDetailService = (data) => {
   );
 };
 const sourceDetailService = (data) => {
-  EditorContentsStore.updateContentAction( data.srcPath , data.content );
+  EditorContentsStore.updateContentAction(data.srcPath, data.content);
   setAlert(
     'Source Detail Service Call',
     `Source Detail Service Call`,
