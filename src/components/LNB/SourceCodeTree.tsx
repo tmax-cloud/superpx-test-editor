@@ -8,7 +8,8 @@ import EditorContentsStore from '../../stores/editorContentsStore';
 
 export const SourceCodeTree: React.FC = () => {
   const onSourceCodeLinkClick = ({ nodeData }) => {
-    const { isFile, srcId, newfile, srcPath, content } = nodeData;
+    const { isFile, srcId, newfile, srcPath, content, nodePath } = nodeData;
+    alert(nodePath);
     if (isFile) {
       if (newfile) {
         EditorContentsStore.updateContentAction(srcPath, content)
@@ -32,10 +33,12 @@ export const SourceCodeTree: React.FC = () => {
       let node = resultJson;
       const srcId = src.srcId;
       const nodeArray = src.srcPath.split('/');
+      let nodeTotalPath: string = ''
       nodeArray.forEach((nodePath, index) => {
         if (!node.children) {
           node.children = [];
         }
+        nodeTotalPath += {nodePath}
         let nameArray: Array<String> = node.children.map((child) => child.name);
         if (!nameArray.includes(nodePath)) {
           if (index === nodeArray.length - 1)
@@ -50,6 +53,7 @@ export const SourceCodeTree: React.FC = () => {
           else
             node.children.push({
               name: nodePath,
+              nodePath: nodeTotalPath
             });
         }
         node = node.children.filter(
@@ -60,6 +64,24 @@ export const SourceCodeTree: React.FC = () => {
     return resultJson;
   };
 
+  // const AddFileIcon = ({ onClick: defaultOnClick, nodeData }) => {
+  //   const {
+  //     path,
+  //     name,
+  //     checked,
+  //     isOpen,
+  //   } = nodeData;
+
+  //   // custom event handler
+  //   const handleClick = () => {   
+
+  //     defaultOnClick();
+  //   };
+
+  //   // custom Style
+  //   return onClick={ handleClick };
+  // };
+
   return (
     <Observer>
       {() => (
@@ -69,6 +91,9 @@ export const SourceCodeTree: React.FC = () => {
             showCheckbox={false}
             indentPixels={5}
             onNameClick={onSourceCodeLinkClick}
+            // iconComponents={{
+            //   AddFileIcon,
+            // }}
           />
         </div>
       )}
