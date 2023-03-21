@@ -8,6 +8,7 @@ export type Reference = {
   refId: number;
   projId: number;
   type: number;
+  newReference?: boolean;
 };
 
 export type Commit = {
@@ -25,4 +26,6 @@ export type SourceCode = {
   srcId?: number;
   content?: string;
   newfile?: boolean;
+  edited?: boolean;
+  deleted?: boolean;
 };

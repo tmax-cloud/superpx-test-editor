@@ -8,11 +8,10 @@ import EditorContentsStore from '../../stores/editorContentsStore';
 
 export const SourceCodeTree: React.FC = () => {
   const onSourceCodeLinkClick = ({ nodeData }) => {
-    const { isFile, srcId, newfile, srcPath, content } = nodeData;
+    const { isFile, srcId, newfile, srcPath, content, edited } = nodeData;
     if (isFile) {
-      if (newfile) {
-        EditorContentsStore.updateContentAction(srcPath, content)
-        
+      if (newfile || edited) {
+        EditorContentsStore.updateContentAction(srcPath, content);
       } else {
         sendMessage('source', 'DetailService', {
           src_id: srcId,
@@ -45,7 +44,8 @@ export const SourceCodeTree: React.FC = () => {
               isFile: true,
               newfile: src.newfile,
               srcPath: src.srcPath,
-              content: src.content
+              content: src.content,
+              edited: src.edited,
             });
           else
             node.children.push({
