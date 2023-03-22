@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import { observable } from 'mobx';
 import { setAlert } from '../utils/alert-utils';
 import { services } from '../utils/service-utils';
@@ -69,6 +70,13 @@ const WorkspaceStore = observable({
   },
   addSourceCodeAction(sourceCode: SourceCode) {
     this.sourceCodeList.push(sourceCode);
+  },
+  updateSourceCodeAction(sourceCode: SourceCode) {
+    this.sourceCodeList.filter((s) => s.srcPath === sourceCode.srcPath)[0] =
+      _.merge(
+        this.sourceCodeList.filter((s) => s.srcPath === sourceCode.srcPath)[0],
+        sourceCode,
+      );
   },
 });
 
