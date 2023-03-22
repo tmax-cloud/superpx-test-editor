@@ -71,17 +71,15 @@ const WorkspaceStore = observable({
   addSourceCodeAction(sourceCode: SourceCode) {
     this.sourceCodeList.push(sourceCode);
   },
-<<<<<<< HEAD
   addNewSourceCodeAction(sourceCode: SourceCode) {
     this.sourceCodeList.push(sourceCode);
-=======
+  },
   updateSourceCodeAction(sourceCode: SourceCode) {
     this.sourceCodeList.filter((s) => s.srcPath === sourceCode.srcPath)[0] =
       _.merge(
         this.sourceCodeList.filter((s) => s.srcPath === sourceCode.srcPath)[0],
         sourceCode,
       );
->>>>>>> 36ffe6cc5619e28229204fb1c5915fb15d1e42b0
   },
 });
 
