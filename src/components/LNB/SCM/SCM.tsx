@@ -14,6 +14,10 @@ import WorkspaceStore from '../../../stores/workspaceStore';
 import { Observer } from 'mobx-react';
 import { wsUrl } from '../../../utils/constants';
 import EditorContentsStore from '../../../stores/editorContentsStore';
+import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
+import TextField from '@mui/material/TextField';
+import { sendMessage } from '../../../utils/service-utils';
 
 export const SCM: React.FC = () => {
   const [openCreateProjectForm, setOpenCreateProjectForm] =
@@ -21,11 +25,52 @@ export const SCM: React.FC = () => {
   const [openCreateReferenceForm, setOpenCreateReferenceForm] =
     React.useState(false);
 
+  const [commitMessage, setCommitMessage] = React.useState(
+    'Enter Commit Message',
+  );
+  const onCommitMessageChange = (event) => {
+    setCommitMessage(event.target.value);
+  };
+  const onCommitClick = () => {
+    const modifiedSrc = WorkspaceStore.sourceCodeList
+      .filter((s) => s.newfile === true || s.edited)
+      .map((src) => {
+        return { src_path: src.srcPath, content: src.content };
+      });
+
+    const deletedSrc = WorkspaceStore.sourceCodeList
+      .filter((s) => s.deleted === true)
+      .map((src) => {
+        return { src_path: src.srcPath };
+      });
+
+    sendMessage('commit', 'InsertService', {
+      proj_name: WorkspaceStore.currentProject.name,
+      ref_name: WorkspaceStore.currentReference.name,
+      commit: { message: commitMessage, is_commit: true },
+      modified_src: modifiedSrc,
+      deleted_src: deletedSrc,
+    });
+  };
+
   return (
     <div className="editor-lnb-drawer">
       <Observer>
         {() => (
           <>
+            <TextField
+              margin="dense"
+              id="name"
+              label="Commit Message"
+              type="text"
+              fullWidth
+              variant="standard"
+              onChange={onCommitMessageChange}
+            />
+            <Button variant="outlined" onClick={onCommitClick}>
+              Commit
+              <AddIcon />
+            </Button>
             {EditorContentsStore.showProjectSelect && (
               <div>
                 <h3 className="list-title">Project List</h3>
