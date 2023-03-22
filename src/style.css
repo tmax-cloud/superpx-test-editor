@@ -231,3 +231,31 @@ body,
   width: 0;
   height: 0;
 }
+.detail-body {
+  height: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.detail-main {
+  height: 130;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 100px;
+}
+.detail-in-flex,
+.detail-in-flex-under {
+  display: flex;
+  gap: 12px;
+  z-index: 1;
+}
+.detail-in-flex-under {
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+}
+.detail-drop-down {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+}
