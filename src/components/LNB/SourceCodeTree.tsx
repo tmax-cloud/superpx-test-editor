@@ -78,12 +78,14 @@ export const SourceCodeTree: React.FC = () => {
     });
     return resultJson;
   };
+  pathToJson(WorkspaceStore.sourceCodeList);
 
   const AddFileIcon = ({ nodeData }) => {
     const { nodePath } = nodeData;
 
     // custom event handler
     const handleClick = () => {
+      setIsFile(true);
       handleOpenModal(nodePath);
       // defaultOnClick();
     };
@@ -97,7 +99,8 @@ export const SourceCodeTree: React.FC = () => {
 
     // custom event handler
     const handleClick = () => {
-      defaultOnClick();
+      setIsFile(false);
+      handleOpenModal(nodePath);
     };
 
     // custom Style
@@ -149,20 +152,60 @@ export const SourceCodeTree: React.FC = () => {
   const [showModal, setShowModal] = React.useState(false);
   const [inputValue, setInputValue] = React.useState('');
   const [pathValue, setPathValue] = React.useState('');
+  const [isFile, setIsFile] = React.useState(false);
   const handleOpenModal = (NodePath) => {
     setShowModal(true);
-    setPathValue(NodePath)
+    setPathValue(NodePath);
   };
 
   const handleCreateModal = () => {
-    const newFilePath = pathValue + inputValue;
+    if (isFile) {
+      let newFilePath = pathValue + inputValue;
+      let copyNum = 1;
+      for (
+        copyNum;
+        WorkspaceStore.sourceCodeList.filter((s) => s.srcPath === newFilePath)
+          .length === 1;
+        copyNum++
+      ) {
+        newFilePath = pathValue + inputValue;
+        newFilePath += '(' + copyNum + ')';
+      }
+
       WorkspaceStore.addNewSourceCodeAction({
         srcPath: newFilePath,
-        newfile: true, 
+        newfile: true,
       });
       EditorContentsStore.updateContentAction(newFilePath, '');
-    setShowModal(false);
-    setInputValue('');
+      setShowModal(false);
+      setInputValue('');
+    } else {
+      let node = resultJson;
+      let newFilePath = pathValue + inputValue;
+      const nodeArray = newFilePath.split('/');
+      let nodeTotalPath: string = '';
+      nodeArray.forEach((nodePath, index) => {
+        if (!node.children) {
+          node.children = [];
+        }
+        nodeTotalPath += nodePath;
+        nodeTotalPath += '/';
+        let nameArray: Array<String> = node.children.map((child) => child.name);
+        if (!nameArray.includes(nodePath)) {
+            node.children.push({
+              name: nodePath,
+              nodePath: nodeTotalPath,
+              children: [],
+            });
+        }
+        node = node.children.filter(
+          (pathList) => pathList.name === nodePath,
+        )[0];
+      });
+      setShowModal(false);
+      setInputValue('');
+    }
+    return resultJson;
   };
   const handleCancelModal = () => {
     setShowModal(false);
@@ -176,48 +219,74 @@ export const SourceCodeTree: React.FC = () => {
     <Observer>
       {() => (
         <div>
-        <div className="source-code-tree">
-          <FolderTree
-            data={pathToJson(WorkspaceStore.sourceCodeList)}
-            showCheckbox={false}
-            indentPixels={5}
-            onNameClick={onSourceCodeLinkClick}
-            iconComponents={{
-              AddFileIcon,
-              AddFolderIcon,
-              CancelIcon,
-              DeleteIcon,
-              EditIcon,
-              FolderIcon,
-              FolderOpenIcon,
-              FileIcon,
-            }}
-          />
-        </div>
-        <div>
-        <Dialog open={showModal} onClose={handleCancelModal}>
-          <DialogTitle> File name</DialogTitle>
-          <DialogContent>
-            <DialogContentText>Please enter a file name</DialogContentText>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label="file name"
-              type="email"
-              fullWidth
-              variant="standard"
-              value={inputValue}
-              onChange={handleInputChange}
+          <div className="source-code-tree">
+            <FolderTree
+              data={resultJson}
+              showCheckbox={false}
+              indentPixels={5}
+              onNameClick={onSourceCodeLinkClick}
+              iconComponents={{
+                AddFileIcon,
+                AddFolderIcon,
+                CancelIcon,
+                DeleteIcon,
+                EditIcon,
+                FolderIcon,
+                FolderOpenIcon,
+                FileIcon,
+              }}
             />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCancelModal}>Cancel</Button>
-            <Button onClick={handleCreateModal}>Create</Button>
-          </DialogActions>
-        </Dialog>
-      </div>
-      </div>
+          </div>
+          <div>
+            <Dialog open={showModal} onClose={handleCancelModal}>
+              {isFile ? (
+                <div>
+                  <DialogTitle> File name</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText>
+                      Please enter a file name
+                    </DialogContentText>
+                    <TextField
+                      autoFocus
+                      margin="dense"
+                      id="name"
+                      label="file name"
+                      type="email"
+                      fullWidth
+                      variant="standard"
+                      value={inputValue}
+                      onChange={handleInputChange}
+                    />
+                  </DialogContent>
+                </div>
+              ) : (
+                <div>
+                  <DialogTitle> Folder name</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText>
+                      Please enter a folder name
+                    </DialogContentText>
+                    <TextField
+                      autoFocus
+                      margin="dense"
+                      id="name"
+                      label="folder name"
+                      type="email"
+                      fullWidth
+                      variant="standard"
+                      value={inputValue}
+                      onChange={handleInputChange}
+                    />
+                  </DialogContent>
+                </div>
+              )}
+              <DialogActions>
+                <Button onClick={handleCancelModal}>Cancel</Button>
+                <Button onClick={handleCreateModal}>Create</Button>
+              </DialogActions>
+            </Dialog>
+          </div>
+        </div>
       )}
     </Observer>
   );
