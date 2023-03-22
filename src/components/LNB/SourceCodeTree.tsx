@@ -25,9 +25,13 @@ import TextField from '@mui/material/TextField';
 
 export const SourceCodeTree: React.FC = () => {
   const onSourceCodeLinkClick = ({ nodeData }) => {
-    const { isFile, srcId, newfile, srcPath, content } = nodeData;
+    const { isFile, srcId, newfile, srcPath, content, edited } = nodeData;
     if (isFile) {
+<<<<<<< HEAD
       if (newfile) {
+=======
+      if (newfile || edited) {
+>>>>>>> 36ffe6cc5619e28229204fb1c5915fb15d1e42b0
         EditorContentsStore.updateContentAction(srcPath, content);
       } else {
         sendMessage('source', 'DetailService', {
@@ -63,6 +67,10 @@ export const SourceCodeTree: React.FC = () => {
               newfile: src.newfile,
               srcPath: src.srcPath,
               content: src.content,
+<<<<<<< HEAD
+=======
+              edited: src.edited,
+>>>>>>> 36ffe6cc5619e28229204fb1c5915fb15d1e42b0
             });
           else
             node.children.push({

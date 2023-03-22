@@ -14,9 +14,9 @@ export const GNB = () => {
         <Link to="/projects">
           <p className="top-menu-text-left">Projects</p>
         </Link>
-        <Link to="/groups">
+        {/* <Link to="/groups">
           <p className="top-menu-text">Groups</p>
-        </Link>
+        </Link> */}
         <Link
           to="/editor"
           onClick={() => {
