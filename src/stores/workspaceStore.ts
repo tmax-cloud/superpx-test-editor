@@ -70,6 +70,9 @@ const WorkspaceStore = observable({
   addSourceCodeAction(sourceCode: SourceCode) {
     this.sourceCodeList.push(sourceCode);
   },
+  addNewSourceCodeAction(sourceCode: SourceCode) {
+    this.sourceCodeList.push(sourceCode);
+  },
 });
 
 export default WorkspaceStore;
