@@ -1,67 +1,59 @@
 import * as React from 'react';
-import FolderTree from 'react-folder-tree';
-import 'react-folder-tree/dist/style.css';
-function createTreeData(sourceCodeList) {
-  const treeData = [];
+import { List, ListItem, ListItemText } from '@mui/material';
+import * as _ from 'lodash';
 
-  sourceCodeList.forEach((item) => {
-    const pathParts = item.srcPath.split('/');
-    let currentLevel = treeData;
+export const getFolderStructure = (srcList) => {
+  const structure = {};
 
-    pathParts.forEach((part, index) => {
-      const existingPath = currentLevel.find((level) => level.name === part);
+  srcList.forEach((item) => {
+    const path = item.srcPath.split('/');
 
-      if (existingPath) {
-        currentLevel = existingPath.children;
-      } else {
-        const newPart = {
-          name: part,
-          children: [],
-          isFile: index === pathParts.length - 1,
-          srcHistId: item.srcHistId,
-          createdTime: item.createdTime,
-          commitId: item.commitId,
-          srcId: item.srcId,
-        };
-
-        currentLevel.push(newPart);
-
-        if (!newPart.isFile) {
-          currentLevel = newPart.children;
-        }
+    let currentLevel = structure;
+    for (let i = 0; i < path.length; i++) {
+      const folder = path[i];
+      if (!currentLevel[folder]) {
+        currentLevel[folder] = i === path.length - 1 ? 'file' : {};
       }
-    });
+      currentLevel = currentLevel[folder];
+    }
   });
+  return structure;
+};
 
-  return treeData;
-}
-function FileTreeView({ sourceCodeList }) {
-  const [treeData, setTreeData] = React.useState([]);
+const FileTreeView = ({ structure, currentPath, onClick }) => {
+  const pathString = currentPath.join('.');
+  const currentFolder =
+    currentPath.length === 0 ? structure : _.get(structure, pathString);
 
-  React.useEffect(() => {
-    setTreeData(createTreeData(sourceCodeList));
-  }, [sourceCodeList]);
+  if (!currentFolder) {
+    return null;
+  }
 
   return (
-    <div>
-      <FolderTree
-        data={treeData}
-        headerTemplate={({ item }) => (
-          <>
-            {item.isFile ? (
-              <i className="file-icon" />
-            ) : (
-              <i className="folder-icon" />
-            )}
-            <span>{item.name}</span>
-          </>
-        )}
-        onItemClick={({ item }) => {
-          console.log(1234, 'File clicked:', item);
-        }}
-      />
-    </div>
-  );
-}
+    <List>
+      {Object.keys(currentFolder).map((key) => {
+        const newPath = [...currentPath, key];
+        const newPathString = newPath.join('.');
 
+        if (currentFolder[key] === 'file') {
+          return (
+            <ListItem key={newPathString}>
+              <ListItemText primary={`📄 ${key}`} />
+            </ListItem>
+          );
+        } else {
+          return (
+            <ListItem
+              key={newPathString}
+              button
+              onClick={() => onClick(newPath)}
+            >
+              <ListItemText primary={`📁 ${key}`} />
+            </ListItem>
+          );
+        }
+      })}
+    </List>
+  );
+};
 export default FileTreeView;
