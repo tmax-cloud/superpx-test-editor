@@ -35,13 +35,9 @@ export const SCM: React.FC = () => {
     const modifiedSrc = WorkspaceStore.sourceCodeList
       .filter((s) => s.newfile === true || s.edited)
       .map((src) => {
-        const contentbyte = [];
-        for (let i = 0; i < src.content.length; i++) {
-          contentbyte.push(src.content.charCodeAt(i));
-        }
         return {
           src_path: src.srcPath,
-          content: contentbyte,
+          content: src.content,
         };
       });
 
