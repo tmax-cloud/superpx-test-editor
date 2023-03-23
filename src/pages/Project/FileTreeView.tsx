@@ -9,7 +9,7 @@ export const getFolderStructure = (srcList) => {
     const path = item.srcPath.split('/');
 
     let currentLevel = structure;
-    for (let i = 0; i < path.length; i++) {
+    for (let i = 1; i < path.length; i++) {
       const folder = path[i];
       if (!currentLevel[folder]) {
         currentLevel[folder] = i === path.length - 1 ? 'file' : {};
@@ -28,10 +28,23 @@ const FileTreeView = ({ structure, currentPath, onClick }) => {
   if (!currentFolder) {
     return null;
   }
+  const files = [];
+  const folders = [];
+  Object.keys(currentFolder).forEach((key) => {
+    if (currentFolder[key] === 'file') {
+      files.push(key);
+    } else {
+      folders.push(key);
+    }
+  });
+
+  files.sort();
+  folders.sort();
+  const sortedKeys = [...folders, ...files];
 
   return (
     <List>
-      {Object.keys(currentFolder).map((key) => {
+      {sortedKeys.map((key) => {
         const newPath = [...currentPath, key];
         const newPathString = newPath.join('.');
 

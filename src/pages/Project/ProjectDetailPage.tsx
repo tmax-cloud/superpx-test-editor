@@ -161,6 +161,7 @@ const ProjectDetailPage: React.FC = () => {
               >
                 main
               </Button>
+              <div>{currentPath.join('/')}</div>
               <Button
                 id="demo-customized-button"
                 aria-controls={open ? 'demo-customized-menu' : undefined}
@@ -177,9 +178,10 @@ const ProjectDetailPage: React.FC = () => {
             <Box>
               {currentPath.length > 0 && (
                 <Box mb={1}>
-                  <Button onClick={handleBack}>{`< Back`}</Button>
+                  <Button onClick={handleBack}>{`../`}</Button>
                 </Box>
               )}
+
               <FileTreeView
                 structure={folderStructure}
                 currentPath={currentPath}
