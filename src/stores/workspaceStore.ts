@@ -71,6 +71,9 @@ const WorkspaceStore = observable({
   addSourceCodeAction(sourceCode: SourceCode) {
     this.sourceCodeList.push(sourceCode);
   },
+  addNewSourceCodeAction(sourceCode: SourceCode) {
+    this.sourceCodeList.push(sourceCode);
+  },
   updateSourceCodeAction(sourceCode: SourceCode) {
     this.sourceCodeList.filter((s) => s.srcPath === sourceCode.srcPath)[0] =
       _.merge(

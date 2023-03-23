@@ -1,16 +1,18 @@
 import * as React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import WorkspaceStore from '../../stores/workspaceStore';
 import { Observer, observer } from 'mobx-react';
 import { Avatar } from '@mui/material';
 import { sendMessage } from '../../utils/service-utils';
-import { toJS } from 'mobx';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import FileTreeView from './FileTreeView';
+import FileTreeView, { getFolderStructure } from './FileTreeView';
+import { Box } from '@mui/material';
 
 const ProjectDetailPage: React.FC = () => {
   const { projectName } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   React.useEffect(() => {
     WorkspaceStore.updateCurrentProjectAction({ name: projectName });
@@ -26,12 +28,28 @@ const ProjectDetailPage: React.FC = () => {
     }
   }, [WorkspaceStore.currentCommit.commitId]);
 
+  const folderStructure = getFolderStructure(WorkspaceStore.sourceCodeList);
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleClickBtn = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
-
+  const [currentPath, setCurrentPath] = React.useState([]);
+  const handleBack = () => {
+    if (currentPath.length > 0) {
+      const newPath = currentPath.slice(0, -1);
+      setCurrentPath(newPath);
+      navigate(newPath.join('/'));
+    }
+  };
+  React.useEffect(() => {
+    const newPath = location.pathname
+      .replace(`/projects/${projectName}`, '')
+      .split('/')
+      .filter((part) => part.length > 0);
+    setCurrentPath(newPath);
+  }, [location.pathname]);
   return (
     <div className="detail-body">
       <div className="detail-main">
@@ -103,7 +121,13 @@ const ProjectDetailPage: React.FC = () => {
               >
                 {'IC'}
               </Avatar>
-              <p>{WorkspaceStore.referenceList.length} Branches</p>
+              <p>
+                {
+                  WorkspaceStore.referenceList.filter((item) => item.type === 0)
+                    .length
+                }{' '}
+                Branches
+              </p>
               <Avatar
                 sx={{
                   bgcolor: 'primary.main',
@@ -116,7 +140,13 @@ const ProjectDetailPage: React.FC = () => {
               >
                 {'IC'}
               </Avatar>
-              <p>Tags</p>
+              <p>
+                {
+                  WorkspaceStore.referenceList.filter((item) => item.type !== 0)
+                    .length
+                }{' '}
+                Tags
+              </p>
             </div>
             <div className="detail-drop-down">
               <Button
@@ -126,11 +156,12 @@ const ProjectDetailPage: React.FC = () => {
                 aria-expanded={open ? 'true' : undefined}
                 variant="contained"
                 disableElevation
-                onClick={handleClick}
+                onClick={handleClickBtn}
                 endIcon={<KeyboardArrowDownIcon />}
               >
                 main
               </Button>
+              <div>{currentPath.join('/')}</div>
               <Button
                 id="demo-customized-button"
                 aria-controls={open ? 'demo-customized-menu' : undefined}
@@ -138,17 +169,28 @@ const ProjectDetailPage: React.FC = () => {
                 aria-expanded={open ? 'true' : undefined}
                 variant="contained"
                 disableElevation
-                onClick={handleClick}
+                onClick={handleClickBtn}
                 endIcon={<KeyboardArrowDownIcon />}
               >
                 Add file
               </Button>
             </div>
-            {/* {WorkspaceStore.sourceCodeList?.length && (
-              <div>
-                <FileTreeView sourceCodeList={WorkspaceStore.sourceCodeList} />
-              </div>
-            )} */}
+            <Box>
+              {currentPath.length > 0 && (
+                <Box mb={1}>
+                  <Button onClick={handleBack}>{`../`}</Button>
+                </Box>
+              )}
+
+              <FileTreeView
+                structure={folderStructure}
+                currentPath={currentPath}
+                onClick={(path) => {
+                  setCurrentPath(path);
+                  navigate(`${path.join('/')}`);
+                }}
+              />
+            </Box>
           </>
         )}
       </Observer>

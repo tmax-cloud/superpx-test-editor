@@ -47,12 +47,6 @@ const EditorContentsStore = observable({
     this.contents[index].content = content;
   },
 
-  pushContentAction(path: string, content: string) {
-    const currentContents = this.contents
-    this.contents = [{ path: path, content: content }, ...currentContents];
-    this.viewIndex = 0;
-  },
-
   getContentAction(path: string) {
     return this.contents.filter((c) => {
       return c.path === path;
