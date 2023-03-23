@@ -29,3 +29,18 @@ export type SourceCode = {
   edited?: boolean;
   deleted?: boolean;
 };
+
+export type FolderTreeData = {
+  name: string;
+  nodePath?: string;
+  srcPath?: string;
+  srcId?: number;
+  content?: string;
+  newfile?: boolean;
+  edited?: boolean;
+  children?: Array<FolderTreeData>;
+  _id?: number;
+  checked?: number;
+  isOpen?: boolean;
+  isFile?: boolean;
+};

@@ -81,6 +81,9 @@ const WorkspaceStore = observable({
         sourceCode,
       );
   },
+  pushSourceCodeListAction() {
+    return this.sourceCodeList;
+  },
 });
 
 export default WorkspaceStore;
