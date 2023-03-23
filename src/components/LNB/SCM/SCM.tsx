@@ -33,7 +33,7 @@ export const SCM: React.FC = () => {
   };
   const onCommitClick = () => {
     const modifiedSrc = WorkspaceStore.sourceCodeList
-      .filter((s) => s.newfile === true || s.edited)
+      .filter((s) => s.newfile || s.edited)
       .map((src) => {
         return {
           src_path: src.srcPath,
