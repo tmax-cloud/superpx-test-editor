@@ -9,7 +9,7 @@ import { BaseAlert } from './components/Alert/Alert';
 import EditorPage from './pages/Editor/EditorPage';
 import { NotFound } from './components/ErrorPage/404';
 import WorkspaceStore from './stores/workspaceStore';
-import WelcomePage from './pages/Welcome'
+import WelcomePage from './pages/Welcome';
 import AboutPage from './pages/AboutPage';
 import ProjectPage from './pages/Project/ProjectPage';
 import ProjectDetailPage from './pages/Project/ProjectDetailPage';
@@ -46,12 +46,12 @@ const router = createHashRouter([
         element: <ProjectPage />,
       },
       {
-        path: 'projects/:projectName',
-        element: <ProjectDetailPage />,
-      },
-      {
         path: 'projects/:projectName/editor',
         element: <EditorPage />,
+      },
+      {
+        path: 'projects/:projectName/*',
+        element: <ProjectDetailPage />,
       },
       {
         path: 'groups',
