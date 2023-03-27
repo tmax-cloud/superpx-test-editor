@@ -6,7 +6,6 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import AddIcon from '@mui/icons-material/Add';
 import { sendMessage } from '../../utils/service-utils';
 
 export const CreateProjectForm: React.FC<CreateProjectFormProps> = ({
@@ -36,13 +35,12 @@ export const CreateProjectForm: React.FC<CreateProjectFormProps> = ({
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>
-        Create Project
-        <AddIcon />
+        New Project
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Create Project</DialogTitle>
+        <DialogTitle>New Project</DialogTitle>
         <DialogContent>
-          <DialogContentText>Create Project</DialogContentText>
+          <DialogContentText>New Project</DialogContentText>
           <TextField
             autoFocus
             margin="dense"

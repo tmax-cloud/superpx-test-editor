@@ -29,7 +29,6 @@ const ProjectDetailPage: React.FC = () => {
   const [readme, setReadme] = React.useState('');
   React.useEffect(() => {
     EditorContentsStore.initContentAction();
-
     if (WorkspaceStore.sourceCodeList.length) {
       WorkspaceStore.sourceCodeList.map((sourceCode) => {
         const lastSlashIndex = sourceCode.srcPath.lastIndexOf('/');
@@ -119,7 +118,7 @@ const ProjectDetailPage: React.FC = () => {
   };
   const handleCreateModal = () => {
     window.location.hash = `#/projects/${projectName}/editor`;
-    EditorContentsStore.pushContentAction(inputValue, '');
+    EditorContentsStore.updateContentAction(inputValue, '');
     setShowModal(false);
     setInputValue('');
   };
