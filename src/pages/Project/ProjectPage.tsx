@@ -13,8 +13,16 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
-import { TableHead } from '@mui/material';
-
+import {
+  FormControl,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  Select,
+  TableHead,
+  TextField,
+} from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 const StyledTableCell = styled(TableCell)({
   textAlign: 'center',
   verticalAlign: 'middle',
@@ -26,30 +34,93 @@ const ProjectPage: React.FC = () => {
   React.useEffect(() => {
     sendMessage('project', 'ListService', {});
   }, []);
+  const [projectList, setProjectList] = React.useState([]);
+  React.useEffect(() => {
+    setProjectList(WorkspaceStore.projectList);
+  }, [WorkspaceStore.projectList]);
 
+  const [searchInput, setSearchInput] = React.useState('');
+  const handleInputChange = (event) => {
+    setSearchInput(event.target.value);
+  };
+  const [action, setAction] = React.useState('Name');
+  const handleActionChange = (event) => {
+    setAction(event.target.value);
+  };
+  React.useEffect(() => {
+    if (action === 'Name') {
+      const newData = WorkspaceStore.projectList.filter((d) =>
+        d.name.includes(searchInput),
+      );
+      setProjectList(newData);
+      console.log(searchInput);
+    } else if (action === 'Favorite') {
+      console.log(searchInput);
+    } else if (action === 'Last updated') {
+      console.log(searchInput);
+    }
+  }, [searchInput, action]);
   return (
     <Observer>
       {() => (
         <div className="project-page-parent">
           <div className="project-page">
             <div className="project-page-create">
-              <CreateProjectForm
-                open={openCreateProjectForm}
-                setOpen={setOpenCreateProjectForm}
-              />
+              <h1>Projects</h1>
+              <div className="padding-top-new-pro">
+                <CreateProjectForm
+                  open={openCreateProjectForm}
+                  setOpen={setOpenCreateProjectForm}
+                />
+              </div>
+            </div>
+            <div className="project-page-search">
+              <TextField
+                label="Search a project"
+                variant="outlined"
+                value={searchInput}
+                onChange={handleInputChange}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
+                size="small"
+                sx={{ m: 1, minWidth: 120 }}
+              ></TextField>
+              <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                <InputLabel id="demo-select-small">unit</InputLabel>
+                <Select
+                  labelId="demo-select-small"
+                  id="demo-select-small"
+                  value={action}
+                  label="Unit"
+                  onChange={handleActionChange}
+                >
+                  <MenuItem value={'Name'} onClick={() => {}}>
+                    Name
+                  </MenuItem>
+                  <MenuItem value={'Favorite'} onClick={() => {}}>
+                    Favorite
+                  </MenuItem>
+                  <MenuItem value={'Last updated'} onClick={() => {}}>
+                    Last updated
+                  </MenuItem>
+                </Select>
+              </FormControl>
             </div>
             <TableContainer component={Paper}>
               <TableHead>
                 <TableRow>
-                  <StyledTableCell>
-                    <h1>Project List</h1>
-                  </StyledTableCell>
+                  <StyledTableCell></StyledTableCell>
                 </TableRow>
               </TableHead>
 
               <Table sx={{ minWidth: 650 }} size="small">
                 <TableBody>
-                  {WorkspaceStore.projectList.map((project) => (
+                  {projectList.map((project) => (
                     <TableRow key={`project-${project.projId}`}>
                       <StyledTableCell
                         onClick={() => {
