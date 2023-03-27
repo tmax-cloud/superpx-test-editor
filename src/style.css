@@ -193,9 +193,9 @@ body,
 
 .project-page-create {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
   padding: 20px 0px;
+  width: 100%;
 }
 .project-page {
   width: 1080px;
@@ -275,4 +275,12 @@ body,
 .center-align {
   text-align: center;
   color: gray;
+}
+.padding-top-new-pro {
+  padding-top: 30px;
+}
+.project-page-search {
+  display: flex;
+  justify-content: right;
+  width: 100%;
 }
