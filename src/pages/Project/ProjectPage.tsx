@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Observer } from 'mobx-react';
+import { observer, Observer } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { CreateProjectForm } from '../../components/Form/CreateProjectForm';
 import WorkspaceStore from '../../stores/workspaceStore';
@@ -23,17 +23,19 @@ import {
   TextField,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { toJS } from 'mobx';
 const StyledTableCell = styled(TableCell)({
   textAlign: 'center',
   verticalAlign: 'middle',
 });
 
 const ProjectPage: React.FC = () => {
-  const [openCreateProjectForm, setOpenCreateProjectForm] =
-    React.useState(false);
   React.useEffect(() => {
     sendMessage('project', 'ListService', {});
   }, []);
+  const [openCreateProjectForm, setOpenCreateProjectForm] =
+    React.useState(false);
+
   const [projectList, setProjectList] = React.useState([]);
   React.useEffect(() => {
     setProjectList(WorkspaceStore.projectList);
@@ -50,7 +52,7 @@ const ProjectPage: React.FC = () => {
   React.useEffect(() => {
     if (action === 'Name') {
       const newData = WorkspaceStore.projectList.filter((d) =>
-        d.name.includes(searchInput),
+        d.name.toLowerCase().includes(searchInput.toLowerCase()),
       );
       setProjectList(newData);
       console.log(searchInput);
@@ -163,5 +165,4 @@ const ProjectPage: React.FC = () => {
     </Observer>
   );
 };
-
-export default ProjectPage;
+export default observer(ProjectPage);
