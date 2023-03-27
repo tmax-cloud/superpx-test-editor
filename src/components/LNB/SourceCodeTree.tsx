@@ -4,7 +4,6 @@ import WorkspaceStore from '../../stores/workspaceStore';
 import { Observer } from 'mobx-react';
 import { sendMessage } from '../../utils/service-utils';
 import 'react-folder-tree/dist/style.css';
-import FolderTreeStore from '../../stores/folderTreeStore';
 import EditorContentsStore from '../../stores/editorContentsStore';
 import {
   NoteAdd,
@@ -38,11 +37,11 @@ export const SourceCodeTree: React.FC = () => {
       }
     }
   };
-  const resultJson = FolderTreeStore.folderTreeData;
-  // {
-  //   name: WorkspaceStore.currentReference.name,
-  //   children: [],
-  // };
+  const resultJson = {
+    name: WorkspaceStore.currentReference.name,
+    children: [],
+    isOpen: true,
+  };
   const pathToJson = (sourceCodeList) => {
     sourceCodeList.forEach((src) => {
       let node = resultJson;
@@ -67,10 +66,19 @@ export const SourceCodeTree: React.FC = () => {
               content: src.content,
               edited: src.edited,
             });
+          else if (index > 0){
+          node.children.push({
+            name: nodePath,
+            nodePath: nodeTotalPath,
+            isOpen: false,
+          });
+          node.isOpen = false;
+        } 
           else
             node.children.push({
               name: nodePath,
               nodePath: nodeTotalPath,
+              isOpen: false,
             });
         }
         node = node.children.filter(
@@ -78,9 +86,9 @@ export const SourceCodeTree: React.FC = () => {
         )[0];
       });
     });
-    // console.log(resultJson);
-    // return resultJson;
+    return resultJson;
   };
+  pathToJson(WorkspaceStore.sourceCodeList);
 
   const AddFileIcon = ({ nodeData }) => {
     const { nodePath } = nodeData;
@@ -155,22 +163,12 @@ export const SourceCodeTree: React.FC = () => {
   const [inputValue, setInputValue] = React.useState('');
   const [pathValue, setPathValue] = React.useState('');
   const [isFile, setIsFile] = React.useState(false);
-  const [isUpdated, setIsUpdated] = React.useState(false);
-  if(isUpdated === false)
-  {
-    pathToJson(WorkspaceStore.sourceCodeList);
-    FolderTreeStore.initTreeDataAction(WorkspaceStore.currentReference.name);
-    FolderTreeStore.updateTreeDataAction(resultJson);
-    setIsUpdated(true);
-  }
-
   const handleOpenModal = (NodePath) => {
     setShowModal(true);
     setPathValue(NodePath);
   };
 
   const handleCreateModal = () => {
-    console.log('json',resultJson);
     if (isFile) {
       let newFilePath = pathValue + inputValue;
       let copyNum = 1;
@@ -189,7 +187,6 @@ export const SourceCodeTree: React.FC = () => {
         newfile: true,
       });
       EditorContentsStore.updateContentAction(newFilePath, '');
-      FolderTreeStore.addFileAction(newFilePath);
       setShowModal(false);
       setInputValue('');
     } else {
@@ -215,11 +212,10 @@ export const SourceCodeTree: React.FC = () => {
           (pathList) => pathList.name === nodePath,
         )[0];
       });
-      console.log(123,resultJson);
-      FolderTreeStore.updateTreeDataAction(resultJson);
       setShowModal(false);
       setInputValue('');
     }
+    return resultJson;
   };
   const handleCancelModal = () => {
     setShowModal(false);
@@ -235,9 +231,10 @@ export const SourceCodeTree: React.FC = () => {
         <div>
           <div className="source-code-tree">
             <FolderTree
-              data={FolderTreeStore.folderTreeData}
+              data={resultJson}
               showCheckbox={false}
-              indentPixels={5}
+              indentPixels={18}
+              initOpenStatus={false}
               onNameClick={onSourceCodeLinkClick}
               iconComponents={{
                 AddFileIcon,
@@ -249,7 +246,6 @@ export const SourceCodeTree: React.FC = () => {
                 FolderOpenIcon,
                 FileIcon,
               }}
-              onChange={console.log(980,FolderTreeStore.folderTreeData)}
             />
           </div>
           <div>

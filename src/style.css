@@ -216,6 +216,7 @@ body,
   overflow: scroll;
   scrollbar-width: thin;
   background-color: #ffffffc4;
+  font-size: smaller;
 }
 .source-code-tree::-webkit-scrollbar {
   width: 6px;
