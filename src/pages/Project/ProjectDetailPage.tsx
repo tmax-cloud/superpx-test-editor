@@ -3,9 +3,16 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import WorkspaceStore from '../../stores/workspaceStore';
 import { Observer, observer } from 'mobx-react';
-import { Avatar } from '@mui/material';
+import {
+  Avatar,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField,
+} from '@mui/material';
 import { sendMessage } from '../../utils/service-utils';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import FileTreeView, { getFolderStructure } from './FileTreeView';
 import { Box } from '@mui/material';
 import InputLabel from '@mui/material/InputLabel';
@@ -13,11 +20,33 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import EditorContentsStore from '../../stores/editorContentsStore';
+import { toJS } from 'mobx';
+import ReactMarkdown from 'react-markdown';
 
 const ProjectDetailPage: React.FC = () => {
   const { projectName } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  const [readme, setReadme] = React.useState('');
+  React.useEffect(() => {
+    if (WorkspaceStore.sourceCodeList.length) {
+      WorkspaceStore.sourceCodeList.map((sourceCode) => {
+        const lastSlashIndex = sourceCode.srcPath.lastIndexOf('/');
+        const result = sourceCode.srcPath.slice(lastSlashIndex + 1);
+        if (result === 'README.md') {
+          sendMessage('source', 'DetailService', {
+            src_id: sourceCode.srcId,
+            commit_id: sourceCode.commitId,
+          });
+        }
+      });
+    }
+  }, [WorkspaceStore.sourceCodeList]);
+  React.useEffect(() => {
+    setReadme(
+      EditorContentsStore.contents[EditorContentsStore.viewIndex].content,
+    );
+  }, [EditorContentsStore.viewIndex]);
 
   React.useEffect(() => {
     WorkspaceStore.updateCurrentProjectAction({ name: projectName });
@@ -72,6 +101,25 @@ const ProjectDetailPage: React.FC = () => {
 
   const handleActionChange = (event: SelectChangeEvent) => {
     setAction(event.target.value);
+  };
+  const [showModal, setShowModal] = React.useState(false);
+  const [inputValue, setInputValue] = React.useState('');
+
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+  const handleCreateModal = () => {
+    window.location.hash = `#/projects/${projectName}/editor`;
+    EditorContentsStore.pushContentAction(inputValue, '');
+    setShowModal(false);
+    setInputValue('');
+  };
+  const handleCancelModal = () => {
+    setShowModal(false);
+    setInputValue('');
+  };
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
   };
   return (
     <div className="detail-body">
@@ -201,7 +249,9 @@ const ProjectDetailPage: React.FC = () => {
                   label="action"
                   onChange={handleActionChange}
                 >
-                  <MenuItem value={'Add file'}>Add file</MenuItem>
+                  <MenuItem value={'Add file'} onClick={handleOpenModal}>
+                    Add file
+                  </MenuItem>
                 </Select>
               </FormControl>
             </div>
@@ -224,6 +274,30 @@ const ProjectDetailPage: React.FC = () => {
           </>
         )}
       </Observer>
+      <Dialog open={showModal} onClose={handleCancelModal}>
+        <DialogTitle> File name</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Please enter a file name</DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="file name"
+            type="email"
+            fullWidth
+            variant="standard"
+            value={inputValue}
+            onChange={handleInputChange}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancelModal}>Cancel</Button>
+          <Button onClick={handleCreateModal}>Create</Button>
+        </DialogActions>
+      </Dialog>
+      <div className="markdown-container">
+        <ReactMarkdown>{readme}</ReactMarkdown>
+      </div>
     </div>
   );
 };
