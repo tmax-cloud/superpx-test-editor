@@ -40,6 +40,7 @@ export const SourceCodeTree: React.FC = () => {
   const resultJson = {
     name: WorkspaceStore.currentReference.name,
     children: [],
+    isOpen: true,
   };
   const pathToJson = (sourceCodeList) => {
     sourceCodeList.forEach((src) => {
@@ -65,10 +66,19 @@ export const SourceCodeTree: React.FC = () => {
               content: src.content,
               edited: src.edited,
             });
+          else if (index > 0){
+          node.children.push({
+            name: nodePath,
+            nodePath: nodeTotalPath,
+            isOpen: false,
+          });
+          node.isOpen = false;
+        } 
           else
             node.children.push({
               name: nodePath,
               nodePath: nodeTotalPath,
+              isOpen: false,
             });
         }
         node = node.children.filter(
@@ -223,7 +233,8 @@ export const SourceCodeTree: React.FC = () => {
             <FolderTree
               data={resultJson}
               showCheckbox={false}
-              indentPixels={5}
+              indentPixels={18}
+              initOpenStatus={false}
               onNameClick={onSourceCodeLinkClick}
               iconComponents={{
                 AddFileIcon,
