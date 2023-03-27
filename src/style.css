@@ -260,3 +260,19 @@ body,
   align-items: center;
   padding-top: 20px;
 }
+.custom-list-item {
+  display: flex;
+  justify-content: space-between;
+}
+.left-align {
+  text-align: left;
+  width: 300px;
+}
+.right-align {
+  text-align: right;
+  color: gray;
+}
+.center-align {
+  text-align: center;
+  color: gray;
+}
