@@ -28,6 +28,8 @@ const ProjectDetailPage: React.FC = () => {
   const location = useLocation();
   const [readme, setReadme] = React.useState('');
   React.useEffect(() => {
+    EditorContentsStore.initContentAction();
+
     if (WorkspaceStore.sourceCodeList.length) {
       WorkspaceStore.sourceCodeList.map((sourceCode) => {
         const lastSlashIndex = sourceCode.srcPath.lastIndexOf('/');
@@ -42,9 +44,17 @@ const ProjectDetailPage: React.FC = () => {
     }
   }, [WorkspaceStore.sourceCodeList]);
   React.useEffect(() => {
-    setReadme(
-      EditorContentsStore.contents[EditorContentsStore.viewIndex].content,
-    );
+    if (
+      EditorContentsStore.contents[EditorContentsStore.viewIndex].path.includes(
+        'README.md',
+      )
+    ) {
+      setReadme(
+        EditorContentsStore.contents[EditorContentsStore.viewIndex].content,
+      );
+    } else {
+      setReadme('');
+    }
   }, [EditorContentsStore.viewIndex]);
 
   React.useEffect(() => {
