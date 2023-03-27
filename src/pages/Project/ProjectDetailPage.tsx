@@ -20,7 +20,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import EditorContentsStore from '../../stores/editorContentsStore';
-import { toJS } from 'mobx';
 import ReactMarkdown from 'react-markdown';
 
 const ProjectDetailPage: React.FC = () => {
@@ -296,6 +295,7 @@ const ProjectDetailPage: React.FC = () => {
         </DialogActions>
       </Dialog>
       <div className="markdown-container">
+        <ReactMarkdown>{'# README.md'}</ReactMarkdown>
         <ReactMarkdown>{readme}</ReactMarkdown>
       </div>
     </div>
