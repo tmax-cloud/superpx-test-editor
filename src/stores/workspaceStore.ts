@@ -28,7 +28,7 @@ const WorkspaceStore = observable({
       service
         ? data
           ? service(data)
-          : setAlert(`No Service ${path} Data.`, message, 'error')
+          : setAlert(`No ${path} Data.`, message, 'error')
         : setAlert(message, `No Service ${path}.`, 'error');
     };
   },
