@@ -103,8 +103,8 @@ const ProjectDetailPage: React.FC = () => {
         if (Number(referenceId) === reference.refId) {
           WorkspaceStore.updateCurrentReferenceAction(reference);
           sendMessage('reference', 'DetailService', {
-            proj_id: reference.projId,
-            ref_id: reference.refId,
+            proj_name: WorkspaceStore.currentProject.name,
+            ref_name: reference.name,
           });
           EditorContentsStore.initContentAction();
         }
