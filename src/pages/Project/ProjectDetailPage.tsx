@@ -28,6 +28,31 @@ const ProjectDetailPage: React.FC = () => {
   const location = useLocation();
   const [readme, setReadme] = React.useState('');
   React.useEffect(() => {
+    const newPath = location.pathname
+      .replace(`/${projectName}`, '')
+      .split('/')
+      .filter((part) => part.length > 0);
+    setCurrentPath(newPath);
+  }, [location.pathname]);
+
+  React.useEffect(() => {
+    WorkspaceStore.updateCurrentCommitAction({});
+    WorkspaceStore.updateCurrentProjectAction({ name: projectName });
+    sendMessage('reference', 'ListService', {
+      proj_name: projectName,
+    });
+  }, []);
+  React.useEffect(() => {
+    if (
+      WorkspaceStore.currentCommit.commitId &&
+      WorkspaceStore.commitList.length
+    ) {
+      sendMessage('commit', 'DetailService', {
+        commit_id: WorkspaceStore.currentCommit.commitId,
+      });
+    }
+  }, [WorkspaceStore.currentCommit.commitId]);
+  React.useEffect(() => {
     EditorContentsStore.initContentAction();
     if (WorkspaceStore.sourceCodeList.length) {
       WorkspaceStore.sourceCodeList.map((sourceCode) => {
@@ -56,20 +81,6 @@ const ProjectDetailPage: React.FC = () => {
     }
   }, [EditorContentsStore.viewIndex]);
 
-  React.useEffect(() => {
-    WorkspaceStore.updateCurrentProjectAction({ name: projectName });
-    sendMessage('reference', 'ListService', {
-      proj_name: projectName,
-    });
-  }, []);
-  React.useEffect(() => {
-    if (WorkspaceStore.currentCommit.commitId) {
-      sendMessage('commit', 'DetailService', {
-        commit_id: WorkspaceStore.currentCommit.commitId,
-      });
-    }
-  }, [WorkspaceStore.currentCommit.commitId]);
-
   const folderStructure = getFolderStructure(WorkspaceStore.sourceCodeList);
 
   const [currentPath, setCurrentPath] = React.useState([]);
@@ -80,31 +91,25 @@ const ProjectDetailPage: React.FC = () => {
       navigate(newPath.join('/'));
     }
   };
-  React.useEffect(() => {
-    const newPath = location.pathname
-      .replace(`/projects/${projectName}`, '')
-      .split('/')
-      .filter((part) => part.length > 0);
-    setCurrentPath(newPath);
-  }, [location.pathname]);
 
-  const [commit, setCommit] = React.useState('');
+  const [referenceId, setReferenceId] = React.useState('');
 
   const handleChange = (event: SelectChangeEvent) => {
-    setCommit(event.target.value);
+    setReferenceId(event.target.value);
   };
   React.useEffect(() => {
-    commit &&
-      sendMessage('commit', 'DetailService', {
-        commit_id: Number(commit),
+    referenceId &&
+      WorkspaceStore.referenceList.map((reference) => {
+        if (Number(referenceId) === reference.refId) {
+          WorkspaceStore.updateCurrentReferenceAction(reference);
+          sendMessage('reference', 'DetailService', {
+            proj_id: reference.projId,
+            ref_id: reference.refId,
+          });
+          EditorContentsStore.initContentAction();
+        }
       });
-    EditorContentsStore.initContentAction();
-    WorkspaceStore.commitList.map((cm) => {
-      if (cm.commitId === Number(commit)) {
-        WorkspaceStore.updateCurrentCommitAction(cm);
-      }
-    });
-  }, [commit]);
+  }, [referenceId]);
   const [action, setAction] = React.useState('');
 
   const handleActionChange = (event: SelectChangeEvent) => {
@@ -117,7 +122,7 @@ const ProjectDetailPage: React.FC = () => {
     setShowModal(true);
   };
   const handleCreateModal = () => {
-    window.location.hash = `#/projects/${projectName}/editor`;
+    window.location.hash = `#/${projectName}/editor`;
     EditorContentsStore.updateContentAction(inputValue, '');
     setShowModal(false);
     setInputValue('');
@@ -152,7 +157,7 @@ const ProjectDetailPage: React.FC = () => {
         </div>
         <div className="detail-in-flex">
           <Button variant="outlined">HISTORY</Button>
-          <Button variant="contained" href={`#/projects/${projectName}/editor`}>
+          <Button variant="contained" href={`#/${projectName}/editor`}>
             PX Editor
           </Button>
           <Button variant="contained">CI/CD</Button>
@@ -229,19 +234,19 @@ const ProjectDetailPage: React.FC = () => {
             </div>
             <div className="detail-drop-down">
               <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                <InputLabel id="demo-select-small">commit</InputLabel>
+                <InputLabel id="demo-select-small">reference</InputLabel>
                 <Select
                   labelId="demo-select-small"
                   id="demo-select-small"
-                  value={commit}
-                  label="commit"
+                  value={referenceId}
+                  label="reference"
                   onChange={handleChange}
                 >
-                  {WorkspaceStore.commitList.length &&
-                    WorkspaceStore.commitList.map((workCommit) => {
+                  {WorkspaceStore.referenceList.length &&
+                    WorkspaceStore.referenceList.map((workReference) => {
                       return (
-                        <MenuItem value={workCommit.commitId}>
-                          <em>{workCommit.message}</em>
+                        <MenuItem value={workReference.refId}>
+                          <em>{workReference.name}</em>
                         </MenuItem>
                       );
                     })}
@@ -304,7 +309,6 @@ const ProjectDetailPage: React.FC = () => {
         </DialogActions>
       </Dialog>
       <div className="markdown-container">
-        <ReactMarkdown>{'# README.md'}</ReactMarkdown>
         <ReactMarkdown>{readme}</ReactMarkdown>
       </div>
     </div>

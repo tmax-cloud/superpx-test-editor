@@ -24,6 +24,7 @@ export default function CustomTab(props: CustomTabProps) {
         onClick={() => {
           EditorContentsStore.updateVeiwIndex(index);
         }}
+        sx={{ textTransform: 'none' }}
       ></Tab>
       <Button
         onClick={() => {
