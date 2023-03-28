@@ -26,7 +26,9 @@ const WorkspaceStore = observable({
       const { data, path, message } = JSON.parse(event.data).body;
       const service = services[path];
       service
-        ? service(data)
+        ? data
+          ? service(data)
+          : setAlert('No Service Data.', message, 'error')
         : setAlert(message, `No Service ${path}.`, 'error');
     };
   },
