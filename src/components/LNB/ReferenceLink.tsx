@@ -8,8 +8,8 @@ export const ReferenceLink: React.FC<ReferenceLinkProps> = ({ reference }) => {
   const onRefereneLinkClick = async () => {
     WorkspaceStore.updateCurrentReferenceAction(reference);
     sendMessage('reference', 'DetailService', {
-      proj_id: reference.projId,
-      ref_id: reference.refId,
+      proj_name: WorkspaceStore.currentProject.name,
+      ref_name: reference.name,
     });
   };
 

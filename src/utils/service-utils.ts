@@ -76,7 +76,8 @@ const referenceListService = (data) => {
 };
 const referenceDetailService = (data) => {  
   sendMessage('commit', 'ListService', {
-    ref_id: data.refId,
+    proj_name: WorkspaceStore.currentProject.name,
+    ref_name: data.name,
   });
 };
 
