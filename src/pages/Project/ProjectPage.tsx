@@ -131,10 +131,10 @@ const ProjectPage: React.FC = () => {
                           });
                         }}
                       >
-                        <Link to={`/projects/${project.name}`}>
+                        <Link to={`/${project.name}`}>
                           <Box sx={{ p: 2 }}>
                             <Paper variant="outlined">
-                              <Link to={`/projects/${project.name}`}>
+                              <Link to={`/${project.name}`}>
                                 <Box sx={{ display: 'flex' }}>
                                   <Box sx={{ p: 2 }}>
                                     <Avatar sx={{ bgcolor: 'primary.main' }}>

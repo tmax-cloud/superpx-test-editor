@@ -39,18 +39,14 @@ const router = createHashRouter([
     children: [
       {
         path: '',
-        element: <WelcomePage />,
-      },
-      {
-        path: 'projects',
         element: <ProjectPage />,
       },
       {
-        path: 'projects/:projectName/editor',
+        path: '/:projectName/editor',
         element: <EditorPage />,
       },
       {
-        path: 'projects/:projectName/*',
+        path: '/:projectName/*',
         element: <ProjectDetailPage />,
       },
       {
