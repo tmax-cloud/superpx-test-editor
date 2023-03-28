@@ -29,7 +29,7 @@ const ProjectDetailPage: React.FC = () => {
   const [readme, setReadme] = React.useState('');
   React.useEffect(() => {
     const newPath = location.pathname
-      .replace(`/${projectName}`, '')
+      .replace(`/projects/${projectName}`, '')
       .split('/')
       .filter((part) => part.length > 0);
     setCurrentPath(newPath);
@@ -37,6 +37,7 @@ const ProjectDetailPage: React.FC = () => {
 
   React.useEffect(() => {
     WorkspaceStore.updateCurrentCommitAction({});
+    WorkspaceStore.updateSourceCodeListAction([]);
     WorkspaceStore.updateCurrentProjectAction({ name: projectName });
     sendMessage('reference', 'ListService', {
       proj_name: projectName,
@@ -122,7 +123,7 @@ const ProjectDetailPage: React.FC = () => {
     setShowModal(true);
   };
   const handleCreateModal = () => {
-    window.location.hash = `#/${projectName}/editor`;
+    window.location.hash = `#/projects/${projectName}/editor`;
     EditorContentsStore.updateContentAction(inputValue, '');
     setShowModal(false);
     setInputValue('');

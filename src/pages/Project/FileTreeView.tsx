@@ -63,7 +63,7 @@ const FileTreeView = ({ structure, currentPath, onClick }) => {
               button
               onClick={() =>
                 onClick(() => {
-                  window.location.hash = `#/${projectName}/editor`;
+                  window.location.hash = `#/projects/${projectName}/editor`;
                   sendMessage('source', 'DetailService', {
                     src_id: srcCodeId,
                     commit_id: WorkspaceStore.currentCommit.commitId,
