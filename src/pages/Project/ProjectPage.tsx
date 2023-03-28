@@ -37,7 +37,9 @@ const ProjectPage: React.FC = () => {
 
   const [projectList, setProjectList] = React.useState([]);
   React.useEffect(() => {
-    setProjectList(WorkspaceStore.projectList);
+    setProjectList(
+      WorkspaceStore.projectList.sort((a, b) => a.name.localeCompare(b.name)),
+    );
   }, [WorkspaceStore.projectList]);
 
   const [searchInput, setSearchInput] = React.useState('');
@@ -134,7 +136,7 @@ const ProjectPage: React.FC = () => {
                         <Link to={`/${project.name}`}>
                           <Box sx={{ p: 2 }}>
                             <Paper variant="outlined">
-                              <Link to={`/${project.name}`}>
+                              <Link to={`/projects/${project.name}`}>
                                 <Box sx={{ display: 'flex' }}>
                                   <Box sx={{ p: 2 }}>
                                     <Avatar sx={{ bgcolor: 'primary.main' }}>
