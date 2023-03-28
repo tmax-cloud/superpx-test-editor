@@ -37,7 +37,9 @@ const ProjectPage: React.FC = () => {
 
   const [projectList, setProjectList] = React.useState([]);
   React.useEffect(() => {
-    setProjectList(WorkspaceStore.projectList);
+    setProjectList(
+      WorkspaceStore.projectList.sort((a, b) => a.name.localeCompare(b.name)),
+    );
   }, [WorkspaceStore.projectList]);
 
   const [searchInput, setSearchInput] = React.useState('');
