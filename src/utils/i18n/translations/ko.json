@@ -1,3 +1,6 @@
 {
-  "PROJECTMAIN": "프로젝트"
+  "PROJECTMAIN": "프로젝트",
+  "REFERENCETYPEBRANCH": "브랜치",
+  "REFERENCETYPETAG": "태그",
+  "REFERENCETYPERELEASE": "릴리즈"
 }

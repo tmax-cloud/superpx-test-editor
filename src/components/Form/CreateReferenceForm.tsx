@@ -10,6 +10,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { sendMessage } from '../../utils/service-utils';
 import WorkspaceStore from '../../stores/workspaceStore';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
   open,
@@ -39,6 +40,7 @@ export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
   const onReferenceTypeChange = (event) => {
     setReferenceType(event.target.value);
   };
+  const { t } = useTranslation();
 
   return (
     <div>
@@ -69,9 +71,9 @@ export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
               label="Reference type"
               onChange={onReferenceTypeChange}
             >
-              <MenuItem value={0}>0</MenuItem>
-              <MenuItem value={1}>1</MenuItem>
-              <MenuItem value={2}>2</MenuItem>
+              <MenuItem value={0}>{t('REFERENCETYPEBRANCH')}</MenuItem>
+              <MenuItem value={1}>{t('REFERENCETYPETAG')}</MenuItem>
+              <MenuItem value={2}>{t('REFERENCETYPERELEASE')}</MenuItem>
             </Select>
           </FormControl>
         </DialogContent>

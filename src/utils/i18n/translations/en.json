@@ -1,3 +1,6 @@
 {
-  "PROJECTMAIN": "Projects"
+  "PROJECTMAIN": "Projects",
+  "REFERENCETYPEBRANCH": "Branch",
+  "REFERENCETYPETAG": "Tag",
+  "REFERENCETYPERELEASE": "release"
 }

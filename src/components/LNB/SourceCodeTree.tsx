@@ -66,15 +66,14 @@ export const SourceCodeTree: React.FC = () => {
               content: src.content,
               edited: src.edited,
             });
-          else if (index > 0){
-          node.children.push({
-            name: nodePath,
-            nodePath: nodeTotalPath,
-            isOpen: false,
-          });
-          node.isOpen = false;
-        } 
-          else
+          else if (index > 0) {
+            node.children.push({
+              name: nodePath,
+              nodePath: nodeTotalPath,
+              isOpen: false,
+            });
+            node.isOpen = false;
+          } else
             node.children.push({
               name: nodePath,
               nodePath: nodeTotalPath,
@@ -202,11 +201,11 @@ export const SourceCodeTree: React.FC = () => {
         nodeTotalPath += '/';
         let nameArray: Array<String> = node.children.map((child) => child.name);
         if (!nameArray.includes(nodePath)) {
-            node.children.push({
-              name: nodePath,
-              nodePath: nodeTotalPath,
-              children: [],
-            });
+          node.children.push({
+            name: nodePath,
+            nodePath: nodeTotalPath,
+            children: [],
+          });
         }
         node = node.children.filter(
           (pathList) => pathList.name === nodePath,
@@ -234,18 +233,20 @@ export const SourceCodeTree: React.FC = () => {
               data={resultJson}
               showCheckbox={false}
               indentPixels={18}
-              initOpenStatus={false}
+              initOpenStatus={'closed'}
               onNameClick={onSourceCodeLinkClick}
-              iconComponents={{
-                AddFileIcon,
-                AddFolderIcon,
-                CancelIcon,
-                DeleteIcon,
-                EditIcon,
-                FolderIcon,
-                FolderOpenIcon,
-                FileIcon,
-              }}
+              iconComponents={
+                {
+                  // AddFileIcon,
+                  // AddFolderIcon,
+                  // CancelIcon,
+                  // DeleteIcon,
+                  // EditIcon,
+                  // FolderIcon,
+                  // FolderOpenIcon,
+                  // FileIcon,
+                }
+              }
             />
           </div>
           <div>
