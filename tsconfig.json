@@ -5,6 +5,8 @@
     "allowJs": true,
     "experimentalDecorators": true,
     "jsx": "react",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
     "types": ["jest", "node"]
   },
   "exclude": ["node_modules"],

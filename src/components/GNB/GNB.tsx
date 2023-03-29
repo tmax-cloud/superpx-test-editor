@@ -2,7 +2,7 @@ import * as React from 'react';
 import HomeIcon from '@mui/icons-material/Home';
 import { Link } from 'react-router-dom';
 import EditorContentsStore from '../../stores/editorContentsStore';
-
+import I18nButton from '../../utils/i18n/I18nButton';
 export const GNB = () => {
   return (
     <div className="gnb">
@@ -29,6 +29,7 @@ export const GNB = () => {
           <p className="top-menu-text">About</p>
         </Link>
       </div>
+      <I18nButton />
     </div>
   );
 };
