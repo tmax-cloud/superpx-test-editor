@@ -9,6 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import AddIcon from '@mui/icons-material/Add';
 import { sendMessage } from '../../utils/service-utils';
 import WorkspaceStore from '../../stores/workspaceStore';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
 export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
   open,
@@ -59,16 +60,20 @@ export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
             variant="standard"
             onChange={onReferenceNameChange}
           />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="type"
-            label="Reference type"
-            type="number"
-            fullWidth
-            variant="standard"
-            onChange={onReferenceTypeChange}
-          />
+          <FormControl sx={{ minWidth: 300, paddingTop: '30px' }}>
+            <InputLabel sx={{ minWidth: 300, paddingTop: '30px' }}>
+              Reference type
+            </InputLabel>
+            <Select
+              value={referenceType}
+              label="Reference type"
+              onChange={onReferenceTypeChange}
+            >
+              <MenuItem value={0}>0</MenuItem>
+              <MenuItem value={1}>1</MenuItem>
+              <MenuItem value={2}>2</MenuItem>
+            </Select>
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

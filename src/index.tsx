@@ -15,6 +15,7 @@ import ProjectPage from './pages/Project/ProjectPage';
 import ProjectDetailPage from './pages/Project/ProjectDetailPage';
 import GroupPage from './pages/Group/GroupPage';
 import GroupDetailPage from './pages/Group/GroupDetailPage';
+import './utils/i18n/i18n';
 
 WorkspaceStore.setupWsAction();
 setupLanguage();

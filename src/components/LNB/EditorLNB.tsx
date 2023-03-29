@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import Button from '@mui/material/Button';
-import CloseIcon from '@mui/icons-material/Close';
 import EditorContentsStore from '../../stores/editorContentsStore';
 import Drawer from '@mui/material/Drawer';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
@@ -25,7 +24,6 @@ export const EditorLNB: React.FC = () => {
       ? EditorContentsStore.updateIsFull(true)
       : EditorContentsStore.isFull && EditorContentsStore.updateIsFull(false);
   }, [lnbOpenState]);
-
   const lnbIcon = {
     explorer: <LibraryBooksIcon />,
     search: <SearchIcon />,
@@ -34,8 +32,7 @@ export const EditorLNB: React.FC = () => {
     extension: <ExtensionIcon />,
   };
   const toggleDrawer =
-    (lnb: Lnb, open: boolean) =>
-    (event: React.KeyboardEvent | React.MouseEvent) => {
+    (lnb: Lnb) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
         event.type === 'keydown' &&
         ((event as React.KeyboardEvent).key === 'Tab' ||
@@ -43,18 +40,28 @@ export const EditorLNB: React.FC = () => {
       ) {
         return;
       }
-      setLnbOpenState(
-        _.merge(
-          {
-            explorer: false,
-            search: false,
-            scm: false,
-            debug: false,
-            extension: false,
-          },
-          { [lnb]: open },
-        ),
-      );
+      if (lnbOpenState[lnb]) {
+        setLnbOpenState({
+          explorer: false,
+          search: false,
+          scm: false,
+          debug: false,
+          extension: false,
+        });
+      } else {
+        setLnbOpenState(
+          _.merge(
+            {
+              explorer: false,
+              search: false,
+              scm: false,
+              debug: false,
+              extension: false,
+            },
+            { [lnb]: true },
+          ),
+        );
+      }
     };
 
   React.useEffect(() => {
@@ -86,7 +93,7 @@ export const EditorLNB: React.FC = () => {
           (lnb) => (
             <Button
               id={`lnb-${lnb}`}
-              onClick={toggleDrawer(lnb, true)}
+              onClick={toggleDrawer(lnb)}
               className="lnb-btn"
             >
               {lnbIcon[lnb]}
@@ -108,12 +115,9 @@ export const EditorLNB: React.FC = () => {
                 }}
                 anchor="left"
                 open={lnbOpenState[lnb]}
-                onClose={toggleDrawer(lnb, false)}
+                onClose={toggleDrawer(lnb)}
                 variant="persistent"
               >
-                <Button onClick={toggleDrawer(lnb, false)}>
-                  <CloseIcon className="lnb-close-icon" />
-                </Button>
                 {lnb === 'explorer' && <Explorer />}
                 {lnb === 'search' && <div className="editor-lnb-drawer"></div>}
                 {lnb === 'scm' && <SCM />}

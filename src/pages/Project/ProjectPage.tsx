@@ -23,6 +23,8 @@ import {
   TextField,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { useTranslation } from 'react-i18next';
+
 const StyledTableCell = styled(TableCell)({
   textAlign: 'center',
   verticalAlign: 'middle',
@@ -63,13 +65,14 @@ const ProjectPage: React.FC = () => {
       console.log(searchInput);
     }
   }, [searchInput, action]);
+  const { t } = useTranslation();
   return (
     <Observer>
       {() => (
         <div className="project-page-parent">
           <div className="project-page">
             <div className="project-page-create">
-              <h1>Projects</h1>
+              <h1>{t('PROJECTMAIN')}</h1>
               <div className="padding-top-new-pro">
                 <CreateProjectForm
                   open={openCreateProjectForm}
