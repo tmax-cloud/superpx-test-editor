@@ -42,15 +42,15 @@ const router = createBrowserRouter([
         element: <ProjectPage />,
       },
       {
-        path: '/:projectName',
+        path: '/projects/:projectName',
         element: <ProjectPage />,
       },
       {
-        path: '/:projectName/editor',
+        path: '/editor/:projectName',
         element: <EditorPage />,
       },
       {
-        path: '/:projectName/details/*',
+        path: '/details/:projectName/*',
         element: <ProjectDetailPage />,
       },
       {

@@ -12,21 +12,21 @@ export const GNB = () => {
           <HomeIcon className="logo-icon" sx={{ color: '#FF7575' }} />
           <p className="logo-text">SuperPX</p>
         </Link>
-        <Link to="/">
+        <Link to={`/projects/${projectName}`}>
           <p className="top-menu-text-left">Projects</p>
         </Link>
         {/* <Link to="/groups">
           <p className="top-menu-text">Groups</p>
         </Link> */}
         <Link
-          to={`/${projectName}/details`}
+          to={`/details/${projectName}`}
           className={`top-menu-link ${!projectName ? 'disabled' : ''}`}
         >
           <p className="top-menu-text">PX Manager</p>
         </Link>
 
         <Link
-          to={`/${projectName}/editor`}
+          to={`/editor/${projectName}`}
           onClick={() => {
             EditorContentsStore.updateEditorLnbInitState('scm');
           }}
