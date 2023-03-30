@@ -12,10 +12,10 @@ export type Reference = {
 };
 
 export type Commit = {
-  commitId: number;
-  message: string;
-  preCommitId: number;
-  isCommit: boolean;
+  commitId?: number;
+  message?: string;
+  preCommitId?: number;
+  isCommit?: boolean;
 };
 
 export type SourceCode = {

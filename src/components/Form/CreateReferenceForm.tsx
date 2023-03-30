@@ -9,6 +9,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import AddIcon from '@mui/icons-material/Add';
 import { sendMessage } from '../../utils/service-utils';
 import WorkspaceStore from '../../stores/workspaceStore';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
   open,
@@ -38,6 +40,7 @@ export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
   const onReferenceTypeChange = (event) => {
     setReferenceType(event.target.value);
   };
+  const { t } = useTranslation();
 
   return (
     <div>
@@ -59,16 +62,20 @@ export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
             variant="standard"
             onChange={onReferenceNameChange}
           />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="type"
-            label="Reference type"
-            type="number"
-            fullWidth
-            variant="standard"
-            onChange={onReferenceTypeChange}
-          />
+          <FormControl sx={{ minWidth: 300, paddingTop: '30px' }}>
+            <InputLabel sx={{ minWidth: 300, paddingTop: '30px' }}>
+              Reference type
+            </InputLabel>
+            <Select
+              value={referenceType}
+              label="Reference type"
+              onChange={onReferenceTypeChange}
+            >
+              <MenuItem value={0}>{t('REFERENCETYPEBRANCH')}</MenuItem>
+              <MenuItem value={1}>{t('REFERENCETYPETAG')}</MenuItem>
+              <MenuItem value={2}>{t('REFERENCETYPERELEASE')}</MenuItem>
+            </Select>
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

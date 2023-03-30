@@ -36,6 +36,7 @@ const FileTreeView = ({ structure, currentPath, onClick }) => {
   }
   const files = [];
   const folders = [];
+  const navigate = useNavigate();
   Object.keys(currentFolder).forEach((key) => {
     if (typeof currentFolder[key] === 'string') {
       files.push(key);
@@ -63,7 +64,7 @@ const FileTreeView = ({ structure, currentPath, onClick }) => {
               button
               onClick={() =>
                 onClick(() => {
-                  window.location.hash = `#/projects/${projectName}/editor`;
+                  navigate(`/projects/${projectName}/editor`);
                   sendMessage('source', 'DetailService', {
                     src_id: srcCodeId,
                     commit_id: WorkspaceStore.currentCommit.commitId,

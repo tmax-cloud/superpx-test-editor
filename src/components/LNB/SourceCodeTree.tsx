@@ -244,16 +244,18 @@ export const SourceCodeTree: React.FC = () => {
               indentPixels={18}
               initOpenStatus="custom"
               onNameClick={onSourceCodeLinkClick}
-              iconComponents={{
-                AddFileIcon,
-                AddFolderIcon,
-                CancelIcon,
-                DeleteIcon,
-                EditIcon,
-                FolderIcon,
-                FolderOpenIcon,
-                FileIcon,
-              }}
+              iconComponents={
+                {
+                  // AddFileIcon,
+                  // AddFolderIcon,
+                  // CancelIcon,
+                  // DeleteIcon,
+                  // EditIcon,
+                  // FolderIcon,
+                  // FolderOpenIcon,
+                  // FileIcon,
+                }
+              }
             />
           </div>
           <div>

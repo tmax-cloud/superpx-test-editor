@@ -27,6 +27,33 @@ const ProjectDetailPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [readme, setReadme] = React.useState('');
+
+  React.useEffect(() => {
+    const newPath = location.pathname
+      .replace(`/projects/${projectName}/details`, '')
+      .split('/')
+      .filter((part) => part.length > 0);
+    setCurrentPath(newPath);
+  }, [location.pathname]);
+
+  React.useEffect(() => {
+    WorkspaceStore.updateCurrentCommitAction({});
+    WorkspaceStore.updateSourceCodeListAction([]);
+    WorkspaceStore.updateCurrentProjectAction({ name: projectName });
+    sendMessage('reference', 'ListService', {
+      proj_name: projectName,
+    });
+  }, []);
+  React.useEffect(() => {
+    if (
+      WorkspaceStore.currentCommit.commitId &&
+      WorkspaceStore.commitList.length
+    ) {
+      sendMessage('commit', 'DetailService', {
+        commit_id: WorkspaceStore.currentCommit.commitId,
+      });
+    }
+  }, [WorkspaceStore.currentCommit.commitId]);
   React.useEffect(() => {
     EditorContentsStore.initContentAction();
     if (WorkspaceStore.sourceCodeList.length) {
@@ -56,20 +83,6 @@ const ProjectDetailPage: React.FC = () => {
     }
   }, [EditorContentsStore.viewIndex]);
 
-  React.useEffect(() => {
-    WorkspaceStore.updateCurrentProjectAction({ name: projectName });
-    sendMessage('reference', 'ListService', {
-      proj_name: projectName,
-    });
-  }, []);
-  React.useEffect(() => {
-    if (WorkspaceStore.currentCommit.commitId) {
-      sendMessage('commit', 'DetailService', {
-        commit_id: WorkspaceStore.currentCommit.commitId,
-      });
-    }
-  }, [WorkspaceStore.currentCommit.commitId]);
-
   const folderStructure = getFolderStructure(WorkspaceStore.sourceCodeList);
 
   const [currentPath, setCurrentPath] = React.useState([]);
@@ -80,31 +93,25 @@ const ProjectDetailPage: React.FC = () => {
       navigate(newPath.join('/'));
     }
   };
-  React.useEffect(() => {
-    const newPath = location.pathname
-      .replace(`/projects/${projectName}`, '')
-      .split('/')
-      .filter((part) => part.length > 0);
-    setCurrentPath(newPath);
-  }, [location.pathname]);
 
-  const [commit, setCommit] = React.useState('');
+  const [referenceId, setReferenceId] = React.useState('');
 
   const handleChange = (event: SelectChangeEvent) => {
-    setCommit(event.target.value);
+    setReferenceId(event.target.value);
   };
   React.useEffect(() => {
-    commit &&
-      sendMessage('commit', 'DetailService', {
-        commit_id: Number(commit),
+    referenceId &&
+      WorkspaceStore.referenceList.map((reference) => {
+        if (Number(referenceId) === reference.refId) {
+          WorkspaceStore.updateCurrentReferenceAction(reference);
+          sendMessage('reference', 'DetailService', {
+            proj_name: WorkspaceStore.currentProject.name,
+            ref_name: reference.name,
+          });
+          EditorContentsStore.initContentAction();
+        }
       });
-    EditorContentsStore.initContentAction();
-    WorkspaceStore.commitList.map((cm) => {
-      if (cm.commitId === Number(commit)) {
-        WorkspaceStore.updateCurrentCommitAction(cm);
-      }
-    });
-  }, [commit]);
+  }, [referenceId]);
   const [action, setAction] = React.useState('');
 
   const handleActionChange = (event: SelectChangeEvent) => {
@@ -117,7 +124,7 @@ const ProjectDetailPage: React.FC = () => {
     setShowModal(true);
   };
   const handleCreateModal = () => {
-    window.location.hash = `#/projects/${projectName}/editor`;
+    window.location.hash = `/projects/${projectName}/editor`;
     EditorContentsStore.updateContentAction(inputValue, '');
     setShowModal(false);
     setInputValue('');
@@ -129,183 +136,216 @@ const ProjectDetailPage: React.FC = () => {
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
   };
+  const menus = [
+    'Details',
+    'Issues',
+    'Merge Requests',
+    'CI/CD Report',
+    'Settings',
+    'PX Analysis',
+  ];
   return (
-    <div className="detail-body">
-      <div className="detail-main">
-        <div className="detail-in-flex">
-          <Avatar
-            sx={{
-              bgcolor: 'primary.main',
-              borderRadius: '20%',
-              top: '20px',
-              width: '80px',
-              height: '80px',
-              fontSize: '3.25rem',
-            }}
-          >
-            {projectName.charAt(0)}
-          </Avatar>
-          <div>
-            <h1>{projectName}</h1>
-            <p>Project ID: {WorkspaceStore.currentReference.projId}</p>
+    <div>
+      <div className="gnb-project-page">
+        {menus.map((menu) => {
+          return (
+            <span key={`menu-All`}>
+              <Button
+                className="gnb-menu-button"
+                id="basic-button"
+                // aria-controls={open ? 'basic-menu' : undefined}
+                // aria-haspopup="true"
+                // aria-expanded={open ? 'true' : undefined}
+                // onClick={handleClick}
+                // value={menu}
+              >
+                {menu}
+              </Button>
+            </span>
+          );
+        })}
+      </div>
+      <div className="detail-body">
+        <div className="detail-main">
+          <div className="detail-in-flex">
+            <Avatar
+              sx={{
+                bgcolor: 'primary.main',
+                borderRadius: '20%',
+                top: '20px',
+                width: '80px',
+                height: '80px',
+                fontSize: '3.25rem',
+              }}
+            >
+              {projectName.charAt(0)}
+            </Avatar>
+            <div>
+              <h1>{projectName}</h1>
+              <p>Project ID: {WorkspaceStore.currentReference.projId}</p>
+            </div>
+          </div>
+          <div className="detail-in-flex">
+            <Button variant="outlined">HISTORY</Button>
+            <Button
+              variant="contained"
+              href={`/projects/${projectName}/editor`}
+            >
+              PX Editor
+            </Button>
+            <Button variant="contained">CI/CD</Button>
           </div>
         </div>
-        <div className="detail-in-flex">
-          <Button variant="outlined">HISTORY</Button>
-          <Button variant="contained" href={`#/projects/${projectName}/editor`}>
-            PX Editor
-          </Button>
-          <Button variant="contained">CI/CD</Button>
-        </div>
-      </div>
-      <Observer>
-        {() => (
-          <>
-            <div className="detail-in-flex-under">
-              <Avatar
-                sx={{
-                  bgcolor: 'primary.main',
-                  borderRadius: '20%',
-                  top: '15px',
-                  width: '20px',
-                  height: '20px',
-                  fontSize: '0.25rem',
-                }}
-              >
-                {'IC'}
-              </Avatar>
-              <p>Add license</p>
-              <Avatar
-                sx={{
-                  bgcolor: 'primary.main',
-                  borderRadius: '20%',
-                  top: '15px',
-                  width: '20px',
-                  height: '20px',
-                  fontSize: '0.25rem',
-                }}
-              >
-                {'IC'}
-              </Avatar>
-              <p>{WorkspaceStore.commitList.length} Commits</p>
-              <Avatar
-                sx={{
-                  bgcolor: 'primary.main',
-                  borderRadius: '20%',
-                  top: '15px',
-                  width: '20px',
-                  height: '20px',
-                  fontSize: '0.25rem',
-                }}
-              >
-                {'IC'}
-              </Avatar>
-              <p>
-                {
-                  WorkspaceStore.referenceList.filter((item) => item.type === 0)
-                    .length
-                }{' '}
-                Branches
-              </p>
-              <Avatar
-                sx={{
-                  bgcolor: 'primary.main',
-                  borderRadius: '20%',
-                  top: '15px',
-                  width: '20px',
-                  height: '20px',
-                  fontSize: '0.25rem',
-                }}
-              >
-                {'IC'}
-              </Avatar>
-              <p>
-                {
-                  WorkspaceStore.referenceList.filter((item) => item.type !== 0)
-                    .length
-                }{' '}
-                Tags
-              </p>
-            </div>
-            <div className="detail-drop-down">
-              <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                <InputLabel id="demo-select-small">commit</InputLabel>
-                <Select
-                  labelId="demo-select-small"
-                  id="demo-select-small"
-                  value={commit}
-                  label="commit"
-                  onChange={handleChange}
+        <Observer>
+          {() => (
+            <>
+              <div className="detail-in-flex-under">
+                <Avatar
+                  sx={{
+                    bgcolor: 'primary.main',
+                    borderRadius: '20%',
+                    top: '15px',
+                    width: '20px',
+                    height: '20px',
+                    fontSize: '0.25rem',
+                  }}
                 >
-                  {WorkspaceStore.commitList.length &&
-                    WorkspaceStore.commitList.map((workCommit) => {
-                      return (
-                        <MenuItem value={workCommit.commitId}>
-                          <em>{workCommit.message}</em>
-                        </MenuItem>
-                      );
-                    })}
-                </Select>
-              </FormControl>
-              <div>{currentPath.join('/')}</div>
-              <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                <InputLabel id="demo-select-small">action</InputLabel>
-                <Select
-                  labelId="demo-select-small"
-                  id="demo-select-small"
-                  value={action}
-                  label="action"
-                  onChange={handleActionChange}
+                  {'IC'}
+                </Avatar>
+                <p>Add license</p>
+                <Avatar
+                  sx={{
+                    bgcolor: 'primary.main',
+                    borderRadius: '20%',
+                    top: '15px',
+                    width: '20px',
+                    height: '20px',
+                    fontSize: '0.25rem',
+                  }}
                 >
-                  <MenuItem value={'Add file'} onClick={handleOpenModal}>
-                    Add file
-                  </MenuItem>
-                </Select>
-              </FormControl>
-            </div>
-            <Box>
-              {currentPath.length > 0 && (
-                <Box mb={1}>
-                  <Button onClick={handleBack}>{`../`}</Button>
-                </Box>
-              )}
+                  {'IC'}
+                </Avatar>
+                <p>{WorkspaceStore.commitList.length} Commits</p>
+                <Avatar
+                  sx={{
+                    bgcolor: 'primary.main',
+                    borderRadius: '20%',
+                    top: '15px',
+                    width: '20px',
+                    height: '20px',
+                    fontSize: '0.25rem',
+                  }}
+                >
+                  {'IC'}
+                </Avatar>
+                <p>
+                  {
+                    WorkspaceStore.referenceList.filter(
+                      (item) => item.type === 0,
+                    ).length
+                  }{' '}
+                  Branches
+                </p>
+                <Avatar
+                  sx={{
+                    bgcolor: 'primary.main',
+                    borderRadius: '20%',
+                    top: '15px',
+                    width: '20px',
+                    height: '20px',
+                    fontSize: '0.25rem',
+                  }}
+                >
+                  {'IC'}
+                </Avatar>
+                <p>
+                  {
+                    WorkspaceStore.referenceList.filter(
+                      (item) => item.type !== 0,
+                    ).length
+                  }{' '}
+                  Tags
+                </p>
+              </div>
+              <div className="detail-drop-down">
+                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                  <InputLabel id="demo-select-small">reference</InputLabel>
+                  <Select
+                    labelId="demo-select-small"
+                    id="demo-select-small"
+                    value={referenceId}
+                    label="reference"
+                    onChange={handleChange}
+                  >
+                    {WorkspaceStore.referenceList.length &&
+                      WorkspaceStore.referenceList.map((workReference) => {
+                        return (
+                          <MenuItem value={workReference.refId}>
+                            <em>{workReference.name}</em>
+                          </MenuItem>
+                        );
+                      })}
+                  </Select>
+                </FormControl>
+                <div>{currentPath.join('/')}</div>
+                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                  <InputLabel id="demo-select-small">action</InputLabel>
+                  <Select
+                    labelId="demo-select-small"
+                    id="demo-select-small"
+                    value={action}
+                    label="action"
+                    onChange={handleActionChange}
+                  >
+                    <MenuItem value={'Add file'} onClick={handleOpenModal}>
+                      Add file
+                    </MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+              <Box>
+                {currentPath.length > 0 && (
+                  <Box mb={1}>
+                    <Button onClick={handleBack}>{`../`}</Button>
+                  </Box>
+                )}
 
-              <FileTreeView
-                structure={folderStructure}
-                currentPath={currentPath}
-                onClick={(path) => {
-                  setCurrentPath(path);
-                  navigate(`${path.join('/')}`);
-                }}
-              />
-            </Box>
-          </>
-        )}
-      </Observer>
-      <Dialog open={showModal} onClose={handleCancelModal}>
-        <DialogTitle> File name</DialogTitle>
-        <DialogContent>
-          <DialogContentText>Please enter a file name</DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="file name"
-            type="email"
-            fullWidth
-            variant="standard"
-            value={inputValue}
-            onChange={handleInputChange}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCancelModal}>Cancel</Button>
-          <Button onClick={handleCreateModal}>Create</Button>
-        </DialogActions>
-      </Dialog>
-      <div className="markdown-container">
-        <ReactMarkdown>{'# README.md'}</ReactMarkdown>
-        <ReactMarkdown>{readme}</ReactMarkdown>
+                <FileTreeView
+                  structure={folderStructure}
+                  currentPath={currentPath}
+                  onClick={(path) => {
+                    setCurrentPath(path);
+                    navigate(`${path.join('/')}`);
+                  }}
+                />
+              </Box>
+            </>
+          )}
+        </Observer>
+        <Dialog open={showModal} onClose={handleCancelModal}>
+          <DialogTitle> File name</DialogTitle>
+          <DialogContent>
+            <DialogContentText>Please enter a file name</DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="file name"
+              type="email"
+              fullWidth
+              variant="standard"
+              value={inputValue}
+              onChange={handleInputChange}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCancelModal}>Cancel</Button>
+            <Button onClick={handleCreateModal}>Create</Button>
+          </DialogActions>
+        </Dialog>
+        <div className="markdown-container">
+          <ReactMarkdown>{readme}</ReactMarkdown>
+        </div>
       </div>
     </div>
   );
