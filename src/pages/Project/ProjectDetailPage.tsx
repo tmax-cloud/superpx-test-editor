@@ -30,7 +30,7 @@ const ProjectDetailPage: React.FC = () => {
 
   React.useEffect(() => {
     const newPath = location.pathname
-      .replace(`/${projectName}/details`, '')
+      .replace(`/projects/${projectName}/details`, '')
       .split('/')
       .filter((part) => part.length > 0);
     setCurrentPath(newPath);
@@ -124,7 +124,7 @@ const ProjectDetailPage: React.FC = () => {
     setShowModal(true);
   };
   const handleCreateModal = () => {
-    window.location.hash = `#/${projectName}/editor`;
+    window.location.hash = `/projects/${projectName}/editor`;
     EditorContentsStore.updateContentAction(inputValue, '');
     setShowModal(false);
     setInputValue('');
@@ -187,7 +187,10 @@ const ProjectDetailPage: React.FC = () => {
           </div>
           <div className="detail-in-flex">
             <Button variant="outlined">HISTORY</Button>
-            <Button variant="contained" href={`#/${projectName}/editor`}>
+            <Button
+              variant="contained"
+              href={`/projects/${projectName}/editor`}
+            >
               PX Editor
             </Button>
             <Button variant="contained">CI/CD</Button>
