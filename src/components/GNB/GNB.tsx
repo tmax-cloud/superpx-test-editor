@@ -1,9 +1,10 @@
 import * as React from 'react';
 import HomeIcon from '@mui/icons-material/Home';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import EditorContentsStore from '../../stores/editorContentsStore';
-
+import I18nButton from '../../utils/i18n/I18nButton';
 export const GNB = () => {
+  const { projectName } = useParams();
   return (
     <div className="gnb">
       <div className="logo">
@@ -18,17 +19,24 @@ export const GNB = () => {
           <p className="top-menu-text">Groups</p>
         </Link> */}
         <Link
-          to="/editor"
+          to={`/${projectName}/details`}
+          className={`top-menu-link ${!projectName ? 'disabled' : ''}`}
+        >
+          <p className="top-menu-text">PX Manager</p>
+        </Link>
+
+        <Link
+          to={`/${projectName}/editor`}
           onClick={() => {
             EditorContentsStore.updateEditorLnbInitState('scm');
           }}
+          className={`top-menu-link ${!projectName ? 'disabled' : ''}`}
         >
-          <p className="top-menu-text">Editor</p>
-        </Link>
-        <Link to="/about">
-          <p className="top-menu-text">About</p>
+          <p className="top-menu-text">PX Editor</p>
         </Link>
       </div>
+      {projectName && <div className="top-head-text">{projectName}</div>}
+      <I18nButton />
     </div>
   );
 };

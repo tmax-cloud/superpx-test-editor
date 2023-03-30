@@ -15,6 +15,7 @@ import ProjectPage from './pages/Project/ProjectPage';
 import ProjectDetailPage from './pages/Project/ProjectDetailPage';
 import GroupPage from './pages/Group/GroupPage';
 import GroupDetailPage from './pages/Group/GroupDetailPage';
+import './utils/i18n/i18n';
 
 WorkspaceStore.setupWsAction();
 setupLanguage();
@@ -42,11 +43,15 @@ const router = createHashRouter([
         element: <ProjectPage />,
       },
       {
-        path: 'projects/:projectName/editor',
+        path: '/:projectName',
+        element: <ProjectPage />,
+      },
+      {
+        path: '/:projectName/editor',
         element: <EditorPage />,
       },
       {
-        path: 'projects/:projectName/*',
+        path: '/:projectName/details/*',
         element: <ProjectDetailPage />,
       },
       {
