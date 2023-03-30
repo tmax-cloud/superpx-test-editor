@@ -64,7 +64,7 @@ const FileTreeView = ({ structure, currentPath, onClick }) => {
               button
               onClick={() =>
                 onClick(() => {
-                  navigate(`/editor/${projectName}`);
+                  navigate(`/projects/${projectName}/editor`);
                   sendMessage('source', 'DetailService', {
                     src_id: srcCodeId,
                     commit_id: WorkspaceStore.currentCommit.commitId,

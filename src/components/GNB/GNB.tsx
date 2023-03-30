@@ -19,14 +19,14 @@ export const GNB = () => {
           <p className="top-menu-text">Groups</p>
         </Link> */}
         <Link
-          to={`/details/${projectName}`}
+          to={`/projects/${projectName}/details`}
           className={`top-menu-link ${!projectName ? 'disabled' : ''}`}
         >
           <p className="top-menu-text">PX Manager</p>
         </Link>
 
         <Link
-          to={`/editor/${projectName}`}
+          to={`/projects/${projectName}/editor`}
           onClick={() => {
             EditorContentsStore.updateEditorLnbInitState('scm');
           }}

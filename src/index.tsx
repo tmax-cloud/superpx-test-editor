@@ -46,11 +46,11 @@ const router = createBrowserRouter([
         element: <ProjectPage />,
       },
       {
-        path: '/editor/:projectName',
+        path: '/projects/:projectName/editor',
         element: <EditorPage />,
       },
       {
-        path: '/details/:projectName/*',
+        path: '/projects/:projectName/details/*',
         element: <ProjectDetailPage />,
       },
       {
