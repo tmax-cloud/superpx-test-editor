@@ -12,7 +12,7 @@ export const GNB = () => {
           <HomeIcon className="logo-icon" sx={{ color: '#FF7575' }} />
           <p className="logo-text">SuperPX</p>
         </Link>
-        <Link to={`/projects/${projectName}`}>
+        <Link to={`/projects`}>
           <p className="top-menu-text-left">Projects</p>
         </Link>
         {/* <Link to="/groups">
