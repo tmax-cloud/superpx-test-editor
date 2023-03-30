@@ -24,10 +24,11 @@ module.exports = (env) => {
           case 'javaWorker':
             return 'javaWorker.js';
           default:
-            return 'bundle.[hash].js';
+            return '[name]/bundle.[hash].js';
         }
       },
       path: path.resolve(__dirname, 'dist'),
+      publicPath: '/',
     },
     resolve: {
       fallback: {
