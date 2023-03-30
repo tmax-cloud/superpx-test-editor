@@ -124,7 +124,7 @@ const ProjectDetailPage: React.FC = () => {
     setShowModal(true);
   };
   const handleCreateModal = () => {
-    window.location.hash = `#/${projectName}/editor`;
+    window.location.hash = `/${projectName}/editor`;
     EditorContentsStore.updateContentAction(inputValue, '');
     setShowModal(false);
     setInputValue('');
@@ -187,7 +187,7 @@ const ProjectDetailPage: React.FC = () => {
           </div>
           <div className="detail-in-flex">
             <Button variant="outlined">HISTORY</Button>
-            <Button variant="contained" href={`#/${projectName}/editor`}>
+            <Button variant="contained" href={`/${projectName}/editor`}>
               PX Editor
             </Button>
             <Button variant="contained">CI/CD</Button>
