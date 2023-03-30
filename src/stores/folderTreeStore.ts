@@ -11,7 +11,6 @@ const FolderTreeStore = observable({
     },
     updateTreeDataAction(folderTreeData: FolderTreeData) {
       this.folderTreeData = folderTreeData;
-      console.log(321,folderTreeData,this.folderTreeData);
     },
     addFileAction(srcPath: string){
       const resultJson = this.folderTreeData;
@@ -35,7 +34,6 @@ const FolderTreeStore = observable({
         )[0];
       });
       this.folderTreeData = resultJson;
-      console.log(999,this.folderTreeData);
     },
   });
   

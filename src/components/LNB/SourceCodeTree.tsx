@@ -54,7 +54,9 @@ export const SourceCodeTree: React.FC = () => {
         }
         nodeTotalPath += nodePath;
         nodeTotalPath += '/';
-        const nameArray: Array<String> = node.children.map((child) => child.name);
+        const nameArray: Array<String> = node.children.map(
+          (child) => child.name,
+        );
         if (!nameArray.includes(nodePath)) {
           if (index === nodeArray.length - 1)
             node.children.push({
@@ -84,7 +86,7 @@ export const SourceCodeTree: React.FC = () => {
             });
           }
           node.children.sort((a, b) => a.name.localeCompare(b.name));
-          node.children.sort((a, b) => a.isFile - b.isFile );
+          node.children.sort((a, b) => a.isFile - b.isFile);
         }
         node = node.children.filter(
           (pathList) => pathList.name === nodePath,
@@ -93,7 +95,6 @@ export const SourceCodeTree: React.FC = () => {
     });
     return resultJson;
   };
-  pathToJson(WorkspaceStore.sourceCodeList);
 
   const AddFileIcon = ({ nodeData }) => {
     const { nodePath } = nodeData;
@@ -157,14 +158,18 @@ export const SourceCodeTree: React.FC = () => {
     return <FolderOpen fontSize="small" onClick={handleClick} />;
   };
 
-  const FileIcon = ({ onClick: defaultOnClick, nodeData}) => {
+  const FileIcon = ({ onClick: defaultOnClick, nodeData }) => {
     const { name } = nodeData;
     const handleClick = () => {
       defaultOnClick();
     };
-    return <div className="file-icon" 
-    dangerouslySetInnerHTML={{ __html: getIcon(name).svg }} onClick={handleClick}
-  />
+    return (
+      <div
+        className="file-icon"
+        dangerouslySetInnerHTML={{ __html: getIcon(name).svg }}
+        onClick={handleClick}
+      />
+    );
   };
 
   const [showModal, setShowModal] = React.useState(false);
@@ -239,23 +244,21 @@ export const SourceCodeTree: React.FC = () => {
         <div>
           <div className="source-code-tree">
             <FolderTree
-              data={resultJson}
+              data={pathToJson(WorkspaceStore.sourceCodeList)}
               showCheckbox={false}
               indentPixels={18}
-              initOpenStatus="custom"
               onNameClick={onSourceCodeLinkClick}
-              iconComponents={
-                {
-                  // AddFileIcon,
-                  // AddFolderIcon,
-                  // CancelIcon,
-                  // DeleteIcon,
-                  // EditIcon,
-                  // FolderIcon,
-                  // FolderOpenIcon,
-                  // FileIcon,
-                }
-              }
+              initOpenStatus="custom"
+              iconComponents={{
+                AddFileIcon,
+                AddFolderIcon,
+                CancelIcon,
+                DeleteIcon,
+                EditIcon,
+                FolderIcon,
+                FolderOpenIcon,
+                FileIcon,
+              }}
             />
           </div>
           <div>
