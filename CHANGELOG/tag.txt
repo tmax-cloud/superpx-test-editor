@@ -1,2 +1,2 @@
-Console Version History
+Version History
 0.0.0.0
