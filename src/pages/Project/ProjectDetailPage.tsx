@@ -187,7 +187,10 @@ const ProjectDetailPage: React.FC = () => {
           </div>
           <div className="detail-in-flex">
             <Button variant="outlined">HISTORY</Button>
-            <Button variant="contained" href={`projects/${projectName}/editor`}>
+            <Button
+              variant="contained"
+              href={`/projects/${projectName}/editor`}
+            >
               PX Editor
             </Button>
             <Button variant="contained">CI/CD</Button>
