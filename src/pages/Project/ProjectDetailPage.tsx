@@ -153,9 +153,9 @@ const ProjectDetailPage: React.FC = () => {
               <Button
                 className="gnb-menu-button"
                 id="basic-button"
-                aria-controls={open ? 'basic-menu' : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
+                // aria-controls={open ? 'basic-menu' : undefined}
+                // aria-haspopup="true"
+                // aria-expanded={open ? 'true' : undefined}
                 // onClick={handleClick}
                 // value={menu}
               >
