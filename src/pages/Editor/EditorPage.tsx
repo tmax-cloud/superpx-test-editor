@@ -16,10 +16,8 @@ export default function EditorPage() {
       sendMessage('reference', 'ListService', {
         proj_name: projectName,
       });
-      EditorContentsStore.updateEditorLnbInitState('explorer');
       EditorContentsStore.updateShowProjectSelect(false);
     } else {
-      EditorContentsStore.updateEditorLnbInitState('scm');
       EditorContentsStore.updateShowProjectSelect(true);
     }
   });
