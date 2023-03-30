@@ -21,7 +21,7 @@ const Editor: React.FC = () => {
         autoIndent: 'full',
         theme: 'vs-dark',
         mouseWheelZoom: true,
-        fontSize: 20,
+        fontSize: 15,
         value:
           EditorContentsStore.contents[EditorContentsStore.viewIndex].content,
       });

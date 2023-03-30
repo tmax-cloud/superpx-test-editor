@@ -1,6 +1,5 @@
 import WorkspaceStore from '../stores/workspaceStore';
-import { setAlert } from './alert-utils';
-import { wsUrl, servicePrefix } from '../utils/constants';
+import { servicePrefix } from '../utils/constants';
 import EditorContentsStore from '../stores/editorContentsStore';
 
 type ServiceCategory = 'project' | 'reference' | 'commit' | 'merge' | 'source';
@@ -38,29 +37,13 @@ export const sendMessage = (
 
 const projectInsertService = (data) => {
   WorkspaceStore.addProjectAction({ name: data.name, projId: data.projId });
-  setAlert(
-    'Project Insert Service Call',
-    `Add Project to ${wsUrl}.`,
-    'success',
-  );
 };
 const projectListService = (data) => {
   WorkspaceStore.updateProjectListAction(data);
-  setAlert(
-    'Project List Service Call',
-    `Get Project List from ${wsUrl}.`,
-    'success',
-  );
 };
 const projectDetailService = (data) => {
-  setAlert(
-    'Project Detail Service Call',
-    `Get Reference List from Project ${data.name}.`,
-    'success',
-  );
 };
 const projectDeleteService = (data) => {
-  setAlert('Project Delete Service Call', `Delete Project.`, 'success');
 };
 
 const referenceInsertService = (data) => {
@@ -71,11 +54,6 @@ const referenceInsertService = (data) => {
     type: data.type,
     newReference: true,
   });
-  setAlert(
-    'Reference Insert Service Call',
-    `Add Reference(${data.name}) to ${WorkspaceStore.currentProject.name}(${WorkspaceStore.currentProject.projId}).`,
-    'success',
-  );
   sendMessage('reference', 'ListService', {
     proj_name: WorkspaceStore.currentProject.name,
   });
@@ -95,29 +73,15 @@ const referenceListService = (data) => {
     proj_name: WorkspaceStore.currentProject.name,
     ref_name: WorkspaceStore.currentReference.name,
   });
-  setAlert(
-    'Reference List Service Call',
-    `Reference List Service Call`,
-    'success',
-  );
 };
-const referenceDetailService = (data) => {
-  setAlert(
-    'Reference Detail Service Call',
-    `Get Commit List from Reference ${data.name}.`,
-    'success',
-  );
+const referenceDetailService = (data) => {  
   sendMessage('commit', 'ListService', {
-    ref_id: data.refId,
+    proj_name: WorkspaceStore.currentProject.name,
+    ref_name: data.name,
   });
 };
 
 const commitInsertService = (data) => {
-  setAlert(
-    'Commit Insert Service Call',
-    `${data.message}(${data.commitId}) is done`,
-    'success',
-  );
 };
 const commitListService = (data) => {
   if (data && data.length) {
@@ -134,28 +98,12 @@ const commitListService = (data) => {
     WorkspaceStore.updateCommitListAction([]);
     WorkspaceStore.updateSourceCodeListAction([]);
   }
-
-  setAlert(
-    'Reference List Service Call',
-    `Reference List Service Call`,
-    'success',
-  );
 };
 const commitDetailService = (data) => {
   WorkspaceStore.updateSourceCodeListAction(data);
-  setAlert(
-    'Commit Detail Service Call',
-    `Commit Detail Service Call`,
-    'success',
-  );
 };
 const sourceDetailService = (data) => {
   EditorContentsStore.updateContentAction(data.srcPath, data.content);
-  setAlert(
-    'Source Detail Service Call',
-    `Source Detail Service Call`,
-    'success',
-  );
 };
 
 export const services = {

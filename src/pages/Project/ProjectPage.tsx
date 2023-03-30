@@ -14,6 +14,7 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import {
+  Button,
   FormControl,
   InputAdornment,
   InputLabel,
@@ -23,6 +24,8 @@ import {
   TextField,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { useTranslation } from 'react-i18next';
+
 const StyledTableCell = styled(TableCell)({
   textAlign: 'center',
   verticalAlign: 'middle',
@@ -37,7 +40,9 @@ const ProjectPage: React.FC = () => {
 
   const [projectList, setProjectList] = React.useState([]);
   React.useEffect(() => {
-    setProjectList(WorkspaceStore.projectList);
+    setProjectList(
+      WorkspaceStore.projectList.sort((a, b) => a.name.localeCompare(b.name)),
+    );
   }, [WorkspaceStore.projectList]);
 
   const [searchInput, setSearchInput] = React.useState('');
@@ -61,13 +66,42 @@ const ProjectPage: React.FC = () => {
       console.log(searchInput);
     }
   }, [searchInput, action]);
+  const { t } = useTranslation();
   return (
     <Observer>
       {() => (
         <div className="project-page-parent">
+          <div className="gnb-project-page">
+            <span key={`menu-All`}>
+              <Button
+                className="gnb-menu-button"
+                id="basic-button"
+                // aria-controls={open ? 'basic-menu' : undefined}
+                // aria-haspopup="true"
+                // aria-expanded={open ? 'true' : undefined}
+                // // onClick={handleClick}
+                // value={menu}
+              >
+                {'All'}
+              </Button>
+            </span>
+            <span key={`menu-Favorites`}>
+              <Button
+                className="gnb-menu-button"
+                id="basic-button"
+                // aria-controls={open ? 'basic-menu' : undefined}
+                // aria-haspopup="true"
+                // aria-expanded={open ? 'true' : undefined}
+                // onClick={handleClick}
+                // value={menu}
+              >
+                {'Favorites'}
+              </Button>
+            </span>
+          </div>
           <div className="project-page">
             <div className="project-page-create">
-              <h1>Projects</h1>
+              <h1>{t('PROJECTMAIN')}</h1>
               <div className="padding-top-new-pro">
                 <CreateProjectForm
                   open={openCreateProjectForm}
@@ -131,10 +165,10 @@ const ProjectPage: React.FC = () => {
                           });
                         }}
                       >
-                        <Link to={`/projects/${project.name}`}>
+                        <Link to={`/projects/${project.name}/details`}>
                           <Box sx={{ p: 2 }}>
                             <Paper variant="outlined">
-                              <Link to={`/projects/${project.name}`}>
+                              <Link to={`/projects/${project.name}/details`}>
                                 <Box sx={{ display: 'flex' }}>
                                   <Box sx={{ p: 2 }}>
                                     <Avatar sx={{ bgcolor: 'primary.main' }}>
