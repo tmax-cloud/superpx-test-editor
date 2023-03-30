@@ -1,2 +1,2 @@
-Superpx Editor Version History
+Superpx-Editor Version History
 0.0.0.0
