@@ -147,7 +147,7 @@ body,
   height: 100%;
 }
 .editor-lnb {
-  height: calc(100% - 72px);
+  height: calc(100% - 100px);
   position: fixed;
   left: 0;
   top: 72px;
@@ -172,8 +172,9 @@ body,
 }
 
 .editor-lnb-drawer {
-  height: calc(100% - 72px);
+  height: calc(100% - 100px);
   padding-left: 65px;
+  overflow: auto;
 }
 .commit-btn {
   text-transform: none !important;
@@ -209,14 +210,19 @@ body,
   justify-content: center;
   align-items: center;
 }
+.file-icon {
+  width: 20px;
+  height:20px;
+  display: inline-block;
+}
 
 .source-code-tree {
   padding: 5px;
   height: 95%;
   overflow: scroll;
   scrollbar-width: thin;
-  background-color: #ffffffc4;
-  font-size: smaller;
+  background-color: #ffffff;
+  font-size: 12px;
 }
 .source-code-tree::-webkit-scrollbar {
   width: 6px;

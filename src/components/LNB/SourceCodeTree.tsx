@@ -13,7 +13,6 @@ import {
   Edit,
   Folder,
   FolderOpen,
-  InsertDriveFile,
 } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -22,6 +21,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
+import { getIcon } from 'material-file-icons';
 
 export const SourceCodeTree: React.FC = () => {
   const onSourceCodeLinkClick = ({ nodeData }) => {
@@ -54,7 +54,7 @@ export const SourceCodeTree: React.FC = () => {
         }
         nodeTotalPath += nodePath;
         nodeTotalPath += '/';
-        let nameArray: Array<String> = node.children.map((child) => child.name);
+        const nameArray: Array<String> = node.children.map((child) => child.name);
         if (!nameArray.includes(nodePath)) {
           if (index === nodeArray.length - 1)
             node.children.push({
@@ -66,20 +66,25 @@ export const SourceCodeTree: React.FC = () => {
               content: src.content,
               edited: src.edited,
             });
-          else if (index > 0){
-          node.children.push({
-            name: nodePath,
-            nodePath: nodeTotalPath,
-            isOpen: false,
-          });
-          node.isOpen = false;
-        } 
-          else
+          else if (index > 0) {
             node.children.push({
               name: nodePath,
               nodePath: nodeTotalPath,
               isOpen: false,
+              isFile: false,
+              children: [],
             });
+          } else {
+            node.children.push({
+              name: nodePath,
+              nodePath: nodeTotalPath,
+              isOpen: true,
+              isFile: false,
+              children: [],
+            });
+          }
+          node.children.sort((a, b) => a.name.localeCompare(b.name));
+          node.children.sort((a, b) => a.isFile - b.isFile );
         }
         node = node.children.filter(
           (pathList) => pathList.name === nodePath,
@@ -152,11 +157,14 @@ export const SourceCodeTree: React.FC = () => {
     return <FolderOpen fontSize="small" onClick={handleClick} />;
   };
 
-  const FileIcon = ({ onClick: defaultOnClick }) => {
+  const FileIcon = ({ onClick: defaultOnClick, nodeData}) => {
+    const { name } = nodeData;
     const handleClick = () => {
       defaultOnClick();
     };
-    return <InsertDriveFile fontSize="small" onClick={handleClick} />;
+    return <div className="file-icon" 
+    dangerouslySetInnerHTML={{ __html: getIcon(name).svg }} onClick={handleClick}
+  />
   };
 
   const [showModal, setShowModal] = React.useState(false);
@@ -202,11 +210,11 @@ export const SourceCodeTree: React.FC = () => {
         nodeTotalPath += '/';
         let nameArray: Array<String> = node.children.map((child) => child.name);
         if (!nameArray.includes(nodePath)) {
-            node.children.push({
-              name: nodePath,
-              nodePath: nodeTotalPath,
-              children: [],
-            });
+          node.children.push({
+            name: nodePath,
+            nodePath: nodeTotalPath,
+            children: [],
+          });
         }
         node = node.children.filter(
           (pathList) => pathList.name === nodePath,
@@ -234,7 +242,7 @@ export const SourceCodeTree: React.FC = () => {
               data={resultJson}
               showCheckbox={false}
               indentPixels={18}
-              initOpenStatus={false}
+              initOpenStatus="custom"
               onNameClick={onSourceCodeLinkClick}
               iconComponents={{
                 AddFileIcon,
