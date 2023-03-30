@@ -8,7 +8,11 @@ body,
 .title {
   height: 50px;
 }
-
+.top-menu-link.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 @media only screen and (max-height: 600px) {
   .center-container {
     height: 50%;
@@ -93,6 +97,14 @@ body,
   display: flex;
   justify-content: space-between;
 }
+.gnb-project-page {
+  background: #070e26;
+  overflow: auto;
+  width: 100%;
+  height: 72;
+  padding: 0px 15px 0px 0px;
+  display: flex;
+}
 .logo {
   display: flex;
   height: 36px;
@@ -130,16 +142,25 @@ body,
   line-height: 13px;
   color: #ffffff;
 }
-
+.top-head-text {
+  height: 15px;
+  padding-right: 200px;
+  position: relative;
+  font-size: 15px;
+  padding-top: 15px;
+  line-height: 13px;
+  color: #ffffff;
+  font-weight: bold;
+}
 .gnb-menu-button {
-  padding: 10px 8px !important;
-  width: 76px;
-  height: 36px;
+  padding: 10px 28px !important;
+  height: 30px;
   background: #070e26;
   color: #ffffff !important;
   font-weight: 700 !important;
   font-size: 13px !important;
   line-height: 14px !important;
+  text-transform: none !important;
 }
 
 .commit-link {
@@ -210,6 +231,7 @@ body,
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
 
 .source-code-tree {

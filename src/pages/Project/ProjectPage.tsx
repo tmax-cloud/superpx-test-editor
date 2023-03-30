@@ -14,6 +14,7 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import {
+  Button,
   FormControl,
   InputAdornment,
   InputLabel,
@@ -70,6 +71,34 @@ const ProjectPage: React.FC = () => {
     <Observer>
       {() => (
         <div className="project-page-parent">
+          <div className="gnb-project-page">
+            <span key={`menu-All`}>
+              <Button
+                className="gnb-menu-button"
+                id="basic-button"
+                aria-controls={open ? 'basic-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                // onClick={handleClick}
+                // value={menu}
+              >
+                {'All'}
+              </Button>
+            </span>
+            <span key={`menu-Favorites`}>
+              <Button
+                className="gnb-menu-button"
+                id="basic-button"
+                aria-controls={open ? 'basic-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                // onClick={handleClick}
+                // value={menu}
+              >
+                {'Favorites'}
+              </Button>
+            </span>
+          </div>
           <div className="project-page">
             <div className="project-page-create">
               <h1>{t('PROJECTMAIN')}</h1>
@@ -139,7 +168,7 @@ const ProjectPage: React.FC = () => {
                         <Link to={`/${project.name}`}>
                           <Box sx={{ p: 2 }}>
                             <Paper variant="outlined">
-                              <Link to={`/projects/${project.name}`}>
+                              <Link to={`/${project.name}/details`}>
                                 <Box sx={{ display: 'flex' }}>
                                   <Box sx={{ p: 2 }}>
                                     <Avatar sx={{ bgcolor: 'primary.main' }}>

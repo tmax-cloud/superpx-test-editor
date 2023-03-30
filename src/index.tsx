@@ -43,11 +43,15 @@ const router = createHashRouter([
         element: <ProjectPage />,
       },
       {
-        path: 'projects/:projectName/editor',
+        path: '/:projectName',
+        element: <ProjectPage />,
+      },
+      {
+        path: '/:projectName/editor',
         element: <EditorPage />,
       },
       {
-        path: 'projects/:projectName/*',
+        path: '/:projectName/details/*',
         element: <ProjectDetailPage />,
       },
       {
