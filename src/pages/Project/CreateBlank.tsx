@@ -4,7 +4,6 @@ import {
   FormControl,
   FormControlLabel,
   FormHelperText,
-  FormLabel,
   IconButton,
   Radio,
   RadioGroup,
@@ -16,13 +15,28 @@ import { useTranslation } from 'react-i18next';
 import HelpIcon from '@mui/icons-material/Help';
 export default function CreateBlank() {
   const { t } = useTranslation();
-  const [text, setText] = React.useState('');
-  const [characterCount, setCharacterCount] = React.useState(0);
+  const [projectDescription, setProjectDescription] = React.useState('');
+  const [projectName, setProjectName] = React.useState('');
 
-  const handleTextChange = (event) => {
-    setText(event.target.value);
+  const [characterCount, setCharacterCount] = React.useState(0);
+  const [invalidProjectNameHelp, setinValidProjectNameHelp] =
+    React.useState('');
+  const handleProjectDescriptionChange = (event) => {
+    setProjectDescription(event.target.value);
     setCharacterCount(event.target.value.length);
   };
+  const handleProjectNameChange = (event) => {
+    setProjectName(event.target.value);
+  };
+  React.useEffect(() => {
+    if (!projectName) {
+      setinValidProjectNameHelp('content is empty');
+    } else if (!/^[^/\\:*?"<>|\s]+$/.test(projectName)) {
+      setinValidProjectNameHelp('Must not contain ", /:?"<>|" characters');
+    } else {
+      setinValidProjectNameHelp('');
+    }
+  }, [projectName]);
   return (
     <div className="project-page-parent">
       <div className="create-page-blank-head">
@@ -32,9 +46,20 @@ export default function CreateBlank() {
       <div className="create-page-blank">
         <h3>Project Name</h3>
         <TextField
-          helperText="Project slug will be created automatically."
-          id="demo-helper-text-aligned"
-          label="My awesome project"
+          helperText={
+            invalidProjectNameHelp
+              ? invalidProjectNameHelp
+              : 'Project slug will be created automatically.'
+          }
+          id={
+            invalidProjectNameHelp
+              ? 'outlined-error'
+              : 'demo-helper-text-aligned'
+          }
+          label={'My awesome project'}
+          error={!!invalidProjectNameHelp}
+          value={projectName}
+          onChange={handleProjectNameChange}
         />
       </div>
 
@@ -52,8 +77,8 @@ export default function CreateBlank() {
             label="This project is awesome."
             multiline
             rows={4}
-            value={text}
-            onChange={handleTextChange}
+            value={projectDescription}
+            onChange={handleProjectDescriptionChange}
             variant="outlined"
             fullWidth
           />

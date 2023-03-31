@@ -23,6 +23,7 @@ const EditorContentsStore = observable({
     if (
       !this.contents.some((c) => {
         if (c.path === path) return true;
+        return false;
       })
     ) {
       this.contents.splice(this.viewIndex + 1, 0, { path, content });
