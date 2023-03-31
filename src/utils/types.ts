@@ -40,7 +40,6 @@ export type FolderTreeData = {
   edited?: boolean;
   children?: Array<FolderTreeData>;
   _id?: number;
-  checked?: number;
   isOpen?: boolean;
   isFile?: boolean;
 };

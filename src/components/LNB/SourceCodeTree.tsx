@@ -1,5 +1,5 @@
 import * as React from 'react';
-import FolderTree from 'react-folder-tree';
+import FolderTree, { IconComponents } from 'react-folder-tree';
 import WorkspaceStore from '../../stores/workspaceStore';
 import { Observer } from 'mobx-react';
 import { sendMessage } from '../../utils/service-utils';
@@ -13,6 +13,8 @@ import {
   Edit,
   Folder,
   FolderOpen,
+  KeyboardArrowDown,
+  KeyboardArrowRight,
 } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -22,8 +24,10 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import { getIcon } from 'material-file-icons';
+import FolderTreeStore from '../../stores/folderTreeStore';
 
 export const SourceCodeTree: React.FC = () => {
+
   const onSourceCodeLinkClick = ({ nodeData }) => {
     const { isFile, srcId, newfile, srcPath, content, edited } = nodeData;
     if (isFile) {
@@ -172,10 +176,42 @@ export const SourceCodeTree: React.FC = () => {
     );
   };
 
+  const CaretRightIcon = ({ onClick: defaultOnClick, nodeData }) => {
+    const { nodePath } = nodeData;
+    const handleClick = () => {
+      defaultOnClick();
+      FolderTreeStore.changeToOpenAction(nodePath);
+      fileTreeData = FolderTreeStore.folderTreeData;
+    };
+    return <KeyboardArrowRight fontSize="small" onClick={handleClick} />;
+  };
+
+  const CaretDownIcon = ({ onClick: defaultOnClick, nodeData }) => {
+    const { nodePath } = nodeData;
+    const handleClick = () => {
+      defaultOnClick();
+      FolderTreeStore.changeToCloseAction(nodePath);
+      fileTreeData = FolderTreeStore.folderTreeData;
+    };
+    return <KeyboardArrowDown fontSize="small" onClick={handleClick} />;
+  };
+
   const [showModal, setShowModal] = React.useState(false);
   const [inputValue, setInputValue] = React.useState('');
   const [pathValue, setPathValue] = React.useState('');
   const [isFile, setIsFile] = React.useState(false);
+  const [needUpdate, setNeedUpdate] = React.useState(true);
+
+  const updateTreeData = ()=>{
+    FolderTreeStore.updateTreeDataAction(pathToJson(WorkspaceStore.sourceCodeList));
+    setNeedUpdate(false);
+  };
+  let fileTreeData = FolderTreeStore.folderTreeData;
+
+  if(needUpdate){
+    updateTreeData();
+  }
+
   const handleOpenModal = (NodePath) => {
     setShowModal(true);
     setPathValue(NodePath);
@@ -228,6 +264,9 @@ export const SourceCodeTree: React.FC = () => {
       setShowModal(false);
       setInputValue('');
     }
+    FolderTreeStore.updatePathToJsonAction(WorkspaceStore.sourceCodeList);
+    setNeedUpdate(false);
+    fileTreeData = FolderTreeStore.folderTreeData;
     return resultJson;
   };
   const handleCancelModal = () => {
@@ -244,7 +283,7 @@ export const SourceCodeTree: React.FC = () => {
         <div>
           <div className="source-code-tree">
             <FolderTree
-              data={pathToJson(WorkspaceStore.sourceCodeList)}
+              data={fileTreeData}
               showCheckbox={false}
               indentPixels={18}
               onNameClick={onSourceCodeLinkClick}
@@ -258,7 +297,9 @@ export const SourceCodeTree: React.FC = () => {
                 FolderIcon,
                 FolderOpenIcon,
                 FileIcon,
-              }}
+                CaretDownIcon,
+                CaretRightIcon,
+              } as IconComponents}
             />
           </div>
           <div>
