@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Box from '@mui/material/Box';
-import { Editor } from './Editor';
+import Editor from './Editor';
 import { Observer } from 'mobx-react';
 import EditorContentsStore from '../../stores/editorContentsStore';
 import CustomTab from './CustomTab';
