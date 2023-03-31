@@ -21,7 +21,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
-import { getIcon } from 'material-file-icons';
+// import { getIcon } from 'material-file-icons';
 
 export const SourceCodeTree: React.FC = () => {
   const onSourceCodeLinkClick = ({ nodeData }) => {
@@ -166,7 +166,7 @@ export const SourceCodeTree: React.FC = () => {
     return (
       <div
         className="file-icon"
-        dangerouslySetInnerHTML={{ __html: getIcon(name).svg }}
+        // dangerouslySetInnerHTML={{ __html: getIcon(name).svg }}
         onClick={handleClick}
       />
     );
@@ -249,16 +249,18 @@ export const SourceCodeTree: React.FC = () => {
               indentPixels={18}
               onNameClick={onSourceCodeLinkClick}
               initOpenStatus="custom"
-              iconComponents={{
-                AddFileIcon,
-                AddFolderIcon,
-                CancelIcon,
-                DeleteIcon,
-                EditIcon,
-                FolderIcon,
-                FolderOpenIcon,
-                FileIcon,
-              }}
+              iconComponents={
+                {
+                  // AddFileIcon,
+                  // AddFolderIcon,
+                  // CancelIcon,
+                  // DeleteIcon,
+                  // EditIcon,
+                  // FolderIcon,
+                  // FolderOpenIcon,
+                  // FileIcon,
+                }
+              }
             />
           </div>
           <div>
