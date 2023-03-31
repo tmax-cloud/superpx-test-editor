@@ -42,7 +42,7 @@ const EditorContentsStore = observable({
       return c.path !== path;
     });
     let newIndex = index - 1;
-    if (EditorContentsStore.contents.length > 0 && newIndex < 0) {
+    if (newIndex < 0) {
       newIndex = 0;
     }
     this.viewIndex = newIndex;

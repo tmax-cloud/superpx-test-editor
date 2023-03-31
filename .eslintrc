@@ -7,6 +7,7 @@
     "eqeqeq": "error", // 일치 연산자 사용 필수
     "dot-notation": "error", // 가능하다면 dot notation 사용
     "no-unused-vars": "error", // 사용하지 않는 변수 금지
-    "react-hooks/exhaustive-deps": "off" //mobx 스토어 배열은 useEffect훅에 넣어도 문제가 없으므로 이를 허용
+    "react-hooks/exhaustive-deps": "off", //mobx 스토어 배열은 useEffect훅에 넣어도 문제가 없으므로 이를 허용
+    "react-hooks/rules-of-hooks": "off" //useNavigate관련 조건부 등록을 위해 허용
   }
 }
