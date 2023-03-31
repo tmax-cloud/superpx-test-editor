@@ -29,7 +29,7 @@ import FolderTreeStore from '../../stores/folderTreeStore';
 export const SourceCodeTree: React.FC = () => {
 
   const onSourceCodeLinkClick = ({ nodeData }) => {
-    const { isFile, srcId, newfile, srcPath, content, edited, nodePath } = nodeData;
+    const { isFile, srcId, newfile, srcPath, content, edited } = nodeData;
     if (isFile) {
       if (newfile || edited) {
         EditorContentsStore.updateContentAction(srcPath, content);
@@ -39,9 +39,6 @@ export const SourceCodeTree: React.FC = () => {
           commit_id: WorkspaceStore.currentCommit.commitId,
         });
       }
-    }
-    else{
-      console.log(nodePath.split('/'));
     }
   };
   const resultJson = {
@@ -269,7 +266,6 @@ export const SourceCodeTree: React.FC = () => {
     }
     FolderTreeStore.updatePathToJsonAction(WorkspaceStore.sourceCodeList);
     setNeedUpdate(false);
-    console.log(444,WorkspaceStore.sourceCodeList);
     fileTreeData = FolderTreeStore.folderTreeData;
     return resultJson;
   };

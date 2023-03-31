@@ -24,7 +24,6 @@ const FolderTreeStore = observable({
         )[0];
       });
       this.folderTreeData = resultJson;
-      console.log(222,this.folderTreeData);
     },
     changeToCloseAction(srcPath: string){
       const resultJson = this.folderTreeData;
@@ -38,7 +37,6 @@ const FolderTreeStore = observable({
         )[0];
       });
       this.folderTreeData = resultJson;
-      console.log(222,this.folderTreeData);
     },
     updatePathToJsonAction(sourceCodeList){
       const resultJson = this.folderTreeData;
