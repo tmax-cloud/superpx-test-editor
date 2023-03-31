@@ -1,7 +1,6 @@
 import * as React from 'react';
 import HomeIcon from '@mui/icons-material/Home';
 import { Link, useParams } from 'react-router-dom';
-import EditorContentsStore from '../../stores/editorContentsStore';
 import I18nButton from '../../utils/i18n/I18nButton';
 export const GNB = () => {
   const { projectName } = useParams();
@@ -27,9 +26,6 @@ export const GNB = () => {
 
         <Link
           to={`/projects/${projectName}/editor`}
-          onClick={() => {
-            EditorContentsStore.updateEditorLnbInitState('scm');
-          }}
           className={`top-menu-link ${!projectName ? 'disabled' : ''}`}
         >
           <p className="top-menu-text">PX Editor</p>

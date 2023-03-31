@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import WorkspaceStore from '../../stores/workspaceStore';
 import { Observer, observer } from 'mobx-react';
@@ -187,12 +187,13 @@ const ProjectDetailPage: React.FC = () => {
           </div>
           <div className="detail-in-flex">
             <Button variant="outlined">HISTORY</Button>
-            <Button
-              variant="contained"
-              href={`/projects/${projectName}/editor`}
-            >
-              PX Editor
-            </Button>
+            <Link to={`/projects/${projectName}/editor`}>
+              <Button
+                variant="contained"
+              >
+                PX Editor
+              </Button>
+            </Link>
             <Button variant="contained">CI/CD</Button>
           </div>
         </div>

@@ -18,13 +18,6 @@ const EditorContentsStore = observable({
   viewIndex: 0,
   isFull: false,
   showProjectSelect: true,
-  editorLnbInitState: {
-    explorer: true,
-    search: false,
-    scm: false,
-    debug: false,
-    extension: false,
-  },
   // action
   updateContentAction(path: string, content: string) {
     if (
@@ -78,15 +71,6 @@ const EditorContentsStore = observable({
   },
   updateShowProjectSelect(to: boolean) {
     this.showProjectSelect = to;
-  },
-  updateEditorLnbInitState(initLnb: string) {
-    this.editorLnbInitState = {
-      explorer: 'explorer' === initLnb,
-      search: 'search' === initLnb,
-      scm: 'scm' === initLnb,
-      debug: 'debug' === initLnb,
-      extension: 'extension' === initLnb,
-    };
   },
 });
 

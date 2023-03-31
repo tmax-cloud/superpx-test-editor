@@ -16,9 +16,13 @@ import { SCM } from './SCM/SCM';
 type Lnb = 'explorer' | 'search' | 'scm' | 'debug' | 'extension';
 
 export const EditorLNB: React.FC = () => {
-  const [lnbOpenState, setLnbOpenState] = React.useState(
-    EditorContentsStore.editorLnbInitState,
-  );
+  const [lnbOpenState, setLnbOpenState] = React.useState({
+    explorer: true,
+    search: false,
+    scm: false,
+    debug: false,
+    extension: false,
+  });
   React.useEffect(() => {
     Object.keys(lnbOpenState).every((key) => lnbOpenState[key] === false)
       ? EditorContentsStore.updateIsFull(true)
@@ -89,46 +93,37 @@ export const EditorLNB: React.FC = () => {
           },
         }}
       >
-        {(['explorer', 'search', 'scm', 'debug', 'extension'] as const).map(
-          (lnb) => (
-            <Button
-              id={`lnb-${lnb}`}
-              onClick={toggleDrawer(lnb)}
-              className="lnb-btn"
-            >
-              {lnbIcon[lnb]}
-            </Button>
-          ),
-        )}
-        {(['explorer', 'search', 'scm', 'debug', 'extension'] as const).map(
-          (lnb) => (
-            <>
-              <Drawer
-                sx={{
+        {(['explorer', 'scm'] as const).map((lnb) => (
+          <Button
+            id={`lnb-${lnb}`}
+            onClick={toggleDrawer(lnb)}
+            className="lnb-btn"
+          >
+            {lnbIcon[lnb]}
+          </Button>
+        ))}
+        {(['explorer', 'scm'] as const).map((lnb) => (
+          <>
+            <Drawer
+              sx={{
+                width: 300,
+                flexShrink: 0,
+                [`& .MuiDrawer-paper`]: {
                   width: 300,
-                  flexShrink: 0,
-                  [`& .MuiDrawer-paper`]: {
-                    width: 300,
-                    boxSizing: 'border-box',
-                  },
-                  zIndex: 0,
-                }}
-                anchor="left"
-                open={lnbOpenState[lnb]}
-                onClose={toggleDrawer(lnb)}
-                variant="persistent"
-              >
-                {lnb === 'explorer' && <Explorer />}
-                {lnb === 'search' && <div className="editor-lnb-drawer"></div>}
-                {lnb === 'scm' && <SCM />}
-                {lnb === 'debug' && <div className="editor-lnb-drawer"></div>}
-                {lnb === 'extension' && (
-                  <div className="editor-lnb-drawer"></div>
-                )}
-              </Drawer>
-            </>
-          ),
-        )}
+                  boxSizing: 'border-box',
+                },
+                zIndex: 0,
+              }}
+              anchor="left"
+              open={lnbOpenState[lnb]}
+              onClose={toggleDrawer(lnb)}
+              variant="persistent"
+            >
+              {lnb === 'explorer' && <Explorer />}
+              {lnb === 'scm' && <SCM />}
+            </Drawer>
+          </>
+        ))}
       </MyDrawer>
     </div>
   );
