@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 import { useNavigate, useParams } from 'react-router-dom';
 import { sendMessage } from '../../utils/service-utils';
 import WorkspaceStore from '../../stores/workspaceStore';
+import EditorContentsStore from '../../stores/editorContentsStore';
 
 export const getFolderStructure = (srcList) => {
   const structure = {};
@@ -64,6 +65,7 @@ const FileTreeView = ({ structure, currentPath, onClick }) => {
               button
               onClick={() =>
                 onClick(() => {
+                  EditorContentsStore.initContentAction();
                   navigate(`/projects/${projectName}/editor`);
                   sendMessage('source', 'DetailService', {
                     src_id: srcCodeId,

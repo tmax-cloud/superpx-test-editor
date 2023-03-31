@@ -41,10 +41,8 @@ const projectInsertService = (data) => {
 const projectListService = (data) => {
   WorkspaceStore.updateProjectListAction(data);
 };
-const projectDetailService = (data) => {
-};
-const projectDeleteService = (data) => {
-};
+const projectDetailService = (data) => {};
+const projectDeleteService = (data) => {};
 
 const referenceInsertService = (data) => {
   WorkspaceStore.updateCurrentReferenceAction({
@@ -74,15 +72,14 @@ const referenceListService = (data) => {
     ref_name: WorkspaceStore.currentReference.name,
   });
 };
-const referenceDetailService = (data) => {  
+const referenceDetailService = (data) => {
   sendMessage('commit', 'ListService', {
     proj_name: WorkspaceStore.currentProject.name,
     ref_name: data.name,
   });
 };
 
-const commitInsertService = (data) => {
-};
+const commitInsertService = (data) => {};
 const commitListService = (data) => {
   if (data && data.length) {
     WorkspaceStore.updateCommitListAction(data);

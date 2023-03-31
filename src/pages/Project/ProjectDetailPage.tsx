@@ -71,9 +71,9 @@ const ProjectDetailPage: React.FC = () => {
   }, [WorkspaceStore.sourceCodeList]);
   React.useEffect(() => {
     if (
-      EditorContentsStore.contents[EditorContentsStore.viewIndex].path.includes(
-        'README.md',
-      )
+      EditorContentsStore.contents[
+        EditorContentsStore.viewIndex
+      ]?.path.includes('README.md')
     ) {
       setReadme(
         EditorContentsStore.contents[EditorContentsStore.viewIndex].content,
@@ -81,7 +81,7 @@ const ProjectDetailPage: React.FC = () => {
     } else {
       setReadme('');
     }
-  }, [EditorContentsStore.viewIndex]);
+  }, [EditorContentsStore.contents]);
 
   const folderStructure = getFolderStructure(WorkspaceStore.sourceCodeList);
 
@@ -190,6 +190,9 @@ const ProjectDetailPage: React.FC = () => {
             <Link to={`/projects/${projectName}/editor`}>
               <Button
                 variant="contained"
+                onClick={() => {
+                  EditorContentsStore.initContentAction();
+                }}
               >
                 PX Editor
               </Button>
