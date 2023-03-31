@@ -1,56 +1,62 @@
 import * as React from 'react';
 import * as monaco from 'monaco-editor';
-import { Observer } from 'mobx-react';
+import { observer, Observer } from 'mobx-react';
 import EditorContentsStore from '../../stores/editorContentsStore';
 import { getExtensionOfFilename } from '../../utils/path-utils';
 import WorkspaceStore from '../../stores/workspaceStore';
 
 const Editor: React.FC = () => {
-  let divNode;
-  const assignRef = React.useCallback((node) => {
-    // On mount get the ref of the div and assign it the divNode
-    divNode = node;
-  }, []);
+  const editorRef = React.useRef(null);
+  const divNodeRef = React.useRef(null);
+
   React.useEffect(() => {
+    if (!divNodeRef.current) return;
+
     const path =
       EditorContentsStore.contents[EditorContentsStore.viewIndex].path;
-    if (divNode) {
-      const editor = monaco.editor.create(divNode, {
-        language: getExtensionOfFilename(path),
-        minimap: { enabled: true },
-        autoIndent: 'full',
-        theme: 'vs-dark',
-        mouseWheelZoom: true,
-        fontSize: 15,
-        value:
-          EditorContentsStore.contents[EditorContentsStore.viewIndex].content,
+
+    const editor = monaco.editor.create(divNodeRef.current, {
+      language: getExtensionOfFilename(path),
+      minimap: { enabled: true },
+      autoIndent: 'full',
+      theme: 'vs-dark',
+      mouseWheelZoom: true,
+      fontSize: 15,
+      value:
+        EditorContentsStore.contents[EditorContentsStore.viewIndex].content,
+    });
+
+    editorRef.current = editor;
+
+    divNodeRef.current.style.height = '100%';
+    divNodeRef.current.style.width = '100%';
+
+    const model = editor.getModel();
+    model.onDidChangeContent((e) => {
+      EditorContentsStore.editContentAction(
+        model.getValue(),
+        EditorContentsStore.viewIndex,
+      );
+      WorkspaceStore.updateSourceCodeAction({
+        srcPath: path,
+        content: model.getValue(),
+        edited: true,
       });
-      divNode.style.height = '100%';
-      divNode.style.width = '100%';
-      const model = editor.getModel();
-      model.onDidChangeContent((e) => {
-        EditorContentsStore.editContentAction(
-          model.getValue(),
-          EditorContentsStore.viewIndex,
-        );
-        WorkspaceStore.updateSourceCodeAction({
-          srcPath: path,
-          content: model.getValue(),
-          edited: true,
-        });
-      });
-    }
-  });
+    });
+
+    return () => {
+      editor.dispose();
+    };
+  }, [EditorContentsStore.contents]);
 
   return (
     <Observer>
       {() => (
         <div className="editor-flex">
-          <div ref={assignRef} className="center-container"></div>
+          <div ref={divNodeRef} className="center-container"></div>
         </div>
       )}
     </Observer>
   );
 };
-
-export { Editor };
+export default observer(Editor);
