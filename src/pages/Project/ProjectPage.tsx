@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { observer, Observer } from 'mobx-react';
 import { Link, useParams } from 'react-router-dom';
-import { CreateProjectForm } from '../../components/Form/CreateProjectForm';
 import WorkspaceStore from '../../stores/workspaceStore';
 import { sendMessage } from '../../utils/service-utils';
 import { styled } from '@mui/material/styles';
@@ -58,11 +57,6 @@ const ProjectPage: React.FC = () => {
         d.name.toLowerCase().includes(searchInput.toLowerCase()),
       );
       setProjectList(newData);
-      console.log(searchInput);
-    } else if (action === 'Favorite') {
-      console.log(searchInput);
-    } else if (action === 'Last updated') {
-      console.log(searchInput);
     }
   }, [searchInput, action]);
   const { t } = useTranslation();
