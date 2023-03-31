@@ -15,6 +15,8 @@ import ProjectDetailPage from './pages/Project/ProjectDetailPage';
 import GroupPage from './pages/Group/GroupPage';
 import GroupDetailPage from './pages/Group/GroupDetailPage';
 import './utils/i18n/i18n';
+import Create from './pages/Project/Create';
+import CreateBlank from './pages/Project/CreateBlank';
 
 WorkspaceStore.setupWsAction();
 setupLanguage();
@@ -56,6 +58,22 @@ const router = createBrowserRouter([
       {
         path: '/projects/:projectName/details/*',
         element: <ProjectDetailPage />,
+      },
+      {
+        path: '/create',
+        element: <Create />,
+      },
+      {
+        path: '/projects/:projectName/create',
+        element: <Create />,
+      },
+      {
+        path: '/create/blank',
+        element: <CreateBlank />,
+      },
+      {
+        path: '/projects/:projectName/create/blank',
+        element: <CreateBlank />,
       },
       {
         path: 'groups',
