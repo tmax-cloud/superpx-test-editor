@@ -1,26 +1,16 @@
 import { observable } from 'mobx';
 
-const testCode = `public class CurrentDateTime {
-
-    public static void main(String[] args) {
-        LocalDateTime current = LocalDateTime.now();
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
-        String formatted = current.format(formatter);
-
-        System.out.println("Current Date and Time is: " + formatted);
-    }
-}`;
-
 const EditorContentsStore = observable({
   // state
-  contents: [{ path: 'testcode.java', content: testCode }],
+  contents: [],
   viewIndex: 0,
   isFull: false,
   showProjectSelect: true,
   // action
   updateContentAction(path: string, content: string) {
-    if (
+    if (!this.contents.length) {
+      this.contents = [{ path, content }];
+    } else if (
       !this.contents.some((c) => {
         if (c.path === path) return true;
         return false;
@@ -59,7 +49,7 @@ const EditorContentsStore = observable({
   },
 
   initContentAction() {
-    this.contents = [{ path: 'testcode.java', content: testCode }];
+    this.contents = [];
     this.viewIndex = 0;
   },
 

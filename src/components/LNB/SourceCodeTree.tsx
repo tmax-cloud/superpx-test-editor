@@ -27,7 +27,6 @@ import { getIcon } from 'material-file-icons';
 import FolderTreeStore from '../../stores/folderTreeStore';
 
 export const SourceCodeTree: React.FC = () => {
-
   const onSourceCodeLinkClick = ({ nodeData }) => {
     const { isFile, srcId, newfile, srcPath, content, edited } = nodeData;
     if (isFile) {
@@ -202,13 +201,15 @@ export const SourceCodeTree: React.FC = () => {
   const [isFile, setIsFile] = React.useState(false);
   const [needUpdate, setNeedUpdate] = React.useState(true);
 
-  const updateTreeData = ()=>{
-    FolderTreeStore.updateTreeDataAction(pathToJson(WorkspaceStore.sourceCodeList));
+  const updateTreeData = () => {
+    FolderTreeStore.updateTreeDataAction(
+      pathToJson(WorkspaceStore.sourceCodeList),
+    );
     setNeedUpdate(false);
   };
   let fileTreeData = FolderTreeStore.folderTreeData;
 
-  if(needUpdate){
+  if (needUpdate) {
     updateTreeData();
   }
 
@@ -288,18 +289,20 @@ export const SourceCodeTree: React.FC = () => {
               indentPixels={18}
               onNameClick={onSourceCodeLinkClick}
               initOpenStatus="custom"
-              iconComponents={{
-                AddFileIcon,
-                AddFolderIcon,
-                CancelIcon,
-                DeleteIcon,
-                EditIcon,
-                FolderIcon,
-                FolderOpenIcon,
-                FileIcon,
-                CaretDownIcon,
-                CaretRightIcon,
-              } as IconComponents}
+              iconComponents={
+                {
+                  AddFileIcon,
+                  AddFolderIcon,
+                  CancelIcon,
+                  DeleteIcon,
+                  EditIcon,
+                  FolderIcon,
+                  FolderOpenIcon,
+                  FileIcon,
+                  CaretDownIcon,
+                  CaretRightIcon,
+                } as IconComponents
+              }
             />
           </div>
           <div>

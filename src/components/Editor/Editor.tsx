@@ -10,7 +10,9 @@ const Editor: React.FC = () => {
   const divNodeRef = React.useRef(null);
 
   React.useEffect(() => {
-    if (!divNodeRef.current) return;
+    if (!divNodeRef.current || !EditorContentsStore.contents.length) {
+      return;
+    }
 
     const path =
       EditorContentsStore.contents[EditorContentsStore.viewIndex].path;
