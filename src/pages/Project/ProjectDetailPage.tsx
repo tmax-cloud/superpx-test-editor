@@ -44,6 +44,7 @@ const ProjectDetailPage: React.FC = () => {
       proj_name: projectName,
     });
   }, []);
+
   React.useEffect(() => {
     if (
       WorkspaceStore.currentCommit.commitId &&

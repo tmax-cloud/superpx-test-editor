@@ -2,6 +2,7 @@ import * as React from 'react';
 import HomeIcon from '@mui/icons-material/Home';
 import { Link, useParams } from 'react-router-dom';
 import I18nButton from '../../utils/i18n/I18nButton';
+import { Chip } from '@mui/material';
 export const GNB = () => {
   const { projectName } = useParams();
   return (
@@ -31,7 +32,23 @@ export const GNB = () => {
           <p className="top-menu-text">PX Editor</p>
         </Link>
       </div>
-      {projectName && <div className="top-head-text">{projectName}</div>}
+      {projectName && (
+        <div className="top-head-text">
+          <div>{projectName}</div>
+          <Chip
+            label="Public"
+            variant="outlined"
+            sx={{
+              color: '#ffffff',
+              height: '18px',
+              borderColor: 'currentColor',
+              '& .MuiChip-label': {
+                fontSize: '0.8rem',
+              },
+            }}
+          />
+        </div>
+      )}
       <I18nButton />
     </div>
   );
