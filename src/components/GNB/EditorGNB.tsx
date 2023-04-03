@@ -20,7 +20,14 @@ export const EditorGNB = () => {
     'help',
   ];
   const menusAction = {
-    file: ['Import File', 'Import Directory'],
+    file: [
+      'New File',
+      'New Folder',
+      'New Window',
+      'Open',
+      'Favorites',
+      'Last updated',
+    ],
     edit: ['editAction1', 'editAction2'],
     select: ['selectAction1', 'selectAction2'],
     view: ['viewAction1', 'viewAction2'],

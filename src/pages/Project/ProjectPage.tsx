@@ -168,7 +168,12 @@ const ProjectPage: React.FC = () => {
                               <Link to={`/projects/${project.name}/details`}>
                                 <Box sx={{ display: 'flex' }}>
                                   <Box sx={{ p: 2 }}>
-                                    <Avatar sx={{ bgcolor: 'primary.main' }}>
+                                    <Avatar
+                                      sx={{
+                                        bgcolor: 'primary.main',
+                                        borderRadius: '20%',
+                                      }}
+                                    >
                                       {project.name.charAt(0)}
                                     </Avatar>
                                   </Box>
