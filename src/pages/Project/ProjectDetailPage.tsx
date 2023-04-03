@@ -139,11 +139,11 @@ const ProjectDetailPage: React.FC = () => {
   };
   const menus = [
     'Details',
-    'Issues',
-    'Merge Requests',
+    // 'Issues',
+    // 'Merge Requests',
     'CI/CD Report',
-    'Settings',
-    'PX Analysis',
+    // 'Settings',
+    // 'PX Analysis',
   ];
   return (
     <div>

@@ -11,30 +11,30 @@ import { ImportDirectoryDialog } from './ImportDirectoryDialog';
 export const EditorGNB = () => {
   const menus = [
     'file',
-    'edit',
-    'select',
-    'view',
-    'goto',
-    'debug',
-    'terminal',
-    'help',
+    // 'edit',
+    // 'select',
+    // 'view',
+    // 'goto',
+    // 'debug',
+    // 'terminal',
+    // 'help',
   ];
   const menusAction = {
     file: [
       'New File',
       'New Folder',
-      'New Window',
-      'Open',
-      'Favorites',
-      'Last updated',
+      // 'New Window',
+      // 'Open',
+      // 'Favorites',
+      // 'Last updated',
     ],
-    edit: ['editAction1', 'editAction2'],
-    select: ['selectAction1', 'selectAction2'],
-    view: ['viewAction1', 'viewAction2'],
-    goto: ['gotoAction1', 'gotoAction2'],
-    debug: ['debugAction1', 'debugAction2'],
-    terminal: ['terminalAction1', 'terminalAction2'],
-    help: ['helpAction1', 'helpAction2'],
+    // edit: ['editAction1', 'editAction2'],
+    // select: ['selectAction1', 'selectAction2'],
+    // view: ['viewAction1', 'viewAction2'],
+    // goto: ['gotoAction1', 'gotoAction2'],
+    // debug: ['debugAction1', 'debugAction2'],
+    // terminal: ['terminalAction1', 'terminalAction2'],
+    // help: ['helpAction1', 'helpAction2'],
   };
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [openMenu, setOpenMenu] = React.useState({});
