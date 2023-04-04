@@ -10,6 +10,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Slide,
   TextField,
 } from '@mui/material';
 import { sendMessage } from '../../utils/service-utils';
@@ -21,7 +22,15 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import EditorContentsStore from '../../stores/editorContentsStore';
 import ReactMarkdown from 'react-markdown';
-
+import { TransitionProps } from '@mui/material/transitions';
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & {
+    children: React.ReactElement<any, any>;
+  },
+  ref: React.Ref<unknown>,
+) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 const ProjectDetailPage: React.FC = () => {
   const { projectName } = useParams();
   const navigate = useNavigate();
@@ -145,6 +154,17 @@ const ProjectDetailPage: React.FC = () => {
     // 'Settings',
     // 'PX Analysis',
   ];
+  const [ciCdSelect, setCiCdSelect] = React.useState(false);
+  const [masterModal, setMasterModal] = React.useState(false);
+  const [targetIp, setTargetIp] = React.useState('');
+  const handleCiCdSelectOpen = () => {
+    setCiCdSelect(true);
+  };
+
+  const handleCiCdSelectClose = () => {
+    setCiCdSelect(false);
+  };
+
   return (
     <div>
       <div className="gnb-project-page">
@@ -198,7 +218,9 @@ const ProjectDetailPage: React.FC = () => {
                 PX Editor
               </Button>
             </Link>
-            <Button variant="contained">CI/CD</Button>
+            <Button variant="contained" onClick={handleCiCdSelectOpen}>
+              CI/CD
+            </Button>
           </div>
         </div>
         <Observer>
@@ -346,6 +368,88 @@ const ProjectDetailPage: React.FC = () => {
           <DialogActions>
             <Button onClick={handleCancelModal}>Cancel</Button>
             <Button onClick={handleCreateModal}>Create</Button>
+          </DialogActions>
+        </Dialog>
+        <Dialog
+          open={ciCdSelect}
+          onClose={handleCiCdSelectClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{'CI/CD'}</DialogTitle>
+          <DialogContent sx={{ minWidth: 312 }}>
+            <DialogContentText id="alert-dialog-description">
+              Select Deploy Target mode
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => {
+                handleCiCdSelectClose();
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={() => {
+                handleCiCdSelectClose();
+                //call
+              }}
+            >
+              Stand Alone
+            </Button>
+            <Button
+              onClick={() => {
+                handleCiCdSelectClose();
+                setMasterModal(true);
+              }}
+            >
+              Master
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        <Dialog
+          open={masterModal}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={() => {
+            setMasterModal(false);
+          }}
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle>Master</DialogTitle>
+          <DialogContent>
+            <DialogContentText>Target Master SAS IP</DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="Target Ip"
+              label="Target Ip"
+              type="text"
+              fullWidth
+              variant="standard"
+              value={targetIp}
+              onChange={(event) => {
+                setTargetIp(event.target.value);
+              }}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => {
+                setMasterModal(false);
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={() => {
+                setMasterModal(false);
+              }}
+            >
+              Create
+            </Button>
           </DialogActions>
         </Dialog>
         <div className="markdown-container">

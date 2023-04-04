@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { observer, Observer } from 'mobx-react';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import WorkspaceStore from '../../stores/workspaceStore';
 import { sendMessage } from '../../utils/service-utils';
 import { styled } from '@mui/material/styles';
@@ -34,7 +34,6 @@ const ProjectPage: React.FC = () => {
   React.useEffect(() => {
     sendMessage('project', 'ListService', {});
   }, []);
-  const { projectName } = useParams();
 
   const [projectList, setProjectList] = React.useState([]);
   React.useEffect(() => {
@@ -96,12 +95,7 @@ const ProjectPage: React.FC = () => {
             <div className="project-page-create">
               <h1>{t('PROJECTMAIN')}</h1>
               <div className="padding-top-new-pro">
-                <Button
-                  variant="contained"
-                  href={
-                    projectName ? `/projects/${projectName}/create` : '/create'
-                  }
-                >
+                <Button variant="contained" href={'/create'}>
                   New Project
                 </Button>
               </div>
