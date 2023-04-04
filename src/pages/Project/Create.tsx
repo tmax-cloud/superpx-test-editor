@@ -51,7 +51,7 @@ export default function Create() {
           border: '1px solid #BDBDBD',
           borderRadius: '8px',
         }}
-        onClick={() => handleCardClick('/create/blank')}
+        onClick={() => handleCardClick('/create/fromTemplate')}
       >
         <CardActionArea>
           <CardContent>

@@ -38,6 +38,9 @@ export const sendMessage = (
 const projectInsertService = (data) => {
   WorkspaceStore.addProjectAction({ name: data.name, projId: data.projId });
 };
+const projectGenerateService = (data) => {
+  WorkspaceStore.addProjectAction({ name: data.name, projId: data.projId });
+};
 const projectListService = (data) => {
   WorkspaceStore.updateProjectListAction(data);
 };
@@ -115,4 +118,5 @@ export const services = {
   CommitListService: commitListService,
   CommitDetailService: commitDetailService,
   SourceDetailService: sourceDetailService,
+  ProjectGenerateService: projectGenerateService,
 };
