@@ -56,14 +56,14 @@ export default function CreateTemplate() {
         <Button
           variant="contained"
           onClick={() => {
-            sendMessage('project', 'InsertService', {
+            sendMessage('project', 'GenerateService', {
               project: {
+                build_system: buildSystem,
                 name: projectName,
-                is_dependency: 0,
-              },
-              reference: {
-                name: 'main',
-                type: 0,
+                group: group,
+                version: version,
+                jdk: jdk,
+                is_import: isImport,
               },
             });
           }}
