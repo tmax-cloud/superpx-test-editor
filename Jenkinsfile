@@ -1,2 +1,2 @@
 echo "Hi"
-echo MAJOR_VER
+echo BUILD_MODE
