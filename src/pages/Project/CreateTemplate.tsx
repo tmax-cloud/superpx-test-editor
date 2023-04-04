@@ -14,6 +14,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import HelpIcon from '@mui/icons-material/Help';
 import { sendMessage } from '../../utils/service-utils';
+import { useNavigate } from 'react-router-dom';
 export default function CreateTemplate() {
   const { t } = useTranslation();
   const [projectDescription, setProjectDescription] = React.useState('');
@@ -48,6 +49,7 @@ export default function CreateTemplate() {
   ) => {
     setVisibilityLevel((event.target as HTMLInputElement).value);
   };
+  const navigate = useNavigate();
 
   return (
     <div className="project-page-parent">
@@ -66,6 +68,7 @@ export default function CreateTemplate() {
                 is_import: isImport,
               },
             });
+            navigate(`/projects/${projectName}`);
           }}
         >
           Create project
