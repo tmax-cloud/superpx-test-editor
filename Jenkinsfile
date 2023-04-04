@@ -1,2 +1,2 @@
 echo "Hi"
-echo "${MAJOR_VER}"
+echo MAJOR_VER
