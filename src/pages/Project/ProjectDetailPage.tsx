@@ -288,10 +288,30 @@ const ProjectDetailPage: React.FC = () => {
                 <p>
                   {
                     WorkspaceStore.referenceList.filter(
-                      (item) => item.type !== 0,
+                      (item) => item.type === 1,
                     ).length
                   }{' '}
                   Tags
+                </p>
+                <Avatar
+                  sx={{
+                    bgcolor: 'primary.main',
+                    borderRadius: '20%',
+                    top: '15px',
+                    width: '20px',
+                    height: '20px',
+                    fontSize: '0.25rem',
+                  }}
+                >
+                  {'IC'}
+                </Avatar>
+                <p>
+                  {
+                    WorkspaceStore.referenceList.filter(
+                      (item) => item.type === 2,
+                    ).length
+                  }{' '}
+                  Release
                 </p>
               </div>
               <div className="detail-drop-down">
