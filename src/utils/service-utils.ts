@@ -1,6 +1,7 @@
 import WorkspaceStore from '../stores/workspaceStore';
 import { servicePrefix } from '../utils/constants';
 import EditorContentsStore from '../stores/editorContentsStore';
+import loadingStore from '../stores/loadingStore';
 
 type ServiceCategory = 'project' | 'reference' | 'commit' | 'merge' | 'source';
 
@@ -37,6 +38,7 @@ export const sendMessage = (
 
 const projectInsertService = (data) => {
   WorkspaceStore.addProjectAction({ name: data.name, projId: data.projId });
+  loadingStore.setLoading(false);
 };
 const projectGenerateService = (data) => {
   WorkspaceStore.addProjectAction({ name: data.name, projId: data.projId });

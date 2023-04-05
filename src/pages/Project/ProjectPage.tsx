@@ -24,6 +24,8 @@ import {
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useTranslation } from 'react-i18next';
+import loadingStore from '../../stores/loadingStore';
+import LoadingScreen from '../../components/Loading/LoadingScreen';
 
 const StyledTableCell = styled(TableCell)({
   textAlign: 'center',
@@ -63,6 +65,7 @@ const ProjectPage: React.FC = () => {
     <Observer>
       {() => (
         <div className="project-page-parent">
+          {loadingStore.loading && <LoadingScreen />}
           <div className="gnb-project-page">
             <span key={`menu-All`}>
               <Button

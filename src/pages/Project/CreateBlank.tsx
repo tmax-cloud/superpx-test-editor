@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import HelpIcon from '@mui/icons-material/Help';
 import { sendMessage } from '../../utils/service-utils';
 import { useNavigate } from 'react-router-dom';
+import loadingStore from '../../stores/loadingStore';
 export default function CreateBlank() {
   const { t } = useTranslation();
   const [projectDescription, setProjectDescription] = React.useState('');
@@ -53,6 +54,7 @@ export default function CreateBlank() {
         <Button
           variant="contained"
           onClick={() => {
+            loadingStore.setLoading(true);
             sendMessage('project', 'InsertService', {
               project: {
                 name: projectName,
