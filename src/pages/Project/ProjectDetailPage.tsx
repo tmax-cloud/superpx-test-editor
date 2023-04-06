@@ -23,6 +23,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import EditorContentsStore from '../../stores/editorContentsStore';
 import ReactMarkdown from 'react-markdown';
 import { TransitionProps } from '@mui/material/transitions';
+import SmallIcon from '../../utils/SmallIcon';
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
     children: React.ReactElement<any, any>;
@@ -32,19 +33,75 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 const ProjectDetailPage: React.FC = () => {
-  const { projectName } = useParams();
+  const { projectName, reference } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const [readme, setReadme] = React.useState('');
+  const folderStructure = getFolderStructure(WorkspaceStore.sourceCodeList);
+  const [currentPath, setCurrentPath] = React.useState([]);
+  const [referenceId, setReferenceId] = React.useState('');
+  const [action, setAction] = React.useState('');
+  const [showModal, setShowModal] = React.useState(false);
+  const [inputValue, setInputValue] = React.useState('');
+  const [ciCdSelect, setCiCdSelect] = React.useState(false);
+  const [masterModal, setMasterModal] = React.useState(false);
+  const [targetIp, setTargetIp] = React.useState('');
+  const menus = [
+    'Details',
+    // 'Issues',
+    // 'Merge Requests',
+    'CI/CD Report',
+    // 'Settings',
+    // 'PX Analysis',
+  ];
+  const handleBack = () => {
+    if (currentPath.length > 0) {
+      const newPath = currentPath.slice(0, -1);
+      setCurrentPath(newPath);
+      navigate(newPath.join('/'));
+    }
+  };
+  const handleChange = (event: SelectChangeEvent) => {
+    setReferenceId(event.target.value);
+  };
+  const handleActionChange = (event: SelectChangeEvent) => {
+    setAction(event.target.value);
+  };
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+  const handleCreateModal = () => {
+    window.location.hash = `/projects/${projectName}/editor`;
+    EditorContentsStore.updateContentAction(inputValue, '');
+    setShowModal(false);
+    setInputValue('');
+  };
+  const handleCancelModal = () => {
+    setShowModal(false);
+    setInputValue('');
+  };
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
+  };
+  const handleCiCdSelectOpen = () => {
+    setCiCdSelect(true);
+  };
+  const handleCiCdSelectClose = () => {
+    setCiCdSelect(false);
+  };
 
   React.useEffect(() => {
-    const newPath = location.pathname
-      .replace(`/projects/${projectName}/details`, '')
-      .split('/')
-      .filter((part) => part.length > 0);
+    const newPath = reference
+      ? location.pathname
+          .replace(`/projects/${projectName}/details/${reference}`, '')
+          .split('/')
+          .filter((part) => part.length > 0)
+      : location.pathname
+          .replace(`/projects/${projectName}/details`, '')
+          .split('/')
+          .filter((part) => part.length > 0);
     setCurrentPath(newPath);
   }, [location.pathname]);
-
   React.useEffect(() => {
     WorkspaceStore.updateCurrentCommitAction({});
     WorkspaceStore.updateSourceCodeListAction([]);
@@ -53,7 +110,6 @@ const ProjectDetailPage: React.FC = () => {
       proj_name: projectName,
     });
   }, []);
-
   React.useEffect(() => {
     if (
       WorkspaceStore.currentCommit.commitId &&
@@ -63,11 +119,13 @@ const ProjectDetailPage: React.FC = () => {
         commit_id: WorkspaceStore.currentCommit.commitId,
       });
     }
+    WorkspaceStore.currentReference.refId &&
+      setReferenceId(String(WorkspaceStore.currentReference.refId));
   }, [WorkspaceStore.currentCommit.commitId]);
   React.useEffect(() => {
     EditorContentsStore.initContentAction();
     if (WorkspaceStore.sourceCodeList.length) {
-      WorkspaceStore.sourceCodeList.map((sourceCode) => {
+      WorkspaceStore.sourceCodeList.forEach((sourceCode) => {
         const lastSlashIndex = sourceCode.srcPath.lastIndexOf('/');
         const result = sourceCode.srcPath.slice(lastSlashIndex + 1);
         if (result === 'README.md') {
@@ -92,26 +150,9 @@ const ProjectDetailPage: React.FC = () => {
       setReadme('');
     }
   }, [EditorContentsStore.contents]);
-
-  const folderStructure = getFolderStructure(WorkspaceStore.sourceCodeList);
-
-  const [currentPath, setCurrentPath] = React.useState([]);
-  const handleBack = () => {
-    if (currentPath.length > 0) {
-      const newPath = currentPath.slice(0, -1);
-      setCurrentPath(newPath);
-      navigate(newPath.join('/'));
-    }
-  };
-
-  const [referenceId, setReferenceId] = React.useState('');
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setReferenceId(event.target.value);
-  };
   React.useEffect(() => {
     referenceId &&
-      WorkspaceStore.referenceList.map((reference) => {
+      WorkspaceStore.referenceList.forEach((reference) => {
         if (Number(referenceId) === reference.refId) {
           WorkspaceStore.updateCurrentReferenceAction(reference);
           sendMessage('reference', 'DetailService', {
@@ -119,51 +160,10 @@ const ProjectDetailPage: React.FC = () => {
             ref_name: reference.name,
           });
           EditorContentsStore.initContentAction();
+          navigate(`/projects/${projectName}/details/${reference.name}`);
         }
       });
   }, [referenceId]);
-  const [action, setAction] = React.useState('');
-
-  const handleActionChange = (event: SelectChangeEvent) => {
-    setAction(event.target.value);
-  };
-  const [showModal, setShowModal] = React.useState(false);
-  const [inputValue, setInputValue] = React.useState('');
-
-  const handleOpenModal = () => {
-    setShowModal(true);
-  };
-  const handleCreateModal = () => {
-    window.location.hash = `/projects/${projectName}/editor`;
-    EditorContentsStore.updateContentAction(inputValue, '');
-    setShowModal(false);
-    setInputValue('');
-  };
-  const handleCancelModal = () => {
-    setShowModal(false);
-    setInputValue('');
-  };
-  const handleInputChange = (event) => {
-    setInputValue(event.target.value);
-  };
-  const menus = [
-    'Details',
-    // 'Issues',
-    // 'Merge Requests',
-    'CI/CD Report',
-    // 'Settings',
-    // 'PX Analysis',
-  ];
-  const [ciCdSelect, setCiCdSelect] = React.useState(false);
-  const [masterModal, setMasterModal] = React.useState(false);
-  const [targetIp, setTargetIp] = React.useState('');
-  const handleCiCdSelectOpen = () => {
-    setCiCdSelect(true);
-  };
-
-  const handleCiCdSelectClose = () => {
-    setCiCdSelect(false);
-  };
 
   return (
     <div>
@@ -171,15 +171,7 @@ const ProjectDetailPage: React.FC = () => {
         {menus.map((menu) => {
           return (
             <span key={`menu-All`}>
-              <Button
-                className="gnb-menu-button"
-                id="basic-button"
-                // aria-controls={open ? 'basic-menu' : undefined}
-                // aria-haspopup="true"
-                // aria-expanded={open ? 'true' : undefined}
-                // onClick={handleClick}
-                // value={menu}
-              >
+              <Button className="gnb-menu-button" id="basic-button">
                 {menu}
               </Button>
             </span>
@@ -221,98 +213,49 @@ const ProjectDetailPage: React.FC = () => {
             <Button variant="contained" onClick={handleCiCdSelectOpen}>
               CI/CD
             </Button>
+            <Link to={`/projects`}>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  sendMessage('project', 'DeleteService', {
+                    proj_name: projectName,
+                  });
+                }}
+              >
+                Project Delete
+              </Button>
+            </Link>
           </div>
         </div>
         <Observer>
           {() => (
             <>
               <div className="detail-in-flex-under">
-                <Avatar
-                  sx={{
-                    bgcolor: 'primary.main',
-                    borderRadius: '20%',
-                    top: '15px',
-                    width: '20px',
-                    height: '20px',
-                    fontSize: '0.25rem',
-                  }}
-                >
-                  {'IC'}
-                </Avatar>
-                <p>Add license</p>
-                <Avatar
-                  sx={{
-                    bgcolor: 'primary.main',
-                    borderRadius: '20%',
-                    top: '15px',
-                    width: '20px',
-                    height: '20px',
-                    fontSize: '0.25rem',
-                  }}
-                >
-                  {'IC'}
-                </Avatar>
-                <p>{WorkspaceStore.commitList.length} Commits</p>
-                <Avatar
-                  sx={{
-                    bgcolor: 'primary.main',
-                    borderRadius: '20%',
-                    top: '15px',
-                    width: '20px',
-                    height: '20px',
-                    fontSize: '0.25rem',
-                  }}
-                >
-                  {'IC'}
-                </Avatar>
-                <p>
-                  {
+                <SmallIcon contents="Add license"></SmallIcon>
+                <SmallIcon
+                  contents={`${WorkspaceStore.commitList.length} Commits`}
+                ></SmallIcon>
+                <SmallIcon
+                  contents={`${
                     WorkspaceStore.referenceList.filter(
                       (item) => item.type === 0,
                     ).length
-                  }{' '}
-                  Branches
-                </p>
-                <Avatar
-                  sx={{
-                    bgcolor: 'primary.main',
-                    borderRadius: '20%',
-                    top: '15px',
-                    width: '20px',
-                    height: '20px',
-                    fontSize: '0.25rem',
-                  }}
-                >
-                  {'IC'}
-                </Avatar>
-                <p>
-                  {
+                  } Branches`}
+                ></SmallIcon>
+                <SmallIcon
+                  contents={`${
                     WorkspaceStore.referenceList.filter(
                       (item) => item.type === 1,
                     ).length
-                  }{' '}
-                  Tags
-                </p>
-                <Avatar
-                  sx={{
-                    bgcolor: 'primary.main',
-                    borderRadius: '20%',
-                    top: '15px',
-                    width: '20px',
-                    height: '20px',
-                    fontSize: '0.25rem',
-                  }}
-                >
-                  {'IC'}
-                </Avatar>
-                <p>
-                  {
+                  } Tags`}
+                ></SmallIcon>
+                <SmallIcon
+                  contents={`${
                     WorkspaceStore.referenceList.filter(
                       (item) => item.type === 2,
                     ).length
-                  }{' '}
-                  Release
-                </p>
+                  } Release`}
+                ></SmallIcon>
               </div>
               <div className="detail-drop-down">
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
@@ -356,7 +299,6 @@ const ProjectDetailPage: React.FC = () => {
                     <Button onClick={handleBack}>{`../`}</Button>
                   </Box>
                 )}
-
                 <FileTreeView
                   structure={folderStructure}
                   currentPath={currentPath}
