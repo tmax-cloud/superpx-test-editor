@@ -200,7 +200,6 @@ body,
 .editor-lnb-drawer {
   height: calc(100% - 100px);
   padding-left: 65px;
-  overflow: auto;
 }
 .commit-btn {
   text-transform: none !important;
@@ -283,18 +282,21 @@ body,
   line-height: 41px;
   color: #424242;
 }
-
 .source-code-tree {
   padding: 5px;
-  height: 95%;
+  height: 800px;
+  width: 220px;
   overflow: scroll;
+  background-color: #F5F7F9;
+  text-overflow : ellipsis;
   scrollbar-width: thin;
-  background-color: #ffffff;
   font-size: 12px;
+  white-space : nowrap;
 }
 .source-code-tree::-webkit-scrollbar {
   width: 6px;
   height: 6px;
+  position: fixed;
 }
 .source-code-tree::-webkit-scrollbar-track {
   background-color: transparent;
