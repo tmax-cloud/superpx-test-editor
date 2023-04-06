@@ -1,7 +1,7 @@
 import * as React from 'react';
 import FolderTree, { IconComponents } from 'react-folder-tree';
 import WorkspaceStore from '../../stores/workspaceStore';
-import { Observer } from 'mobx-react';
+import { Observer, observer } from 'mobx-react';
 import { sendMessage } from '../../utils/service-utils';
 import 'react-folder-tree/dist/style.css';
 import EditorContentsStore from '../../stores/editorContentsStore';
@@ -26,7 +26,7 @@ import TextField from '@mui/material/TextField';
 import { getIcon } from 'material-file-icons';
 import FolderTreeStore from '../../stores/folderTreeStore';
 
-export const SourceCodeTree: React.FC = () => {
+const SourceCodeTree: React.FC = () => {
   const onSourceCodeLinkClick = ({ nodeData }) => {
     const { isFile, srcId, newfile, srcPath, content, edited } = nodeData;
     if (isFile) {
@@ -140,9 +140,10 @@ export const SourceCodeTree: React.FC = () => {
     return <Delete fontSize="small" onClick={handleClick} />;
   };
 
-  const EditIcon = ({ onClick: defaultOnClick }) => {
+  const EditIcon = ({ onClick: defaultOnClick, nodeData }) => {
+    const { srcPath } = nodeData;
     const handleClick = () => {
-      defaultOnClick();
+      handleOpenEditModal(srcPath);
     };
     return <Edit fontSize="small" onClick={handleClick} />;
   };
@@ -180,7 +181,6 @@ export const SourceCodeTree: React.FC = () => {
     const handleClick = () => {
       defaultOnClick();
       FolderTreeStore.changeToOpenAction(nodePath);
-      fileTreeData = FolderTreeStore.folderTreeData;
     };
     return <KeyboardArrowRight fontSize="small" onClick={handleClick} />;
   };
@@ -190,12 +190,13 @@ export const SourceCodeTree: React.FC = () => {
     const handleClick = () => {
       defaultOnClick();
       FolderTreeStore.changeToCloseAction(nodePath);
-      fileTreeData = FolderTreeStore.folderTreeData;
     };
     return <KeyboardArrowDown fontSize="small" onClick={handleClick} />;
   };
 
   const [showModal, setShowModal] = React.useState(false);
+  const [showEditModal, setShowEditModal] = React.useState(false);
+  const [showDeleteModal, setShowDeleteModal] = React.useState(false);
   const [inputValue, setInputValue] = React.useState('');
   const [pathValue, setPathValue] = React.useState('');
   const [isFile, setIsFile] = React.useState(false);
@@ -207,7 +208,6 @@ export const SourceCodeTree: React.FC = () => {
     );
     setNeedUpdate(false);
   };
-  let fileTreeData = FolderTreeStore.folderTreeData;
 
   if (needUpdate) {
     updateTreeData();
@@ -218,9 +218,14 @@ export const SourceCodeTree: React.FC = () => {
     setPathValue(NodePath);
   };
 
+  const handleOpenEditModal = (srcPath) => {
+    setShowEditModal(true);
+    setPathValue(srcPath);
+  };
+
   const handleCreateModal = () => {
+    let newFilePath = pathValue + inputValue;
     if (isFile) {
-      let newFilePath = pathValue + inputValue;
       let copyNum = 1;
       for (
         copyNum;
@@ -265,26 +270,58 @@ export const SourceCodeTree: React.FC = () => {
       setShowModal(false);
       setInputValue('');
     }
-    FolderTreeStore.updatePathToJsonAction(WorkspaceStore.sourceCodeList);
+    FolderTreeStore.updatePathToJsonAction(newFilePath);
     setNeedUpdate(false);
-    fileTreeData = FolderTreeStore.folderTreeData;
+    return resultJson;
+  };
+
+  const handleEditModal = () => {
+    const lastPathArray = pathValue.split('/');
+    let newPath: string = '';
+    lastPathArray.forEach((nodePath, index) => {
+      if (index < lastPathArray.length - 1) {
+        newPath += nodePath;
+        newPath += '/';
+      }
+    });
+    let newFilePath = newPath + inputValue;
+    let newFileName = inputValue;
+    let copyNum = 1;
+    for (
+      copyNum;
+      WorkspaceStore.sourceCodeList.filter((s) => s.srcPath === newFilePath)
+        .length === 1;
+      copyNum++
+    ) {
+      newFileName = inputValue;
+      newFilePath += '(' + copyNum + ')';
+      newFilePath = newPath + inputValue;
+      newFilePath += '(' + copyNum + ')';
+    }
+
+    WorkspaceStore.renameSourceCodeAction(pathValue, newFilePath);
+    setShowEditModal(false);
+    setInputValue('');
+
+    FolderTreeStore.renameNodeAction(pathValue, newFileName, newFilePath);
+    setNeedUpdate(false);
     return resultJson;
   };
   const handleCancelModal = () => {
     setShowModal(false);
+    setShowEditModal(false);
     setInputValue('');
   };
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
   };
-
   return (
     <Observer>
       {() => (
         <div>
           <div className="source-code-tree">
             <FolderTree
-              data={fileTreeData}
+              data={FolderTreeStore.folderTreeData}
               showCheckbox={false}
               indentPixels={18}
               onNameClick={onSourceCodeLinkClick}
@@ -353,9 +390,36 @@ export const SourceCodeTree: React.FC = () => {
                 <Button onClick={handleCreateModal}>Create</Button>
               </DialogActions>
             </Dialog>
+            <Dialog open={showEditModal} onClose={handleCancelModal}>
+              <div>
+                <DialogTitle>Edit File name</DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    Please enter a file name to change
+                  </DialogContentText>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    label="file name"
+                    type="email"
+                    fullWidth
+                    variant="standard"
+                    value={inputValue}
+                    onChange={handleInputChange}
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleCancelModal}>Cancel</Button>
+                  <Button onClick={handleCancelModal}>Edit</Button>
+                </DialogActions>
+              </div>
+            </Dialog>
           </div>
         </div>
       )}
     </Observer>
   );
 };
+
+export default observer(SourceCodeTree);

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import WorkspaceStore from '../../../stores/workspaceStore';
-import { SourceCodeTree } from '../SourceCodeTree';
+import SourceCodeTree from '../SourceCodeTree';
 import { Observer } from 'mobx-react';
 
 export const Explorer: React.FC = () => {

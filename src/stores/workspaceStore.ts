@@ -66,7 +66,6 @@ const WorkspaceStore = observable({
   updateCurrentCommitAction(commit: Commit) {
     this.currentCommit = commit;
   },
-
   updateSourceCodeListAction(sourceCodeList: SourceCode[]) {
     this.sourceCodeList = sourceCodeList;
   },
@@ -75,6 +74,13 @@ const WorkspaceStore = observable({
   },
   addNewSourceCodeAction(sourceCode: SourceCode) {
     this.sourceCodeList.push(sourceCode);
+  },
+  renameSourceCodeAction(lastSourcePath, newSourcePath) {
+    const renamedSource: SourceCode = this.sourceCodeList.filter((s) => s.srcPath === lastSourcePath)[0];
+    renamedSource.srcPath = newSourcePath;
+    renamedSource.edited = true;
+    this.sourceCodeList = this.sourceCodeList.filter((s) => !s.srcPath === lastSourcePath);
+
   },
   updateSourceCodeAction(sourceCode: SourceCode) {
     this.sourceCodeList.filter((s) => s.srcPath === sourceCode.srcPath)[0] =

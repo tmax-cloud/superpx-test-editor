@@ -12,6 +12,7 @@ import WorkspaceStore from './stores/workspaceStore';
 import AboutPage from './pages/AboutPage';
 import ProjectPage from './pages/Project/ProjectPage';
 import ProjectDetailPage from './pages/Project/ProjectDetailPage';
+import CommitHistory from './pages/Project/CommitHistory';
 import GroupPage from './pages/Group/GroupPage';
 import GroupDetailPage from './pages/Group/GroupDetailPage';
 import './utils/i18n/i18n';
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
       {
         path: '/projects/:projectName/editor',
         element: <EditorPage />,
+      },
+      {
+        path: '/projects/:projectName/commitHistory',
+        element: <CommitHistory />,
       },
       {
         path: '/projects/:projectName/details/*',
