@@ -160,7 +160,12 @@ const ProjectDetailPage: React.FC = () => {
             ref_name: reference.name,
           });
           EditorContentsStore.initContentAction();
-          navigate(`/projects/${projectName}/details/${reference.name}`);
+          navigate(
+            `/projects/${projectName}/details/${reference.name.replace(
+              /\//g,
+              '-',
+            )}`,
+          );
         }
       });
   }, [referenceId]);
