@@ -48,10 +48,10 @@ export const EditorGNB = () => {
   const getActions = (action) => {
     // setActionState(action);
     switch (action) {
-      case 'Import Directory':
+      case 'New Folder':
         handleImportDirectory();
         break;
-      case 'Import File':
+      case 'New File':
         handleImportFile();
         break;
       default:

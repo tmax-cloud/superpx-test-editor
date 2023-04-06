@@ -61,6 +61,10 @@ const router = createBrowserRouter([
         element: <ProjectDetailPage />,
       },
       {
+        path: '/projects/:projectName/details/:reference/*',
+        element: <ProjectDetailPage />,
+      },
+      {
         path: '/create',
         element: <Create />,
       },
