@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { observer, Observer } from 'mobx-react';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import WorkspaceStore from '../../stores/workspaceStore';
 import { sendMessage } from '../../utils/service-utils';
 import { styled } from '@mui/material/styles';
@@ -24,6 +24,8 @@ import {
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useTranslation } from 'react-i18next';
+import loadingStore from '../../stores/loadingStore';
+import LoadingScreen from '../../components/Loading/LoadingScreen';
 
 const StyledTableCell = styled(TableCell)({
   textAlign: 'center',
@@ -31,19 +33,9 @@ const StyledTableCell = styled(TableCell)({
 });
 
 const ProjectPage: React.FC = () => {
-  React.useEffect(() => {
-    sendMessage('project', 'ListService', {});
-  }, []);
-  const { projectName } = useParams();
-
   const [projectList, setProjectList] = React.useState([]);
-  React.useEffect(() => {
-    setProjectList(
-      WorkspaceStore.projectList.sort((a, b) => a.name.localeCompare(b.name)),
-    );
-  }, [WorkspaceStore.projectList]);
-
   const [searchInput, setSearchInput] = React.useState('');
+  const { t } = useTranslation();
   const handleInputChange = (event) => {
     setSearchInput(event.target.value);
   };
@@ -52,6 +44,14 @@ const ProjectPage: React.FC = () => {
     setAction(event.target.value);
   };
   React.useEffect(() => {
+    sendMessage('project', 'ListService', {});
+  }, []);
+  React.useEffect(() => {
+    setProjectList(
+      WorkspaceStore.projectList.sort((a, b) => a.name.localeCompare(b.name)),
+    );
+  }, [WorkspaceStore.projectList]);
+  React.useEffect(() => {
     if (action === 'Name') {
       const newData = WorkspaceStore.projectList.filter((d) =>
         d.name.toLowerCase().includes(searchInput.toLowerCase()),
@@ -59,35 +59,19 @@ const ProjectPage: React.FC = () => {
       setProjectList(newData);
     }
   }, [searchInput, action]);
-  const { t } = useTranslation();
   return (
     <Observer>
       {() => (
         <div className="project-page-parent">
+          {loadingStore.loading && <LoadingScreen />}
           <div className="gnb-project-page">
             <span key={`menu-All`}>
-              <Button
-                className="gnb-menu-button"
-                id="basic-button"
-                // aria-controls={open ? 'basic-menu' : undefined}
-                // aria-haspopup="true"
-                // aria-expanded={open ? 'true' : undefined}
-                // // onClick={handleClick}
-                // value={menu}
-              >
+              <Button className="gnb-menu-button" id="basic-button">
                 {'All'}
               </Button>
             </span>
             <span key={`menu-Favorites`}>
-              <Button
-                className="gnb-menu-button"
-                id="basic-button"
-                // aria-controls={open ? 'basic-menu' : undefined}
-                // aria-haspopup="true"
-                // aria-expanded={open ? 'true' : undefined}
-                // onClick={handleClick}
-                // value={menu}
-              >
+              <Button className="gnb-menu-button" id="basic-button">
                 {'Favorites'}
               </Button>
             </span>
@@ -96,12 +80,7 @@ const ProjectPage: React.FC = () => {
             <div className="project-page-create">
               <h1>{t('PROJECTMAIN')}</h1>
               <div className="padding-top-new-pro">
-                <Button
-                  variant="contained"
-                  href={
-                    projectName ? `/projects/${projectName}/create` : '/create'
-                  }
-                >
+                <Button variant="contained" component={Link} to="/create">
                   New Project
                 </Button>
               </div>

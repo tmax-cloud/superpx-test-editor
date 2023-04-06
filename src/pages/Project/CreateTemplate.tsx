@@ -15,10 +15,14 @@ import { useTranslation } from 'react-i18next';
 import HelpIcon from '@mui/icons-material/Help';
 import { sendMessage } from '../../utils/service-utils';
 import { useNavigate } from 'react-router-dom';
-import loadingStore from '../../stores/loadingStore';
-export default function CreateBlank() {
+export default function CreateTemplate() {
   const { t } = useTranslation();
   const [projectDescription, setProjectDescription] = React.useState('');
+  const [buildSystem, setBuildSystem] = React.useState('');
+  const [group, setGroup] = React.useState('');
+  const [version, setVersion] = React.useState('');
+  const [jdk, setJdk] = React.useState('');
+  const [isImport, setIsImport] = React.useState(false);
   const [projectName, setProjectName] = React.useState('');
   const [visibilityLevel, setVisibilityLevel] = React.useState('Public');
   const [characterCount, setCharacterCount] = React.useState(0);
@@ -54,15 +58,14 @@ export default function CreateBlank() {
         <Button
           variant="contained"
           onClick={() => {
-            loadingStore.setLoading(true);
-            sendMessage('project', 'InsertService', {
+            sendMessage('project', 'GenerateService', {
               project: {
+                build_system: buildSystem,
                 name: projectName,
-                is_dependency: 0,
-              },
-              reference: {
-                name: 'main',
-                type: 0,
+                group: group,
+                version: version,
+                jdk: jdk,
+                is_import: isImport,
               },
             });
             navigate(`/projects/${projectName}`);
@@ -89,6 +92,75 @@ export default function CreateBlank() {
           value={projectName}
           onChange={handleProjectNameChange}
         />
+      </div>
+
+      <div className="create-page-blank">
+        <h3>Build System</h3>
+        <TextField
+          helperText={'Enter Build System'}
+          id={'demo-helper-text-aligned'}
+          label={'Enter Build System'}
+          value={buildSystem}
+          onChange={(event) => {
+            setBuildSystem(event.target.value);
+          }}
+        />
+      </div>
+      <div className="create-page-blank">
+        <h3>Group</h3>
+        <TextField
+          helperText={'Enter Build Group'}
+          id={'demo-helper-text-aligned'}
+          label={'Enter Build Group'}
+          value={group}
+          onChange={(event) => {
+            setGroup(event.target.value);
+          }}
+        />
+      </div>
+      <div className="create-page-blank">
+        <h3>Version</h3>
+        <TextField
+          helperText={'Enter Version'}
+          id={'demo-helper-text-aligned'}
+          label={'Enter Version'}
+          value={version}
+          onChange={(event) => {
+            setVersion(event.target.value);
+          }}
+        />
+      </div>
+      <div className="create-page-blank">
+        <div>
+          <h3>Jdk</h3>
+        </div>
+        <TextField
+          helperText={'Enter Jdk'}
+          id={'demo-helper-text-aligned'}
+          label={'Enter Jdk'}
+          value={jdk}
+          onChange={(event) => {
+            setJdk(event.target.value);
+          }}
+        />
+      </div>
+      <div className="create-page-blank">
+        <div>
+          <h3>Is import</h3>
+        </div>
+        <FormControl>
+          <RadioGroup
+            aria-labelledby="demo-radio-buttons-group-label"
+            value={isImport}
+            onChange={(event) => {
+              setIsImport(event.target.value === 'true');
+            }}
+            name="Is import"
+          >
+            <FormControlLabel value={false} control={<Radio />} label="false" />
+            <FormControlLabel value={true} control={<Radio />} label="true" />
+          </RadioGroup>
+        </FormControl>
       </div>
 
       <div className="create-page-blank">

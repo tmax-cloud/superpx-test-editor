@@ -27,17 +27,16 @@ export const getFolderStructure = (srcList) => {
 
 const FileTreeView = ({ structure, currentPath, onClick }) => {
   const { projectName } = useParams();
-
   const pathString = currentPath.join('.');
   const currentFolder =
     currentPath.length === 0 ? structure : _.get(structure, pathString);
-
-  if (!currentFolder) {
-    return null;
-  }
   const files = [];
   const folders = [];
   const navigate = useNavigate();
+  if (!currentFolder) {
+    return null;
+  }
+
   Object.keys(currentFolder).forEach((key) => {
     if (typeof currentFolder[key] === 'string') {
       files.push(key);
