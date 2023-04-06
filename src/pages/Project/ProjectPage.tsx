@@ -33,18 +33,9 @@ const StyledTableCell = styled(TableCell)({
 });
 
 const ProjectPage: React.FC = () => {
-  React.useEffect(() => {
-    sendMessage('project', 'ListService', {});
-  }, []);
-
   const [projectList, setProjectList] = React.useState([]);
-  React.useEffect(() => {
-    setProjectList(
-      WorkspaceStore.projectList.sort((a, b) => a.name.localeCompare(b.name)),
-    );
-  }, [WorkspaceStore.projectList]);
-
   const [searchInput, setSearchInput] = React.useState('');
+  const { t } = useTranslation();
   const handleInputChange = (event) => {
     setSearchInput(event.target.value);
   };
@@ -53,6 +44,14 @@ const ProjectPage: React.FC = () => {
     setAction(event.target.value);
   };
   React.useEffect(() => {
+    sendMessage('project', 'ListService', {});
+  }, []);
+  React.useEffect(() => {
+    setProjectList(
+      WorkspaceStore.projectList.sort((a, b) => a.name.localeCompare(b.name)),
+    );
+  }, [WorkspaceStore.projectList]);
+  React.useEffect(() => {
     if (action === 'Name') {
       const newData = WorkspaceStore.projectList.filter((d) =>
         d.name.toLowerCase().includes(searchInput.toLowerCase()),
@@ -60,7 +59,6 @@ const ProjectPage: React.FC = () => {
       setProjectList(newData);
     }
   }, [searchInput, action]);
-  const { t } = useTranslation();
   return (
     <Observer>
       {() => (
@@ -68,28 +66,12 @@ const ProjectPage: React.FC = () => {
           {loadingStore.loading && <LoadingScreen />}
           <div className="gnb-project-page">
             <span key={`menu-All`}>
-              <Button
-                className="gnb-menu-button"
-                id="basic-button"
-                // aria-controls={open ? 'basic-menu' : undefined}
-                // aria-haspopup="true"
-                // aria-expanded={open ? 'true' : undefined}
-                // // onClick={handleClick}
-                // value={menu}
-              >
+              <Button className="gnb-menu-button" id="basic-button">
                 {'All'}
               </Button>
             </span>
             <span key={`menu-Favorites`}>
-              <Button
-                className="gnb-menu-button"
-                id="basic-button"
-                // aria-controls={open ? 'basic-menu' : undefined}
-                // aria-haspopup="true"
-                // aria-expanded={open ? 'true' : undefined}
-                // onClick={handleClick}
-                // value={menu}
-              >
+              <Button className="gnb-menu-button" id="basic-button">
                 {'Favorites'}
               </Button>
             </span>
@@ -98,7 +80,7 @@ const ProjectPage: React.FC = () => {
             <div className="project-page-create">
               <h1>{t('PROJECTMAIN')}</h1>
               <div className="padding-top-new-pro">
-                <Button variant="contained" href={'/create'}>
+                <Button variant="contained" component={Link} to="/create">
                   New Project
                 </Button>
               </div>
