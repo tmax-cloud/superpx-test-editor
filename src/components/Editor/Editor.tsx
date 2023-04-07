@@ -4,6 +4,7 @@ import { observer, Observer } from 'mobx-react';
 import EditorContentsStore from '../../stores/editorContentsStore';
 import { getExtensionOfFilename } from '../../utils/path-utils';
 import WorkspaceStore from '../../stores/workspaceStore';
+import FolderTreeStore from '../../stores/folderTreeStore';
 
 const Editor: React.FC = () => {
   const editorRef = React.useRef(null);
@@ -44,6 +45,7 @@ const Editor: React.FC = () => {
         content: model.getValue(),
         edited: true,
       });
+      FolderTreeStore.updateContentAction(path, model.getValue());
     });
 
     return () => {

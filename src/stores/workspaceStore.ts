@@ -75,12 +75,18 @@ const WorkspaceStore = observable({
   addNewSourceCodeAction(sourceCode: SourceCode) {
     this.sourceCodeList.push(sourceCode);
   },
-  renameSourceCodeAction(lastSourcePath, newSourcePath) {
-    const renamedSource: SourceCode = this.sourceCodeList.filter((s) => s.srcPath === lastSourcePath)[0];
-    renamedSource.srcPath = newSourcePath;
-    renamedSource.edited = true;
-    this.sourceCodeList = this.sourceCodeList.filter((s) => !s.srcPath === lastSourcePath);
-
+  renameSourceCodeAction(lastSourcePath, newSourcePath, content) {
+    this.sourceCodeList.push({
+      srcPath: newSourcePath,
+      newfile: true,
+      content: content,
+    });
+    this.sourceCodeList = this.sourceCodeList.map((s) => {
+      if (s.srcPath === lastSourcePath) {
+        s.deleted = true;
+      }
+      return s;
+    });
   },
   updateSourceCodeAction(sourceCode: SourceCode) {
     this.sourceCodeList.filter((s) => s.srcPath === sourceCode.srcPath)[0] =
@@ -91,6 +97,22 @@ const WorkspaceStore = observable({
   },
   pushSourceCodeListAction() {
     return this.sourceCodeList;
+  },
+  deleteSourceCodeAction(srcPath: string) {
+    this.sourceCodeList = this.sourceCodeList.map((s) => {
+      if (s.srcPath === srcPath) {
+        s.deleted = true;
+      }
+      return s;
+    });
+  },
+  getContentAction(srcPath: string) {
+    const content = this.sourceCodeList.map((s) => {
+      if (s.srcPath === srcPath) {
+        return s.content;
+      }
+    })[0];
+    return content;
   },
 });
 
