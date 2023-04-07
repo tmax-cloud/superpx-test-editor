@@ -47,6 +47,24 @@ const EditorContentsStore = observable({
     }
     this.viewIndex = newIndex;
   },
+  deleteSourceCodeAction(path: string) {
+    this.contents = this.contents.filter((c) => {
+      return c.path !== path;
+    });
+    if (this.contents.findIndex((c) => c.path === path) === this.viewIndex) {
+      if (this.viewIndex !== 0) {
+        this.viewIndex = this.viewIndex - 1;
+      }
+    }
+  },
+  renameSourceCodeAction(pastPath, newFilePath) {
+    this.contents = this.contents.map((c) => {
+      if (c.path === pastPath) {
+        c.path = newFilePath;
+      }
+      return c;
+    });
+  },
 
   initContentAction() {
     this.contents = [];
