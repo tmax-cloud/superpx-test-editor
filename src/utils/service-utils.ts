@@ -84,7 +84,12 @@ const referenceDetailService = (data) => {
   });
 };
 
-const commitInsertService = (data) => {};
+const commitInsertService = (data) => {
+  sendMessage('commit', 'ListService', {
+    proj_name: WorkspaceStore.currentProject.name,
+    ref_name: WorkspaceStore.currentReference.name,
+  });
+};
 const commitListService = (data) => {
   if (data && data.length) {
     WorkspaceStore.updateCommitListAction(data);
