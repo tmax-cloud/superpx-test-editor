@@ -11,7 +11,7 @@ import {
   CreateNewFolder,
   Close,
   Delete,
-  Edit,
+  // Edit,
   Folder,
   FolderOpen,
   KeyboardArrowDown,
@@ -29,10 +29,11 @@ import FolderTreeStore from '../../stores/folderTreeStore';
 
 const SourceCodeTree: React.FC = () => {
   const onSourceCodeLinkClick = ({ nodeData }) => {
-    const { isFile, srcId, newfile, srcPath, content, edited } = nodeData;
+    const { isFile, srcId, newfile, srcPath, edited } = nodeData;
     if (isFile) {
       if (newfile || edited) {
-        EditorContentsStore.updateContentAction(srcPath, content);
+        const editorContent = WorkspaceStore.getContentAction(srcPath);
+        EditorContentsStore.updateContentAction(srcPath, editorContent);
       } else {
         sendMessage('source', 'DetailService', {
           src_id: srcId,
@@ -134,19 +135,27 @@ const SourceCodeTree: React.FC = () => {
     return <Close fontSize="small" onClick={handleClick} />;
   };
 
-  const DeleteIcon = ({ onClick: defaultOnClick }) => {
+  const DeleteIcon = ({ onClick: defaultOnClick, nodeData }) => {
+    const { srcPath, name } = nodeData;
     const handleClick = () => {
-      defaultOnClick();
+      handleOpenDeleteModal(srcPath, name);
     };
     return <Delete fontSize="small" onClick={handleClick} />;
   };
 
   const EditIcon = ({ onClick: defaultOnClick, nodeData }) => {
-    const { srcPath } = nodeData;
-    const handleClick = () => {
-      handleOpenEditModal(srcPath);
-    };
-    return <Edit fontSize="small" onClick={handleClick} />;
+    const { srcPath, edited, newfile, content, isFile, nodePath } = nodeData;
+    // const handleClick = () =>
+    // {
+    if (edited || newfile) {
+      setContent(content);
+    } else {
+      setContent('');
+    }
+    handleOpenEditModal(srcPath, isFile, nodePath);
+    // }
+    // return <Edit fontSize="small" onClick={handleClick} />;
+    return <></>;
   };
 
   const FolderIcon = ({ onClick: defaultOnClick }) => {
@@ -200,6 +209,8 @@ const SourceCodeTree: React.FC = () => {
   const [showDeleteModal, setShowDeleteModal] = React.useState(false);
   const [inputValue, setInputValue] = React.useState('');
   const [pathValue, setPathValue] = React.useState('');
+  const [fileName, setFileName] = React.useState('');
+  const [content, setContent] = React.useState('');
   const [isFile, setIsFile] = React.useState(false);
   const [needUpdate, setNeedUpdate] = React.useState(true);
 
@@ -219,61 +230,66 @@ const SourceCodeTree: React.FC = () => {
     setPathValue(NodePath);
   };
 
-  const handleOpenEditModal = (srcPath) => {
-    setShowEditModal(true);
+  const handleOpenEditModal = (srcPath, isFile, nodePath) => {
+    if (isFile) {
+      setShowEditModal(true);
+      setPathValue(srcPath);
+      setIsFile(isFile);
+    } else {
+      const folderPath = nodePath.slice(0, -1);
+      setShowEditModal(true);
+      setPathValue(folderPath);
+      setIsFile(isFile);
+    }
+  };
+
+  const handleOpenDeleteModal = (srcPath, name) => {
+    setShowDeleteModal(true);
     setPathValue(srcPath);
+    setFileName(name);
   };
 
   const handleCreateModal = () => {
-    let newFilePath = pathValue + inputValue;
+    let newNodePath = pathValue + inputValue;
     if (isFile) {
       let copyNum = 1;
       for (
         copyNum;
-        WorkspaceStore.sourceCodeList.filter((s) => s.srcPath === newFilePath)
+        WorkspaceStore.sourceCodeList.filter((s) => s.srcPath === newNodePath)
           .length === 1;
         copyNum++
       ) {
-        newFilePath = pathValue + inputValue;
-        newFilePath += '(' + copyNum + ')';
+        newNodePath = pathValue + inputValue;
+        newNodePath += '(' + copyNum + ')';
       }
 
       WorkspaceStore.addNewSourceCodeAction({
-        srcPath: newFilePath,
+        srcPath: newNodePath,
         newfile: true,
       });
-      EditorContentsStore.updateContentAction(newFilePath, '');
-      setShowModal(false);
-      setInputValue('');
+      EditorContentsStore.updateContentAction(newNodePath, '');
+      FolderTreeStore.updatePathToJsonAction(newNodePath);
     } else {
-      let node = resultJson;
-      let newFilePath = pathValue + inputValue;
-      const nodeArray = newFilePath.split('/');
-      let nodeTotalPath: string = '';
-      nodeArray.forEach((nodePath, index) => {
-        if (!node.children) {
-          node.children = [];
-        }
-        nodeTotalPath += nodePath;
-        nodeTotalPath += '/';
-        let nameArray: Array<String> = node.children.map((child) => child.name);
-        if (!nameArray.includes(nodePath)) {
-          node.children.push({
-            name: nodePath,
-            nodePath: nodeTotalPath,
-            children: [],
-          });
-        }
-        node = node.children.filter(
-          (pathList) => pathList.name === nodePath,
-        )[0];
-      });
-      setShowModal(false);
-      setInputValue('');
+      FolderTreeStore.addNewFolderAction(newNodePath);
     }
-    FolderTreeStore.updatePathToJsonAction(newFilePath);
+    setShowModal(false);
+    setInputValue('');
     setNeedUpdate(false);
-    return resultJson;
+  };
+  const checkDuplicate = (newNodePath) => {
+    const resultJson = FolderTreeStore.folderTreeData;
+    let result = false;
+    let node = resultJson;
+    const nodeArray = newNodePath.split('/');
+    nodeArray.forEach((nodePath, index) => {
+      if (index === nodeArray.length - 1) {
+        if (node.children.filter((c) => c.name === nodePath).length === 1) {
+          result = true;
+        }
+      }
+      node = node.children.filter((pathList) => pathList.name === nodePath)[0];
+    });
+    return result;
   };
 
   const handleEditModal = () => {
@@ -285,32 +301,58 @@ const SourceCodeTree: React.FC = () => {
         newPath += '/';
       }
     });
-    let newFilePath = newPath + inputValue;
-    let newFileName = inputValue;
-    let copyNum = 1;
-    for (
-      copyNum;
-      WorkspaceStore.sourceCodeList.filter((s) => s.srcPath === newFilePath)
-        .length === 1;
-      copyNum++
-    ) {
-      newFileName = inputValue;
-      newFilePath += '(' + copyNum + ')';
-      newFilePath = newPath + inputValue;
-      newFilePath += '(' + copyNum + ')';
+    let newNodePath = newPath + inputValue;
+    let newNodeName = inputValue;
+    if (checkDuplicate(newNodePath)) {
+      if (isFile) {
+        alert('동일한 이름의 파일이 존재합니다!');
+      } else {
+        alert('동일한 이름의 폴더가 존재합니다!');
+      }
+    } else if (isFile) {
+      let copyNum = 1;
+      for (
+        copyNum;
+        WorkspaceStore.sourceCodeList.filter(
+          (s) => s.srcPath === newNodePath && !s.deleted,
+        ).length === 1;
+        copyNum++
+      ) {
+        newNodeName = inputValue;
+        newNodePath += '(' + copyNum + ')';
+        newNodePath = newPath + inputValue;
+        newNodePath += '(' + copyNum + ')';
+      }
+      EditorContentsStore.renameSourceCodeAction(pathValue, newNodePath);
+      WorkspaceStore.renameSourceCodeAction(pathValue, newNodePath, content);
+      FolderTreeStore.renameNodeAction(
+        pathValue,
+        newNodeName,
+        newNodePath,
+        content,
+      );
+      setShowEditModal(false);
+      setInputValue('');
+      setNeedUpdate(false);
+    } else {
+      FolderTreeStore.renameFolderAction(pathValue, newNodePath, newNodeName);
+      setShowEditModal(false);
+      setInputValue('');
+      setNeedUpdate(false);
     }
-
-    WorkspaceStore.renameSourceCodeAction(pathValue, newFilePath);
-    setShowEditModal(false);
+  };
+  const handleDeleteModal = () => {
+    WorkspaceStore.deleteSourceCodeAction(pathValue);
+    EditorContentsStore.deleteSourceCodeAction(pathValue);
+    FolderTreeStore.deleteSourceCodeAction(pathValue);
+    setShowDeleteModal(false);
     setInputValue('');
-
-    FolderTreeStore.renameNodeAction(pathValue, newFileName, newFilePath);
     setNeedUpdate(false);
-    return resultJson;
   };
   const handleCancelModal = () => {
     setShowModal(false);
     setShowEditModal(false);
+    setShowDeleteModal(false);
     setInputValue('');
   };
   const handleInputChange = (event) => {
@@ -324,7 +366,7 @@ const SourceCodeTree: React.FC = () => {
             <FolderTree
               data={FolderTreeStore.folderTreeData}
               showCheckbox={false}
-              indentPixels={18}
+              indentPixels={20}
               onNameClick={onSourceCodeLinkClick}
               initOpenStatus="custom"
               iconComponents={
@@ -412,7 +454,21 @@ const SourceCodeTree: React.FC = () => {
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleCancelModal}>Cancel</Button>
-                  <Button onClick={handleCancelModal}>Edit</Button>
+                  <Button onClick={handleEditModal}>Edit</Button>
+                </DialogActions>
+              </div>
+            </Dialog>
+            <Dialog open={showDeleteModal} onClose={handleCancelModal}>
+              <div>
+                <DialogTitle>File delete</DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    Are you sure you want to delete {fileName}?
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleCancelModal}>Cancel</Button>
+                  <Button onClick={handleDeleteModal}>Delete</Button>
                 </DialogActions>
               </div>
             </Dialog>
