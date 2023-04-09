@@ -6,12 +6,19 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
+interface GNBDialogProps {
+  fullScreen: any;
+  openDialog: any;
+  handleCloseDialog: (event: any) => void;
+  actionState: String;
+}
+
 export default function GNBDialog({
   fullScreen,
   openDialog,
   handleCloseDialog,
   actionState,
-}) {
+}: GNBDialogProps) {
   return (
     <Dialog
       fullScreen={fullScreen}

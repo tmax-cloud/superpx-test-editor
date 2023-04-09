@@ -8,13 +8,14 @@ import LoadingScreen from '../../components/Loading/LoadingScreen';
 import TablePage from '../../utils/TablePage';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { Project } from '../../utils/types';
 
 const TableButton = () => (
   <Button variant="contained" component={Link} to="/create">
     New Project
   </Button>
 );
-const projectClickFuntion = (project) => {
+const projectClickFuntion = (project: Project) => {
   WorkspaceStore.updateCurrentProjectAction(project);
   sendMessage('reference', 'ListService', {
     proj_name: project.name,

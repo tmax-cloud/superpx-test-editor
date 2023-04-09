@@ -8,12 +8,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
+import { ImportDirectoryDialogProps } from './ImportDirectoryDialog';
 
 export const ImportFileDialog = ({
   fullScreen,
   openDialog,
   handleCloseDialog,
-}) => {
+}: ImportDirectoryDialogProps) => {
   const [filePath, setFilePath] = React.useState('');
   const [sourceContent, setsourceContent] = React.useState('');
   const onChangeFilePath = (e) => {

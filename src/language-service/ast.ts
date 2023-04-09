@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 export enum ArithmeticOperation {
   ADDITION = '+',
   SUBTRACTION = '-',
@@ -83,7 +84,7 @@ export class ArithmeticNode extends ExpressionNode {
   constructor(
     public left: ExpressionNode,
     public right: ExpressionNode,
-    public operation: ArithmeticOperation
+    public operation: ArithmeticOperation,
   ) {
     super('arithmetic');
   }
@@ -92,7 +93,7 @@ export class ArithmeticNode extends ExpressionNode {
 export class UnaryLogicalNode extends ExpressionNode {
   constructor(
     public left: ExpressionNode,
-    public operation: UnaryLogicalOperation
+    public operation: UnaryLogicalOperation,
   ) {
     super('unaryLogical');
   }
@@ -102,7 +103,7 @@ export class BinaryLogicalNode extends ExpressionNode {
   constructor(
     public left: ExpressionNode,
     public right: ExpressionNode,
-    public operation: BinaryLogicalOperation
+    public operation: BinaryLogicalOperation,
   ) {
     super('binaryLogical');
   }
@@ -112,7 +113,7 @@ export class ComparisonNode extends ExpressionNode {
   constructor(
     public left: ExpressionNode,
     public right: ExpressionNode,
-    public operation: ComparisonOperation
+    public operation: ComparisonOperation,
   ) {
     super('comparison');
   }
@@ -141,7 +142,7 @@ export class IfStatementNode extends Node {
     public condition: ExpressionNode,
     public statements: StatementNode[],
     public elseIfs: ElseIfStatementNode[] = [],
-    public els?: ElseStatementNode
+    public els?: ElseStatementNode,
   ) {
     super('ifStatement');
   }
@@ -150,7 +151,7 @@ export class IfStatementNode extends Node {
 export class ElseIfStatementNode extends Node {
   constructor(
     public condition: ExpressionNode,
-    public statements: StatementNode[]
+    public statements: StatementNode[],
   ) {
     super('elseIfStatement');
   }
@@ -165,7 +166,7 @@ export class ElseStatementNode extends Node {
 export class WhileLoopNode extends Node {
   constructor(
     public condition: ExpressionNode,
-    public statements: StatementNode[]
+    public statements: StatementNode[],
   ) {
     super('whileLoop');
   }
@@ -177,7 +178,7 @@ export class ForLoopNode extends Node {
     public start: ExpressionNode,
     public stop: ExpressionNode,
     public step: ExpressionNode,
-    public statements: StatementNode[]
+    public statements: StatementNode[],
   ) {
     super('forLoop');
   }

@@ -9,7 +9,7 @@ interface CustomTabProps {
   index?: number;
 }
 
-const getFileName = (path) => {
+const getFileName = (path: String) => {
   const pathArray: Array<String> = path.split('/');
   const fileName = pathArray[pathArray.length - 1];
   return fileName;
