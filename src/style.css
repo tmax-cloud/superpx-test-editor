@@ -70,6 +70,7 @@ body,
   position: sticky;
   height: calc(100% - 36px);
   overflow-y: auto;
+  overflow-x: hidden;
 }
 .lnb-btn {
   z-index: 3;
@@ -197,6 +198,16 @@ body,
   padding-left: 10px;
 }
 
+.editor-status-bar {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: #ddd;
+}
+.editor-status-bar-alert {
+  position: absolute;
+  right: 0;
+}
 .editor-lnb-drawer {
   height: calc(100% - 100px);
   padding-left: 65px;
