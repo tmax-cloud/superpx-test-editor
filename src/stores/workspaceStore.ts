@@ -106,6 +106,14 @@ const WorkspaceStore = observable({
       return s;
     });
   },
+  deleteDirectoryAction(nodePath: string) {
+    this.sourceCodeList = this.sourceCodeList.map((s) => {
+      if (s.srcPath.includes(nodePath, 0)) {
+        s.deleted = true;
+      }
+      return s;
+    });
+  },
   getContentAction(srcPath: string) {
     const content = this.sourceCodeList.map((s) => {
       if (s.srcPath === srcPath) {
