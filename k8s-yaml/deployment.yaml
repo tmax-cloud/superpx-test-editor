@@ -26,8 +26,6 @@ spec:
         - env:
             - name: WS_URL
               value: 'ws://172.22.11.2:38080'
-            - name: SUPER_PX_VERSION
-              value: super-px-0.1.8.1
           image: 'hyperregistry.tmaxcloud.org/ck3-2/superpx-editor:0.0.0.1'
           imagePullPolicy: IfNotPresent
           name: web-app
