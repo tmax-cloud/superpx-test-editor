@@ -135,8 +135,9 @@ const SourceCodeTree: React.FC = () => {
   };
 
   const DeleteIcon = ({ onClick: defaultOnClick, nodeData }) => {
-    const { srcPath, name } = nodeData;
+    const { srcPath, name, isFile } = nodeData;
     const handleClick = () => {
+      setIsFile(isFile);
       handleOpenDeleteModal(srcPath, name);
     };
     return <Delete fontSize="small" onClick={handleClick} />;
@@ -341,9 +342,14 @@ const SourceCodeTree: React.FC = () => {
     }
   };
   const handleDeleteModal = () => {
-    WorkspaceStore.deleteSourceCodeAction(pathValue);
+    if(isFile){
+      WorkspaceStore.deleteSourceCodeAction(pathValue);
     EditorContentsStore.deleteSourceCodeAction(pathValue);
     FolderTreeStore.deleteSourceCodeAction(pathValue);
+    } else {
+      FolderTreeStore.deleteSourceCodeAction(pathValue);
+    }
+    
     setShowDeleteModal(false);
     setInputValue('');
     setNeedUpdate(false);
@@ -458,6 +464,7 @@ const SourceCodeTree: React.FC = () => {
               </div>
             </Dialog>
             <Dialog open={showDeleteModal} onClose={handleCancelModal}>
+            {isFile ? (
               <div>
                 <DialogTitle>File delete</DialogTitle>
                 <DialogContent>
@@ -469,7 +476,22 @@ const SourceCodeTree: React.FC = () => {
                   <Button onClick={handleCancelModal}>Cancel</Button>
                   <Button onClick={handleDeleteModal}>Delete</Button>
                 </DialogActions>
-              </div>
+              </div>):(<div>
+                <DialogTitle>Folder delete</DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    Are you sure you want to delete {fileName}?
+                  </DialogContentText>
+                  <DialogContentText>
+                    All folder contents will be deleted
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleCancelModal}>Cancel</Button>
+                  <Button onClick={handleDeleteModal}>Delete</Button>
+                </DialogActions>
+              </div>)
+}
             </Dialog>
           </div>
         </div>
