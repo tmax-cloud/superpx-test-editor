@@ -70,6 +70,7 @@ body,
   position: sticky;
   height: calc(100% - 36px);
   overflow-y: auto;
+  overflow-x: hidden;
 }
 .lnb-btn {
   z-index: 3;
@@ -197,6 +198,16 @@ body,
   padding-left: 10px;
 }
 
+.editor-status-bar {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: #ddd;
+}
+.editor-status-bar-alert {
+  position: absolute;
+  right: 0;
+}
 .editor-lnb-drawer {
   height: calc(100% - 100px);
   padding-left: 65px;
@@ -287,11 +298,11 @@ body,
   height: 800px;
   width: 220px;
   overflow: scroll;
-  background-color: #F5F7F9;
-  text-overflow : ellipsis;
+  background-color: #f5f7f9;
+  text-overflow: ellipsis;
   scrollbar-width: thin;
   font-size: 12px;
-  white-space : nowrap;
+  white-space: nowrap;
 }
 .source-code-tree::-webkit-scrollbar {
   width: 6px;
@@ -390,6 +401,10 @@ body,
   width: 50px;
   height: 50px;
   animation: spin 1s linear infinite;
+}
+
+.item-name {
+  text-align: left;
 }
 
 @keyframes spin {

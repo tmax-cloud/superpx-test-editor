@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import { sendMessage } from '../../utils/service-utils';
 import WorkspaceStore from '../../stores/workspaceStore';
 import { EditorGNB } from '../../components/GNB/EditorGNB';
+import { EditorStatusBar } from '../../components/Editor/EditorStatusBar';
 
 export default function EditorPage() {
   const { projectName } = useParams();
@@ -38,6 +39,7 @@ export default function EditorPage() {
           </>
         )}
       </Observer>
+      <EditorStatusBar />
     </div>
   );
 }
