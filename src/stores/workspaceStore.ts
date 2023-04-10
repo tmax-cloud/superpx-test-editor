@@ -3,7 +3,7 @@ import { observable } from 'mobx';
 import { setAlert } from '../utils/alert-utils';
 import { services } from '../utils/service-utils';
 import { wsUrl } from '../utils/constants';
-import { Project, Reference, Commit, SourceCode } from '../utils/types';
+import { Project, Reference, Commit, SourceCode, CICD } from '../utils/types';
 import loadingStore from './loadingStore';
 
 const WorkspaceStore = observable({
@@ -16,6 +16,8 @@ const WorkspaceStore = observable({
   commitList: [] as Commit[],
   currentCommit: {} as Commit,
   sourceCodeList: [] as SourceCode[],
+  CICDList: [] as CICD[],
+  currentCICD: {} as CICD,
 
   // action
   setupWsAction() {
@@ -128,6 +130,12 @@ const WorkspaceStore = observable({
       }
     })[0];
     return content;
+  },
+  updateCICDListAction(CICDList: CICD[]) {
+    this.CICDList = [...CICDList];
+  },
+  updateCICDAction(CICD: CICD) {
+    this.currentCICD = {...CICD};
   },
 });
 
