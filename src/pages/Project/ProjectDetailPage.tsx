@@ -24,6 +24,8 @@ import EditorContentsStore from '../../stores/editorContentsStore';
 import ReactMarkdown from 'react-markdown';
 import { TransitionProps } from '@mui/material/transitions';
 import SmallIcon from '../../utils/SmallIcon';
+import loadingStore from '../../stores/loadingStore';
+import LoadingScreen from '../../components/Loading/LoadingScreen';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -174,6 +176,7 @@ const ProjectDetailPage: React.FC = () => {
 
   return (
     <div>
+      {loadingStore.loading && <LoadingScreen />}
       <div className="gnb-project-page">
         {menus.map((menu) => {
           return (
@@ -364,7 +367,16 @@ const ProjectDetailPage: React.FC = () => {
             <Button
               onClick={() => {
                 handleCiCdSelectClose();
-                //call
+                sendMessage(
+                  'service',
+                  'CicdSA',
+                  {
+                    proj_name: projectName,
+                    ref_name: WorkspaceStore.currentReference.name,
+                  },
+                  'super-px/com.tmax.buildanddeploy',
+                );
+                loadingStore.setLoading(true);
               }}
             >
               Stand Alone
@@ -417,6 +429,18 @@ const ProjectDetailPage: React.FC = () => {
             <Button
               onClick={() => {
                 setMasterModal(false);
+                sendMessage(
+                  'service',
+                  'CicdMW',
+                  {
+                    proj_name: projectName,
+                    ref_name: WorkspaceStore.currentReference.name,
+                    pool_id: 'default',
+                    target_ip: targetIp,
+                  },
+                  'super-px/com.tmax.buildanddeploy',
+                );
+                loadingStore.setLoading(true);
               }}
             >
               Create

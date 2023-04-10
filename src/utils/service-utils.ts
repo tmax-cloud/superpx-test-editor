@@ -2,17 +2,27 @@ import WorkspaceStore from '../stores/workspaceStore';
 import { servicePrefix } from '../utils/constants';
 import EditorContentsStore from '../stores/editorContentsStore';
 import loadingStore from '../stores/loadingStore';
+import { setAlert } from './alert-utils';
 
-type ServiceCategory = 'project' | 'reference' | 'commit' | 'merge' | 'source';
+type ServiceCategory =
+  | 'project'
+  | 'reference'
+  | 'commit'
+  | 'merge'
+  | 'source'
+  | 'service';
 
 const createRequest = (
   category: ServiceCategory,
   service: string,
   body: object,
+  serviceKind?: string,
 ) => {
   return {
     header: {
-      targetServiceName: `${servicePrefix}.${category}.${service}`,
+      targetServiceName: `${
+        serviceKind ? serviceKind : servicePrefix
+      }.${category}.${service}`,
       messageType: 'REQUEST',
       contentType: 'TEXT',
     },
@@ -24,15 +34,16 @@ export const sendMessage = (
   category: ServiceCategory,
   service: string,
   body: object,
+  serviceKind?: string,
 ) => {
   WorkspaceStore.superPxWs.readyState === 0
     ? (WorkspaceStore.superPxWs.onopen = (event) => {
         WorkspaceStore.superPxWs.send(
-          JSON.stringify(createRequest(category, service, body)),
+          JSON.stringify(createRequest(category, service, body, serviceKind)),
         );
       })
     : WorkspaceStore.superPxWs.send(
-        JSON.stringify(createRequest(category, service, body)),
+        JSON.stringify(createRequest(category, service, body, serviceKind)),
       );
 };
 
@@ -42,6 +53,7 @@ const projectInsertService = (data) => {
 };
 const projectGenerateService = (data) => {
   WorkspaceStore.addProjectAction({ name: data.name, projId: data.projId });
+  loadingStore.setLoading(false);
 };
 const projectListService = (data) => {
   WorkspaceStore.updateProjectListAction(data);
@@ -112,7 +124,16 @@ const commitDetailService = (data) => {
 const sourceDetailService = (data) => {
   EditorContentsStore.updateContentAction(data.srcPath, data.content);
 };
-
+const serviceCicdMW = (data) => {
+  data.statusCode === 200
+    ? setAlert(`success`, data.message, 'success')
+    : setAlert(`error`, data.message, 'error');
+};
+const serviceCicdSA = (data) => {
+  data.statusCode === 200
+    ? setAlert(`success`, data.message, 'success')
+    : setAlert(`error`, data.message, 'error');
+};
 export const services = {
   ProjectInsertService: projectInsertService,
   ProjectListService: projectListService,
@@ -126,4 +147,6 @@ export const services = {
   CommitDetailService: commitDetailService,
   SourceDetailService: sourceDetailService,
   ProjectGenerateService: projectGenerateService,
+  CicdMW: serviceCicdMW,
+  CicdSA: serviceCicdSA,
 };
