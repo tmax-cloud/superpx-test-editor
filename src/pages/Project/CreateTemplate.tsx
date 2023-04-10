@@ -15,10 +15,12 @@ import { useTranslation } from 'react-i18next';
 import HelpIcon from '@mui/icons-material/Help';
 import { sendMessage } from '../../utils/service-utils';
 import { useNavigate } from 'react-router-dom';
+import loadingStore from '../../stores/loadingStore';
+
 export default function CreateTemplate() {
   const { t } = useTranslation();
   const [projectDescription, setProjectDescription] = React.useState('');
-  const [buildSystem, setBuildSystem] = React.useState('');
+  // const [buildSystem, setBuildSystem] = React.useState('');
   const [group, setGroup] = React.useState('');
   const [version, setVersion] = React.useState('');
   const [jdk, setJdk] = React.useState('');
@@ -60,7 +62,7 @@ export default function CreateTemplate() {
           onClick={() => {
             sendMessage('project', 'GenerateService', {
               project: {
-                build_system: buildSystem,
+                build_system: 'maven',
                 name: projectName,
                 group: group,
                 version: version,
@@ -69,6 +71,7 @@ export default function CreateTemplate() {
               },
             });
             navigate(`/projects/${projectName}`);
+            loadingStore.setLoading(true);
           }}
         >
           Create project
@@ -100,10 +103,13 @@ export default function CreateTemplate() {
           helperText={'Enter Build System'}
           id={'demo-helper-text-aligned'}
           label={'Enter Build System'}
-          value={buildSystem}
-          onChange={(event) => {
-            setBuildSystem(event.target.value);
+          defaultValue={'maven'}
+          InputProps={{
+            readOnly: true,
           }}
+          // onChange={(event) => {
+          //   setBuildSystem(event.target.value);
+          // }}
         />
       </div>
       <div className="create-page-blank">

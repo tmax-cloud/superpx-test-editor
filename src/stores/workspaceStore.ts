@@ -4,6 +4,7 @@ import { setAlert } from '../utils/alert-utils';
 import { services } from '../utils/service-utils';
 import { wsUrl } from '../utils/constants';
 import { Project, Reference, Commit, SourceCode } from '../utils/types';
+import loadingStore from './loadingStore';
 
 const WorkspaceStore = observable({
   // state
@@ -25,6 +26,12 @@ const WorkspaceStore = observable({
     this.superPxWs.onmessage = (event) => {
       const { data, path, message } = JSON.parse(event.data).body;
       const service = services[path];
+      if (path === 'CicdSA' || path === 'CicdMW') {
+        service(JSON.parse(event.data).body);
+        loadingStore.setLoading(false);
+        return;
+      }
+      path === 'ProjectGenerateService' && loadingStore.setLoading(false);
       service
         ? data
           ? service(data)
