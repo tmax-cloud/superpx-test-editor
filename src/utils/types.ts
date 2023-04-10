@@ -44,3 +44,18 @@ export type FolderTreeData = {
   isOpen?: boolean;
   isFile?: boolean;
 };
+
+export type CICDDetail = {
+  cicdId: number;
+  projId?: number;
+  projName?: string;
+  refId?: number;
+  refName?: string;
+  targetIp?: string;
+  result?: number;
+  createdTime?: string;
+  readFileFromDB?: number;
+  buildProject?: number;
+  readBuildFile?: number;
+  deployApp?: number;
+};

@@ -3,7 +3,7 @@ import { observable } from 'mobx';
 import { setAlert } from '../utils/alert-utils';
 import { services } from '../utils/service-utils';
 import { wsUrl } from '../utils/constants';
-import { Project, Reference, Commit, SourceCode } from '../utils/types';
+import { Project, Reference, Commit, SourceCode, CICDDetail } from '../utils/types';
 import loadingStore from './loadingStore';
 
 const WorkspaceStore = observable({
@@ -16,6 +16,7 @@ const WorkspaceStore = observable({
   commitList: [] as Commit[],
   currentCommit: {} as Commit,
   sourceCodeList: [] as SourceCode[],
+  currentCICDDetail: [] as CICDDetail[],
 
   // action
   setupWsAction() {
