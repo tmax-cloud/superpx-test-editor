@@ -8,11 +8,17 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
+export interface ImportDirectoryDialogProps {
+  fullScreen: any;
+  openDialog: any;
+  handleCloseDialog: () => void;
+}
+
 export const ImportDirectoryDialog = ({
   fullScreen,
   openDialog,
   handleCloseDialog,
-}) => {
+}: ImportDirectoryDialogProps) => {
   const [sourceCodes, setSourceCodes] = React.useState([]);
   const [updateInput, setUpdateInput] = React.useState(openDialog);
 

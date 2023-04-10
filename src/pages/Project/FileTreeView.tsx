@@ -5,8 +5,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { sendMessage } from '../../utils/service-utils';
 import WorkspaceStore from '../../stores/workspaceStore';
 import EditorContentsStore from '../../stores/editorContentsStore';
+import { SourceCode } from '../../utils/types';
 
-export const getFolderStructure = (srcList) => {
+interface FileTreeViewProps {
+  structure: {};
+  currentPath: any[];
+  onClick: (event: any) => void;
+}
+
+export const getFolderStructure = (srcList: SourceCode[]) => {
   const structure = {};
   srcList.forEach((item) => {
     const path = item.srcPath.split('/');
@@ -25,7 +32,11 @@ export const getFolderStructure = (srcList) => {
   return structure;
 };
 
-const FileTreeView = ({ structure, currentPath, onClick }) => {
+const FileTreeView = ({
+  structure,
+  currentPath,
+  onClick,
+}: FileTreeViewProps) => {
   const { projectName } = useParams();
   const pathString = currentPath.join('.');
   const currentFolder =
@@ -63,7 +74,7 @@ const FileTreeView = ({ structure, currentPath, onClick }) => {
               key={newPathString}
               button
               onClick={() =>
-                onClick(() => {
+                onClick((event) => {
                   EditorContentsStore.initContentAction();
                   navigate(`/projects/${projectName}/editor`);
                   sendMessage('source', 'DetailService', {

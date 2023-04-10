@@ -45,6 +45,7 @@ export class TypeAstVisitor extends AstVisitor<void> {
     this.visit(arithmetic.left);
     this.visit(arithmetic.right);
 
+    // eslint-disable-next-line no-console
     console.log(arithmetic);
 
     if (
@@ -75,11 +76,12 @@ export class TypeAstVisitor extends AstVisitor<void> {
 
     declaration.name.type = { ...declaration.value.type };
     this.vars[declaration.name.atom] = { ...declaration.name.type };
+    // eslint-disable-next-line no-console
     console.log(
       'updated type of',
       declaration.name.atom,
       'to',
-      declaration.name.type
+      declaration.name.type,
     );
   }
 
@@ -89,11 +91,12 @@ export class TypeAstVisitor extends AstVisitor<void> {
 
     assignment.name.type = { ...assignment.value.type };
     this.vars[assignment.name.atom] = { ...assignment.name.type };
+    // eslint-disable-next-line no-console
     console.log(
       'updated type of',
       assignment.name.atom,
       'to',
-      assignment.name.type
+      assignment.name.type,
     );
   }
 
@@ -104,6 +107,7 @@ export class TypeAstVisitor extends AstVisitor<void> {
       atom.type = { type: PrimitiveType.FLOAT, isArray: false };
     } else {
       if (atom.atom in this.vars) {
+        // eslint-disable-next-line no-console
         console.log(atom.atom, this.vars[atom.atom]);
         atom.type = { ...this.vars[atom.atom] };
       } else {
@@ -112,6 +116,7 @@ export class TypeAstVisitor extends AstVisitor<void> {
       }
     }
 
+    // eslint-disable-next-line no-console
     console.log(atom);
   }
 

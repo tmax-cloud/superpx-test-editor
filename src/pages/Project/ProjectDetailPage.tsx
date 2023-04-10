@@ -24,6 +24,7 @@ import EditorContentsStore from '../../stores/editorContentsStore';
 import ReactMarkdown from 'react-markdown';
 import { TransitionProps } from '@mui/material/transitions';
 import SmallIcon from '../../utils/SmallIcon';
+
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
     children: React.ReactElement<any, any>;
@@ -32,6 +33,7 @@ const Transition = React.forwardRef(function Transition(
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+
 const ProjectDetailPage: React.FC = () => {
   const { projectName, reference } = useParams();
   const navigate = useNavigate();
@@ -204,8 +206,8 @@ const ProjectDetailPage: React.FC = () => {
             </div>
           </div>
           <div className="detail-in-flex">
-          <Link to={`/projects/${projectName}/commitHistory`}>
-            <Button variant="outlined">HISTORY</Button>
+            <Link to={`/projects/${projectName}/commitHistory`}>
+              <Button variant="outlined">HISTORY</Button>
             </Link>
             <Link to={`/projects/${projectName}/editor`}>
               <Button
