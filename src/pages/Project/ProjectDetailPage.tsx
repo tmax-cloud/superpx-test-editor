@@ -10,6 +10,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Menu,
   Slide,
   TextField,
 } from '@mui/material';
@@ -26,6 +27,7 @@ import { TransitionProps } from '@mui/material/transitions';
 import SmallIcon from '../../utils/SmallIcon';
 import loadingStore from '../../stores/loadingStore';
 import LoadingScreen from '../../components/Loading/LoadingScreen';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -173,6 +175,15 @@ const ProjectDetailPage: React.FC = () => {
         }
       });
   }, [referenceId]);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <div>
@@ -222,10 +233,39 @@ const ProjectDetailPage: React.FC = () => {
                 PX Editor
               </Button>
             </Link>
-            <Button variant="contained" onClick={handleCiCdSelectOpen}>
+            {/* <Button variant="contained" onClick={handleCiCdSelectOpen}>
+              CI/CD
+            </Button> */}
+            <Button
+              variant="contained"
+              onClick={handleClick}
+              endIcon={<ArrowDropDownIcon />}
+            >
               CI/CD
             </Button>
-            <Link to={`/projects`}>
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                  handleCiCdSelectOpen();
+                }}
+              >
+                Stand Alone
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                  setMasterModal(true);
+                }}
+              >
+                Master
+              </MenuItem>
+            </Menu>
+            {/* <Link to={`/projects`}>
               <Button
                 variant="contained"
                 onClick={() => {
@@ -236,7 +276,7 @@ const ProjectDetailPage: React.FC = () => {
               >
                 Project Delete
               </Button>
-            </Link>
+            </Link> */}
           </div>
         </div>
         <Observer>
@@ -353,7 +393,7 @@ const ProjectDetailPage: React.FC = () => {
           <DialogTitle id="alert-dialog-title">{'CI/CD'}</DialogTitle>
           <DialogContent sx={{ minWidth: 312 }}>
             <DialogContentText id="alert-dialog-description">
-              Select Deploy Target mode
+              Create Stand Alone
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -379,15 +419,7 @@ const ProjectDetailPage: React.FC = () => {
                 loadingStore.setLoading(true);
               }}
             >
-              Stand Alone
-            </Button>
-            <Button
-              onClick={() => {
-                handleCiCdSelectClose();
-                setMasterModal(true);
-              }}
-            >
-              Master
+              Create
             </Button>
           </DialogActions>
         </Dialog>
