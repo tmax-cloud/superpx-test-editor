@@ -46,6 +46,7 @@ const SourceCodeTree: React.FC = () => {
     name: WorkspaceStore.currentReference.name,
     children: [],
     isOpen: true,
+    nodePath: '',
   };
   const pathToJson = (sourceCodeList) => {
     sourceCodeList.forEach((src) => {
