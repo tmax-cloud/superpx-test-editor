@@ -136,24 +136,29 @@ const SourceCodeTree: React.FC = () => {
   };
 
   const DeleteIcon = ({ onClick: defaultOnClick, nodeData }) => {
-    const { srcPath, name, isFile } = nodeData;
+    const { srcPath, name, isFile, nodePath } = nodeData;
     const handleClick = () => {
       setIsFile(isFile);
-      handleOpenDeleteModal(srcPath, name);
+      if (isFile) {
+        handleOpenDeleteModal(srcPath, name);
+      } else {
+        const folderPath = nodePath.slice(0, -1);
+        handleOpenDeleteModal(folderPath, name);
+      }
     };
     return <Delete fontSize="small" onClick={handleClick} />;
   };
 
-  const EditIcon = ({ onClick: defaultOnClick, nodeData }) => {
-    const { srcPath, edited, newfile, content, isFile, nodePath } = nodeData;
+  const EditIcon = () => {
+    // const { srcPath, edited, newfile, content, isFile, nodePath } = nodeData;
     // const handleClick = () =>
     // {
-    if (edited || newfile) {
-      setContent(content);
-    } else {
-      setContent('');
-    }
-    handleOpenEditModal(srcPath, isFile, nodePath);
+    // if (edited || newfile) {
+    //   setContent(content);
+    // } else {
+    //   setContent('');
+    // }
+    // handleOpenEditModal(srcPath, isFile, nodePath);
     // }
     // return <Edit fontSize="small" onClick={handleClick} />;
     return <></>;
@@ -343,14 +348,15 @@ const SourceCodeTree: React.FC = () => {
     }
   };
   const handleDeleteModal = () => {
-    if(isFile){
+    if (isFile) {
       WorkspaceStore.deleteSourceCodeAction(pathValue);
-    EditorContentsStore.deleteSourceCodeAction(pathValue);
-    FolderTreeStore.deleteSourceCodeAction(pathValue);
+      EditorContentsStore.deleteSourceCodeAction(pathValue);
+      FolderTreeStore.deleteSourceCodeAction(pathValue);
     } else {
+      WorkspaceStore.deleteDirectoryAction(pathValue);
+      EditorContentsStore.deleteDirectoryAction(pathValue);
       FolderTreeStore.deleteSourceCodeAction(pathValue);
     }
-    
     setShowDeleteModal(false);
     setInputValue('');
     setNeedUpdate(false);
@@ -465,34 +471,36 @@ const SourceCodeTree: React.FC = () => {
               </div>
             </Dialog>
             <Dialog open={showDeleteModal} onClose={handleCancelModal}>
-            {isFile ? (
-              <div>
-                <DialogTitle>File delete</DialogTitle>
-                <DialogContent>
-                  <DialogContentText>
-                    Are you sure you want to delete {fileName}?
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleCancelModal}>Cancel</Button>
-                  <Button onClick={handleDeleteModal}>Delete</Button>
-                </DialogActions>
-              </div>):(<div>
-                <DialogTitle>Folder delete</DialogTitle>
-                <DialogContent>
-                  <DialogContentText>
-                    Are you sure you want to delete {fileName}?
-                  </DialogContentText>
-                  <DialogContentText>
-                    All folder contents will be deleted
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleCancelModal}>Cancel</Button>
-                  <Button onClick={handleDeleteModal}>Delete</Button>
-                </DialogActions>
-              </div>)
-}
+              {isFile ? (
+                <div>
+                  <DialogTitle>File delete</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText>
+                      Are you sure you want to delete {fileName}?
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleCancelModal}>Cancel</Button>
+                    <Button onClick={handleDeleteModal}>Delete</Button>
+                  </DialogActions>
+                </div>
+              ) : (
+                <div>
+                  <DialogTitle>Folder delete</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText>
+                      Are you sure you want to delete {fileName}?
+                    </DialogContentText>
+                    <DialogContentText>
+                      All folder contents will be deleted
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleCancelModal}>Cancel</Button>
+                    <Button onClick={handleDeleteModal}>Delete</Button>
+                  </DialogActions>
+                </div>
+              )}
             </Dialog>
           </div>
         </div>
