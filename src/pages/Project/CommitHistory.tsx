@@ -2,9 +2,25 @@ import * as React from 'react';
 import { Observer, observer } from 'mobx-react';
 import WorkspaceStore from '../../stores/workspaceStore';
 import { Button } from '@mui/material';
+import { sendMessage } from '../../utils/service-utils';
+import { useParams } from 'react-router-dom';
 
 const CommitHistory: React.FC = () => {
-  React.useEffect(() => {});
+  const { projectName } = useParams();
+
+  React.useEffect(() => {
+    const timer = setInterval(
+      () =>
+        sendMessage('commit', 'ListService', {
+          proj_name: projectName,
+          ref_name: WorkspaceStore.currentReference.name,
+        }),
+      20000,
+    );
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
   const menus = [
     'Details',
     // 'Issues',
@@ -19,15 +35,7 @@ const CommitHistory: React.FC = () => {
         {menus.map((menu) => {
           return (
             <span key={`menu-All`}>
-              <Button
-                className="gnb-menu-button"
-                id="basic-button"
-                // aria-controls={open ? 'basic-menu' : undefined}
-                // aria-haspopup="true"
-                // aria-expanded={open ? 'true' : undefined}
-                // onClick={handleClick}
-                // value={menu}
-              >
+              <Button className="gnb-menu-button" id="basic-button">
                 {menu}
               </Button>
             </span>

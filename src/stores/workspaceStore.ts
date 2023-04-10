@@ -31,6 +31,7 @@ const WorkspaceStore = observable({
         loadingStore.setLoading(false);
         return;
       }
+      path === 'ProjectGenerateService' && loadingStore.setLoading(false);
       service
         ? data
           ? service(data)

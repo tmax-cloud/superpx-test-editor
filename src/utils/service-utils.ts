@@ -53,7 +53,6 @@ const projectInsertService = (data) => {
 };
 const projectGenerateService = (data) => {
   WorkspaceStore.addProjectAction({ name: data.name, projId: data.projId });
-  loadingStore.setLoading(false);
 };
 const projectListService = (data) => {
   WorkspaceStore.updateProjectListAction(data);
