@@ -19,7 +19,6 @@ import './utils/i18n/i18n';
 import Create from './pages/Project/Create';
 import CreateBlank from './pages/Project/CreateBlank';
 import CreateTemplate from './pages/Project/CreateTemplate';
-import CICDListPage from './pages/Project/CICDListPage';
 
 WorkspaceStore.setupWsAction();
 setupLanguage();
@@ -65,10 +64,6 @@ const router = createBrowserRouter([
       {
         path: '/projects/:projectName/details/*',
         element: <ProjectDetailPage />,
-      },
-      {
-        path: '/projects/:projectName/cicdList',
-        element: <CICDListPage />,
       },
       {
         path: '/projects/:projectName/details/:reference/*',
