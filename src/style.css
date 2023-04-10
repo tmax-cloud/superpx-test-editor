@@ -70,6 +70,7 @@ body,
   position: sticky;
   height: calc(100% - 36px);
   overflow-y: auto;
+  overflow-x: hidden;
 }
 .lnb-btn {
   z-index: 3;
