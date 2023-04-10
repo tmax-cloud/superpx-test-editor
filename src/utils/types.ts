@@ -45,7 +45,7 @@ export type FolderTreeData = {
   isFile?: boolean;
 };
 
-export type CICDDetail = {
+export type CICD = {
   cicdId: number;
   projId?: number;
   projName?: string;
