@@ -73,7 +73,6 @@ module.exports = (env) => {
       }),
       new webpack.EnvironmentPlugin({
         WS_URL: env.WS_URL,
-        SUPER_PX_VERSION: env.SUPER_PX_VERSION,
       }),
     ],
   };
