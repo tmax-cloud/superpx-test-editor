@@ -16,6 +16,7 @@ export type Commit = {
   message?: string;
   preCommitId?: number;
   isCommit?: boolean;
+  createdTime?: string;
 };
 
 export type SourceCode = {

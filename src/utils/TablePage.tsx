@@ -25,7 +25,7 @@ interface TablePageProps {
   itemList: any[];
   setItemList: (list: any[]) => void;
   mainName: string;
-  TableButton: ReactElement;
+  TableButton?: ReactElement;
   rawProjectList: any[];
   cellClickFuntion: any;
   type: 'project' | 'commit';
@@ -71,9 +71,16 @@ const TablePage = (props: TablePageProps) => {
   };
   React.useEffect(() => {
     if (action === 'Name') {
-      const newData = rawProjectList.filter((d) =>
-        d.name.toLowerCase().includes(searchInput.toLowerCase()),
-      );
+      const newData =
+        type === 'project'
+          ? rawProjectList.filter((d) =>
+              d.name.toLowerCase().includes(searchInput.toLowerCase()),
+            )
+          : type === 'commit'
+          ? rawProjectList.filter((d) =>
+              d.message?.toLowerCase().includes(searchInput.toLowerCase()),
+            )
+          : [];
       setItemList(newData);
     }
   }, [searchInput, action]);
@@ -82,7 +89,9 @@ const TablePage = (props: TablePageProps) => {
     <div className="project-page">
       <div className="project-page-create">
         <h1>{mainName}</h1>
-        <div className="padding-top-new-pro">{TableButton}</div>
+        {TableButton && (
+          <div className="padding-top-new-pro">{TableButton}</div>
+        )}
       </div>
       <div className="project-page-search">
         <TextField
@@ -132,17 +141,22 @@ const TablePage = (props: TablePageProps) => {
           <TableBody>
             {itemList
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((project) => {
+              .map((item) => {
                 const linkTo =
                   type === 'project'
-                    ? `/projects/${project.name}/details`
+                    ? `/projects/${item.name}/details`
                     : `/projects`;
-                const itemName = type === 'project' ? project.name : 'No Name';
+                const itemName =
+                  type === 'project'
+                    ? item.name
+                    : type === 'commit'
+                    ? item.message
+                    : 'No Name';
                 return (
-                  <TableRow key={`project-${project.projId}`}>
+                  <TableRow key={`project-${item.projId}`}>
                     <StyledTableCell
                       onClick={() => {
-                        cellClickFuntion(project);
+                        cellClickFuntion(item);
                       }}
                     >
                       <Link to={linkTo}>
@@ -157,14 +171,21 @@ const TablePage = (props: TablePageProps) => {
                                       borderRadius: '20%',
                                     }}
                                   >
-                                    {itemName.charAt(0)}
+                                    {itemName?.charAt(0)}
                                   </Avatar>
                                 </Box>
                                 <Box sx={{ p: 2 }}>
-                                  <div>
+                                  <div className="item-name">
                                     <b>{itemName}</b>
                                   </div>
-                                  <div>{itemName}</div>
+                                  {type === 'project' && (
+                                    <div className="item-name">{itemName}</div>
+                                  )}
+                                  {type === 'commit' && (
+                                    <div className="item-name">
+                                      {item.createdTime}
+                                    </div>
+                                  )}
                                 </Box>
                               </Box>
                             </Link>

@@ -4,10 +4,20 @@ import WorkspaceStore from '../../stores/workspaceStore';
 import { Button } from '@mui/material';
 import { sendMessage } from '../../utils/service-utils';
 import { useParams } from 'react-router-dom';
+import TablePage from '../../utils/TablePage';
 
 const CommitHistory: React.FC = () => {
   const { projectName } = useParams();
-
+  const [commitList, setCommitList] = React.useState([]);
+  React.useEffect(() => {
+    setCommitList(
+      WorkspaceStore.commitList.sort((a, b) => {
+        const dateA = new Date(a.createdTime);
+        const dateB = new Date(b.createdTime);
+        return dateB.getTime() - dateA.getTime();
+      }),
+    );
+  }, [WorkspaceStore.commitList]);
   React.useEffect(() => {
     const timer = setInterval(
       () =>
@@ -30,7 +40,7 @@ const CommitHistory: React.FC = () => {
     // 'PX Analysis',
   ];
   return (
-    <div>
+    <div className="project-page-parent">
       <div className="gnb-project-page">
         {menus.map((menu) => {
           return (
@@ -45,16 +55,14 @@ const CommitHistory: React.FC = () => {
       <Observer>
         {() => (
           <>
-            <div>
-              {WorkspaceStore.commitList.map((commit) => {
-                return (
-                  <div>
-                    <p>{commit.commitId}</p>
-                    <p>{commit.message}</p>
-                  </div>
-                );
-              })}
-            </div>
+            <TablePage
+              itemList={commitList}
+              setItemList={setCommitList}
+              rawProjectList={WorkspaceStore.commitList}
+              mainName={'Commit List'}
+              cellClickFuntion={() => {}}
+              type="commit"
+            />
           </>
         )}
       </Observer>
