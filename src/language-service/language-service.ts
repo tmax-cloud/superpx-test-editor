@@ -18,6 +18,7 @@ export abstract class LanguageService<R extends ParserRuleContext> {
     const depthVisitor = new DepthAstVisitor();
     depthVisitor.visit(ast.root);
 
+    // eslint-disable-next-line no-console
     console.log('pre-processed ast:', ast.root);
     return 'please override';
   }
