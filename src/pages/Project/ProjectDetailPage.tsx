@@ -219,9 +219,11 @@ const ProjectDetailPage: React.FC = () => {
                 PX Editor
               </Button>
             </Link>
+            <Link to={`/projects/${projectName}/cicdList`}>
             <Button variant="contained" onClick={handleCiCdSelectOpen}>
               CI/CD
             </Button>
+            </Link>
             <Link to={`/projects`}>
               <Button
                 variant="contained"
