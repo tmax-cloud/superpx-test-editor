@@ -43,6 +43,7 @@ const CommitHistory: React.FC = () => {
                   <div>
                     <p>{commit.commitId}</p>
                     <p>{commit.message}</p>
+                    <p>{commit.createdTime}</p>
                   </div>
                 );
               })}
