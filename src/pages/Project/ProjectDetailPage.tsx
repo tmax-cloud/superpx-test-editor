@@ -169,7 +169,7 @@ const ProjectDetailPage: React.FC = () => {
           EditorContentsStore.initContentAction();
           navigate(
             `/projects/${projectName}/details/${reference.name.replace(
-              /\//g,
+              /[/.]/g,
               '-',
             )}`,
           );
