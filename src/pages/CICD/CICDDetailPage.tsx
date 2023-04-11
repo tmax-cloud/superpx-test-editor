@@ -27,17 +27,22 @@ const CICDDetailPage = () => {
         return 'Failed';
     }
   };
+  const requestCicdDetail = () =>{
+    sendMessage(
+      'service',
+      'GetHistoryDetail',
+      {
+        cicd_id: cicdId,
+      },
+      'super-px/com.tmax.buildanddeploy',
+    );
+  };
+
   React.useEffect(() => {
+    requestCicdDetail();
     const timer = setInterval(
       () =>
-        sendMessage(
-          'service',
-          'GetHistoryDetail',
-          {
-            cicd_id: cicdId,
-          },
-          'super-px/com.tmax.buildanddeploy',
-        ),
+      requestCicdDetail(),
       10000,
     );
     return () => {
