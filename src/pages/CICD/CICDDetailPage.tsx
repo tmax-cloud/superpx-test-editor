@@ -1,10 +1,9 @@
-import { Avatar, Box, Button } from '@mui/material';
+import { Button } from '@mui/material';
 import { Observer, observer } from 'mobx-react';
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import WorkspaceStore from '../../stores/workspaceStore';
 import { sendMessage } from '../../utils/service-utils';
-import { CICD } from '../../utils/types';
 
 const CICDDetailPage = () => {
   const { projectName, cicdId } = useParams();
@@ -39,23 +38,12 @@ const CICDDetailPage = () => {
           },
           'super-px/com.tmax.buildanddeploy',
         ),
-      1000,
+      10000,
     );
     return () => {
       clearInterval(timer);
     };
   }, []);
-  React.useEffect(() => {
-    WorkspaceStore.currentProject?.projId &&
-      sendMessage(
-        'service',
-        'GetHistoryList',
-        {
-          proj_id: WorkspaceStore.currentProject.projId,
-        },
-        'super-px/com.tmax.buildanddeploy',
-      );
-  }, [WorkspaceStore.currentProject]);
 
   return (
     <div className="project-page-parent">
