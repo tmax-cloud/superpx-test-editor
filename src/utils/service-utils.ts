@@ -133,6 +133,9 @@ const serviceCicdSA = (data) => {
     ? setAlert(`success`, data.message, 'success')
     : setAlert(`error`, data.message, 'error');
 };
+const serviceGetHistoryDetail = (data) => {
+  WorkspaceStore.updateCICDAction(data);
+};
 export const services = {
   ProjectInsertService: projectInsertService,
   ProjectListService: projectListService,
@@ -148,4 +151,5 @@ export const services = {
   ProjectGenerateService: projectGenerateService,
   CicdMW: serviceCicdMW,
   CicdSA: serviceCicdSA,
+  GetHistoryDetail: serviceGetHistoryDetail,
 };
