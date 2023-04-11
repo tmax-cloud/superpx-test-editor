@@ -59,7 +59,7 @@ const WorkspaceStore = observable({
   },
 
   updateCurrentProjectAction(project: Project) {
-    this.currentProject = project;
+    this.currentProject = { ...project };
   },
 
   updateReferenceListAction(referenceList: Reference[]) {
@@ -135,7 +135,7 @@ const WorkspaceStore = observable({
     this.CICDList = [...CICDList];
   },
   updateCICDAction(CICD: CICD) {
-    this.currentCICD = {...CICD};
+    this.currentCICD = { ...CICD };
   },
 });
 

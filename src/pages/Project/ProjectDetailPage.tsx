@@ -53,10 +53,10 @@ const ProjectDetailPage: React.FC = () => {
   const [masterModal, setMasterModal] = React.useState(false);
   const [targetIp, setTargetIp] = React.useState('');
   const menus = [
-    'Details',
+    { name: 'Details', to: `/projects/${projectName}/details` },
+    { name: 'CI/CD Report', to: `/projects/${projectName}/CICDList` },
     // 'Issues',
     // 'Merge Requests',
-    'CI/CD Report',
     // 'Settings',
     // 'PX Analysis',
   ];
@@ -191,9 +191,14 @@ const ProjectDetailPage: React.FC = () => {
       <div className="gnb-project-page">
         {menus.map((menu) => {
           return (
-            <span key={`menu-All`}>
-              <Button className="gnb-menu-button" id="basic-button">
-                {menu}
+            <span key={`menu-All-${menu.name}`}>
+              <Button
+                className="gnb-menu-button"
+                id="basic-button"
+                component={Link}
+                to={menu.to}
+              >
+                {menu.name}
               </Button>
             </span>
           );
