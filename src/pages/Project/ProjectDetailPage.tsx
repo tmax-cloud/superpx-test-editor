@@ -28,6 +28,7 @@ import SmallIcon from '../../utils/SmallIcon';
 import loadingStore from '../../stores/loadingStore';
 import LoadingScreen from '../../components/Loading/LoadingScreen';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { CICDMasterModal, CICDStandAloneModal } from '../CICD/CICDModal';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -389,101 +390,23 @@ const ProjectDetailPage: React.FC = () => {
             <Button onClick={handleCreateModal}>Create</Button>
           </DialogActions>
         </Dialog>
-        <Dialog
-          open={ciCdSelect}
-          onClose={handleCiCdSelectClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">{'CI/CD'}</DialogTitle>
-          <DialogContent sx={{ minWidth: 312 }}>
-            <DialogContentText id="alert-dialog-description">
-              Create Stand Alone
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => {
-                handleCiCdSelectClose();
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={() => {
-                handleCiCdSelectClose();
-                sendMessage(
-                  'service',
-                  'CicdSA',
-                  {
-                    proj_name: projectName,
-                    ref_name: WorkspaceStore.currentReference.name,
-                  },
-                  'super-px/com.tmax.buildanddeploy',
-                );
-                loadingStore.setLoading(true);
-              }}
-            >
-              Create
-            </Button>
-          </DialogActions>
-        </Dialog>
-
-        <Dialog
-          open={masterModal}
-          TransitionComponent={Transition}
-          keepMounted
-          onClose={() => {
-            setMasterModal(false);
-          }}
-          aria-describedby="alert-dialog-slide-description"
-        >
-          <DialogTitle>Master</DialogTitle>
-          <DialogContent>
-            <DialogContentText>Target Master SAS IP</DialogContentText>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="Target Ip"
-              label="Target Ip"
-              type="text"
-              fullWidth
-              variant="standard"
-              value={targetIp}
-              onChange={(event) => {
-                setTargetIp(event.target.value);
-              }}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => {
-                setMasterModal(false);
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={() => {
-                setMasterModal(false);
-                sendMessage(
-                  'service',
-                  'CicdMW',
-                  {
-                    proj_name: projectName,
-                    ref_name: WorkspaceStore.currentReference.name,
-                    pool_id: 'default',
-                    target_ip: targetIp,
-                  },
-                  'super-px/com.tmax.buildanddeploy',
-                );
-                loadingStore.setLoading(true);
-              }}
-            >
-              Create
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <CICDStandAloneModal
+          ciCdSelect={ciCdSelect}
+          handleCiCdSelectClose={handleCiCdSelectClose}
+          referenceId={referenceId}
+          handleChange={handleChange}
+          projectName={projectName}
+        />
+        <CICDMasterModal
+          masterModal={masterModal}
+          setMasterModal={setMasterModal}
+          Transition={Transition}
+          targetIp={targetIp}
+          setTargetIp={setTargetIp}
+          projectName={projectName}
+          referenceId={referenceId}
+          handleChange={handleChange}
+        />
         <div className="markdown-container">
           <ReactMarkdown>{readme}</ReactMarkdown>
         </div>
