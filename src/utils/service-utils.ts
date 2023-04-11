@@ -57,7 +57,9 @@ const projectGenerateService = (data) => {
 const projectListService = (data) => {
   WorkspaceStore.updateProjectListAction(data);
 };
-const projectDetailService = (data) => {};
+const projectDetailService = (data) => {
+  WorkspaceStore.updateCurrentProjectAction(data);
+};
 const projectDeleteService = (data) => {};
 
 const referenceInsertService = (data) => {
@@ -133,6 +135,9 @@ const serviceCicdSA = (data) => {
     ? setAlert(`success`, data.message, 'success')
     : setAlert(`error`, data.message, 'error');
 };
+const serviceGetHistoryList = (data) => {
+  WorkspaceStore.updateCICDListAction(data);
+};
 const serviceGetHistoryDetail = (data) => {
   WorkspaceStore.updateCICDAction(data);
 };
@@ -151,5 +156,6 @@ export const services = {
   ProjectGenerateService: projectGenerateService,
   CicdMW: serviceCicdMW,
   CicdSA: serviceCicdSA,
+  GetHistoryList: serviceGetHistoryList,
   GetHistoryDetail: serviceGetHistoryDetail,
 };

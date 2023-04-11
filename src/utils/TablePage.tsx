@@ -1,6 +1,4 @@
 import {
-  Avatar,
-  Box,
   FormControl,
   InputAdornment,
   InputLabel,
@@ -15,7 +13,6 @@ import {
   TextField,
 } from '@mui/material';
 import React, { ReactElement } from 'react';
-import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import styled from '@emotion/styled';
 import Table from '@mui/material/Table';
@@ -24,11 +21,12 @@ import TablePagination from '@mui/material/TablePagination';
 interface TablePageProps {
   itemList: any[];
   setItemList: (list: any[]) => void;
+  InnerComponent: any;
   mainName: string;
   TableButton?: ReactElement;
   rawProjectList: any[];
   cellClickFuntion: any;
-  type: 'project' | 'commit';
+  type: 'project' | 'commit' | 'CICD';
 }
 
 const StyledTableCell = styled(TableCell)({
@@ -40,6 +38,7 @@ const TablePage = (props: TablePageProps) => {
   const {
     itemList,
     setItemList,
+    InnerComponent,
     mainName,
     TableButton,
     rawProjectList,
@@ -142,16 +141,6 @@ const TablePage = (props: TablePageProps) => {
             {itemList
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((item) => {
-                const linkTo =
-                  type === 'project'
-                    ? `/projects/${item.name}/details`
-                    : `/projects`;
-                const itemName =
-                  type === 'project'
-                    ? item.name
-                    : type === 'commit'
-                    ? item.message
-                    : 'No Name';
                 return (
                   <TableRow key={`project-${item.projId}`}>
                     <StyledTableCell
@@ -159,39 +148,7 @@ const TablePage = (props: TablePageProps) => {
                         cellClickFuntion(item);
                       }}
                     >
-                      <Link to={linkTo}>
-                        <Box sx={{ p: 2 }}>
-                          <Paper variant="outlined">
-                            <Link to={linkTo}>
-                              <Box sx={{ display: 'flex' }}>
-                                <Box sx={{ p: 2 }}>
-                                  <Avatar
-                                    sx={{
-                                      bgcolor: 'primary.main',
-                                      borderRadius: '20%',
-                                    }}
-                                  >
-                                    {itemName?.charAt(0)}
-                                  </Avatar>
-                                </Box>
-                                <Box sx={{ p: 2 }}>
-                                  <div className="item-name">
-                                    <b>{itemName}</b>
-                                  </div>
-                                  {type === 'project' && (
-                                    <div className="item-name">{itemName}</div>
-                                  )}
-                                  {type === 'commit' && (
-                                    <div className="item-name">
-                                      {item.createdTime}
-                                    </div>
-                                  )}
-                                </Box>
-                              </Box>
-                            </Link>
-                          </Paper>
-                        </Box>
-                      </Link>
+                      <Paper variant="outlined">{InnerComponent(item)}</Paper>
                     </StyledTableCell>
                   </TableRow>
                 );
