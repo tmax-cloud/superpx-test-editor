@@ -70,6 +70,7 @@ const TablePage = (props: TablePageProps) => {
   const handleActionChange = (event) => {
     setAction(event.target.value);
   };
+
   React.useEffect(() => {
     if (action === 'Name') {
       const newData =
@@ -80,6 +81,12 @@ const TablePage = (props: TablePageProps) => {
           : type === 'commit'
           ? rawProjectList.filter((d) =>
               d.message?.toLowerCase().includes(searchInput.toLowerCase()),
+            )
+          : type === 'CICD'
+          ? rawProjectList.filter((d) =>
+              String(d.cicdId)
+                ?.toLowerCase()
+                .includes(searchInput.toLowerCase()),
             )
           : [];
       setItemList(newData);

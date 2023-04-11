@@ -46,7 +46,7 @@ const StyledTableRow = styled(TableRow)({
 });
 
 const InnerComponent = (item: CICD) => (
-  <Link to={`/projects/${item.projName}/details`}>
+  <Link to={`/projects/${item.projName}/CICDDetail/${item.cicdId}`}>
     <Box sx={{ display: 'flex' }}>
       <Box sx={{ p: 2 }}>
         <Avatar
