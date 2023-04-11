@@ -60,7 +60,7 @@ const router = createBrowserRouter([
         element: <EditorPage />,
       },
       {
-        path: '/projects/:projectName/commitHistory',
+        path: '/projects/:projectName/commitHistory/:reference',
         element: <CommitHistory />,
       },
       {

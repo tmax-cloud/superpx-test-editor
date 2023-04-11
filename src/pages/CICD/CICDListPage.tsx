@@ -86,7 +86,7 @@ const TableHeader = () => {
     <StyledTableRow>
       <StyledTableCell className="cicd-left-align">CICD Id</StyledTableCell>
       <StyledTableCell className="cicd-left-align">
-        Refence Name
+        Reference Name
       </StyledTableCell>
       <StyledTableCell className="cicd-left-align">Mode</StyledTableCell>
       <StyledTableCell className="cicd-left-align">
@@ -101,10 +101,6 @@ const CICDListPage = () => {
   const menus = [
     { name: 'Details', to: `/projects/${projectName}/details` },
     { name: 'CI/CD Report', to: `/projects/${projectName}/CICDList` },
-    // 'Issues',
-    // 'Merge Requests',
-    // 'Settings',
-    // 'PX Analysis',
   ];
   const [referenceId, setReferenceId] = React.useState('');
   const [ciCdSelect, setCiCdSelect] = React.useState(false);
@@ -152,8 +148,13 @@ const CICDListPage = () => {
         proj_name: projectName,
       });
   }, [WorkspaceStore.currentProject]);
+
   React.useEffect(() => {
-    setCicdList(WorkspaceStore.CICDList);
+    setCicdList(
+      WorkspaceStore.CICDList.sort((a, b) => {
+        return String(a.cicdId).localeCompare(String(b.cicdId));
+      }),
+    );
   }, [WorkspaceStore.CICDList]);
 
   return (
