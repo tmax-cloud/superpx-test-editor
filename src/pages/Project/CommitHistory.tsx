@@ -1,10 +1,32 @@
 import * as React from 'react';
 import { Observer, observer } from 'mobx-react';
 import WorkspaceStore from '../../stores/workspaceStore';
-import { Button } from '@mui/material';
+import { Avatar, Box, Button } from '@mui/material';
 import { sendMessage } from '../../utils/service-utils';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import TablePage from '../../utils/TablePage';
+import { Commit } from '../../utils/types';
+
+const InnerComponent = (item: Commit) => (
+  <Box sx={{ display: 'flex' }}>
+    <Box sx={{ p: 2 }}>
+      <Avatar
+        sx={{
+          bgcolor: 'primary.main',
+          borderRadius: '20%',
+        }}
+      >
+        {item.message?.charAt(0)}
+      </Avatar>
+    </Box>
+    <Box sx={{ p: 2 }}>
+      <div className="item-name">
+        <b>{item.message}</b>
+      </div>
+      <div className="item-name">{item.createdTime}</div>
+    </Box>
+  </Box>
+);
 
 const CommitHistory: React.FC = () => {
   const { projectName } = useParams();
@@ -32,10 +54,10 @@ const CommitHistory: React.FC = () => {
     };
   }, []);
   const menus = [
-    'Details',
+    { name: 'Details', to: `/projects/${projectName}/details` },
+    { name: 'CI/CD Report', to: `/projects/${projectName}/CICDList` },
     // 'Issues',
     // 'Merge Requests',
-    'CI/CD Report',
     // 'Settings',
     // 'PX Analysis',
   ];
@@ -45,8 +67,13 @@ const CommitHistory: React.FC = () => {
         {menus.map((menu) => {
           return (
             <span key={`menu-All`}>
-              <Button className="gnb-menu-button" id="basic-button">
-                {menu}
+              <Button
+                className="gnb-menu-button"
+                id="basic-button"
+                component={Link}
+                to={menu.to}
+              >
+                {menu.name}
               </Button>
             </span>
           );
@@ -58,6 +85,7 @@ const CommitHistory: React.FC = () => {
             <TablePage
               itemList={commitList}
               setItemList={setCommitList}
+              InnerComponent={InnerComponent}
               rawProjectList={WorkspaceStore.commitList}
               mainName={'Commit List'}
               cellClickFuntion={() => {}}
