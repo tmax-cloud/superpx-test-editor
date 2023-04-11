@@ -269,6 +269,17 @@ body,
 .create-page-blank > :first-child {
   width: 500px;
 }
+.detail-page-title {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0px;
+  width: 100%;
+}
+.cicd-detail {
+  justify-content: left;
+  font-weight: 700;
+  width: 100%;
+}
 .file-icon {
   width: 20px;
   height: 20px;
