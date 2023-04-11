@@ -22,6 +22,7 @@ interface TablePageProps {
   itemList: any[];
   setItemList: (list: any[]) => void;
   InnerComponent: any;
+  TableHeader?: any;
   mainName: string;
   TableButton?: ReactElement;
   rawProjectList: any[];
@@ -39,6 +40,7 @@ const TablePage = (props: TablePageProps) => {
     itemList,
     setItemList,
     InnerComponent,
+    TableHeader,
     mainName,
     TableButton,
     rawProjectList,
@@ -130,12 +132,9 @@ const TablePage = (props: TablePageProps) => {
         </FormControl>
       </div>
       <TableContainer component={Paper}>
-        <TableHead>
-          <TableRow>
-            <StyledTableCell></StyledTableCell>
-          </TableRow>
+        <TableHead sx={{ width: '100%' }}>
+          <TableRow>{TableHeader && <TableHeader />}</TableRow>
         </TableHead>
-
         <Table sx={{ minWidth: 650 }} size="small">
           <TableBody>
             {itemList

@@ -406,7 +406,9 @@ body,
 .item-name {
   text-align: left;
 }
-
+.item-cicd-name {
+  text-align: center;
+}
 @keyframes spin {
   0% {
     transform: rotate(0deg);
