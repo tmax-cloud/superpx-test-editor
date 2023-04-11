@@ -67,16 +67,16 @@ const InnerComponent = (item: CICD) => (
           width: '100%',
         }}
       >
-        <div className="item-cicd-name">
+        <div className="cicd-left-align">
           <b>{item.cicdId}</b>
         </div>
-        <div className="item-cicd-name">{item.refName}</div>
+        <div className="cicd-left-align">{item.refName}</div>
         {item.targetIp ? (
-          <div className="item-cicd-name">Master {item.targetIp}</div>
+          <div className="cicd-left-align">Master {item.targetIp}</div>
         ) : (
-          <div className="item-cicd-name">Stand Alone</div>
+          <div className="cicd-left-align">Stand Alone</div>
         )}
-        <div className="item-cicd-name">{item.createdTime}</div>
+        <div className="cicd-left-align">{item.createdTime}</div>
       </Box>
     </Box>
   </Link>
@@ -84,10 +84,14 @@ const InnerComponent = (item: CICD) => (
 const TableHeader = () => {
   return (
     <StyledTableRow>
-      <StyledTableCell>CICD Id</StyledTableCell>
-      <StyledTableCell>Refence Name</StyledTableCell>
-      <StyledTableCell>Mode</StyledTableCell>
-      <StyledTableCell>Created Time</StyledTableCell>
+      <StyledTableCell className="cicd-left-align">CICD Id</StyledTableCell>
+      <StyledTableCell className="cicd-left-align">
+        Refence Name
+      </StyledTableCell>
+      <StyledTableCell className="cicd-left-align">Mode</StyledTableCell>
+      <StyledTableCell className="cicd-left-align">
+        Created Time
+      </StyledTableCell>
     </StyledTableRow>
   );
 };
