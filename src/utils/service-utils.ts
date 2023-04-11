@@ -138,6 +138,9 @@ const serviceCicdSA = (data) => {
 const serviceGetHistoryList = (data) => {
   WorkspaceStore.updateCICDListAction(data);
 };
+const serviceGetHistoryDetail = (data) => {
+  WorkspaceStore.updateCICDAction(data);
+};
 export const services = {
   ProjectInsertService: projectInsertService,
   ProjectListService: projectListService,
@@ -154,4 +157,5 @@ export const services = {
   CicdMW: serviceCicdMW,
   CicdSA: serviceCicdSA,
   GetHistoryList: serviceGetHistoryList,
+  GetHistoryDetail: serviceGetHistoryDetail,
 };

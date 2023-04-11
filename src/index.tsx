@@ -68,7 +68,7 @@ const router = createBrowserRouter([
         element: <ProjectDetailPage />,
       },
       {
-        path: '/projects/:projectName/CICDDetail',
+        path: '/projects/:projectName/CICDDetail/:cicdId',
         element: <CICDDetailPage />,
       },
       {
