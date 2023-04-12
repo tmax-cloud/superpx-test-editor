@@ -29,11 +29,16 @@ export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
       proj_name: WorkspaceStore.currentProject.name,
       ref_name: referenceName,
       type: referenceType,
+      src_ref_name: sourceReferenceName,
     });
     setOpen(false);
   };
   const [referenceName, setReferenceName] = React.useState('');
+  const [sourceReferenceName, setSourceReferenceName] = React.useState('');
   const [referenceType, setReferenceType] = React.useState(0);
+  const onSourceReferenceNameChange = (event) => {
+    setSourceReferenceName(event.target.value);
+  };
   const onReferenceNameChange = (event) => {
     setReferenceName(event.target.value);
   };
@@ -62,6 +67,20 @@ export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
             variant="standard"
             onChange={onReferenceNameChange}
           />
+          <FormControl sx={{ minWidth: 300, paddingTop: '30px' }}>
+            <InputLabel sx={{ minWidth: 300, paddingTop: '30px' }}>
+              Source Reference Name
+            </InputLabel>
+            <Select
+              value={sourceReferenceName}
+              label="Reference type"
+              onChange={onSourceReferenceNameChange}
+            >
+              {WorkspaceStore.referenceList.map((ref) => (
+                <MenuItem value={ref.name}>{ref.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <FormControl sx={{ minWidth: 300, paddingTop: '30px' }}>
             <InputLabel sx={{ minWidth: 300, paddingTop: '30px' }}>
               Reference type
