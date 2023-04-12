@@ -8,8 +8,8 @@ import { sendMessage } from '../../utils/service-utils';
 const CICDDetailPage = () => {
   const { projectName, cicdId } = useParams();
   const menus = [
-    { name: 'Details', to: `/px/projects/${projectName}/details` },
-    { name: 'CI/CD Report', to: `/px/projects/${projectName}/CICDList` },
+    { name: 'Details', to: `/projects/${projectName}/details` },
+    { name: 'CI/CD Report', to: `/projects/${projectName}/CICDList` },
     // 'Issues',
     // 'Merge Requests',
     // 'Settings',

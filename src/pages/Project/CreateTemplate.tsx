@@ -54,7 +54,7 @@ export default function CreateTemplate() {
                 is_import: isImport,
               },
             });
-            navigate(`/px/projects/${projectName}`);
+            navigate(`/projects/${projectName}`);
             loadingStore.setLoading(true);
           }}
         >
