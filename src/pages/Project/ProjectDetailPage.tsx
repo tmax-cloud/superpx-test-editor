@@ -168,10 +168,9 @@ const ProjectDetailPage: React.FC = () => {
           });
           EditorContentsStore.initContentAction();
           navigate(
-            `/projects/${projectName}/details/${reference.name.replace(
-              /[/.]/g,
-              '-',
-            )}`,
+            `/projects/${projectName}/details/${reference.name
+              .replace(/\./g, '-dot-')
+              .replace(/\//g, '-slash-')}`,
           );
         }
       });
@@ -226,7 +225,7 @@ const ProjectDetailPage: React.FC = () => {
             </div>
           </div>
           <div className="detail-in-flex">
-            <Link to={`/projects/${projectName}/commitHistory`}>
+            <Link to={`/projects/${projectName}/commitHistory/${reference}`}>
               <Button variant="outlined">HISTORY</Button>
             </Link>
             <Link to={`/projects/${projectName}/editor`}>

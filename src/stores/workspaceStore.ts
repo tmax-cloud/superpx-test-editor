@@ -34,11 +34,16 @@ const WorkspaceStore = observable({
         return;
       }
       path === 'ProjectGenerateService' && loadingStore.setLoading(false);
-      service
-        ? data
-          ? service(data)
-          : setAlert(`No ${path} Data.`, message, 'error')
-        : setAlert(message, `No Service ${path}.`, 'error');
+      if (service) {
+        if (data) {
+          service(data);
+        } else {
+          setAlert(`No ${path} Data.`, message, 'error');
+          path === 'CommitListService' && this.updateCommitListAction([]);
+        }
+      } else {
+        setAlert(message, `No Service ${path}.`, 'error');
+      }
     };
   },
   resetWsUrlAction() {
