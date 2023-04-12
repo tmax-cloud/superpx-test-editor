@@ -65,7 +65,7 @@ export default function CreateBlank() {
                 type: 0,
               },
             });
-            navigate(`/projects/${projectName}`);
+            navigate(`/px/projects/${projectName}`);
           }}
         >
           Create project

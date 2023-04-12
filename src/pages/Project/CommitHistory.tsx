@@ -64,8 +64,8 @@ const CommitHistory: React.FC = () => {
     };
   }, []);
   const menus = [
-    { name: 'Details', to: `/projects/${projectName}/details` },
-    { name: 'CI/CD Report', to: `/projects/${projectName}/CICDList` },
+    { name: 'Details', to: `/px/projects/${projectName}/details` },
+    { name: 'CI/CD Report', to: `/px/projects/${projectName}/CICDList` },
     // 'Issues',
     // 'Merge Requests',
     // 'Settings',

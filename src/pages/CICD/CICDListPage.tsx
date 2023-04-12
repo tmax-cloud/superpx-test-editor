@@ -46,7 +46,7 @@ const StyledTableRow = styled(TableRow)({
 });
 
 const InnerComponent = (item: CICD) => (
-  <Link to={`/projects/${item.projName}/CICDDetail/${item.cicdId}`}>
+  <Link to={`/px/projects/${item.projName}/CICDDetail/${item.cicdId}`}>
     <Box sx={{ display: 'flex' }}>
       <Box sx={{ p: 2 }}>
         <Avatar
@@ -99,8 +99,8 @@ const CICDListPage = () => {
   const { projectName } = useParams();
   const [cicdList, setCicdList] = React.useState([]);
   const menus = [
-    { name: 'Details', to: `/projects/${projectName}/details` },
-    { name: 'CI/CD Report', to: `/projects/${projectName}/CICDList` },
+    { name: 'Details', to: `/px/projects/${projectName}/details` },
+    { name: 'CI/CD Report', to: `/px/projects/${projectName}/CICDList` },
   ];
   const [referenceId, setReferenceId] = React.useState('');
   const [ciCdSelect, setCiCdSelect] = React.useState(false);
