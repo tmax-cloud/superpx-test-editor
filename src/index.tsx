@@ -39,7 +39,7 @@ const App = () => {
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: 'px',
     element: <App />,
     errorElement: <NotFound />,
     children: [
@@ -48,47 +48,51 @@ const router = createBrowserRouter([
         element: <ProjectPage />,
       },
       {
-        path: '/projects',
+        path: 'index.html',
         element: <ProjectPage />,
       },
       {
-        path: '/projects/:projectName',
+        path: 'projects',
         element: <ProjectPage />,
       },
       {
-        path: '/projects/:projectName/editor',
+        path: 'projects/:projectName',
+        element: <ProjectPage />,
+      },
+      {
+        path: 'projects/:projectName/editor',
         element: <EditorPage />,
       },
       {
-        path: '/projects/:projectName/commitHistory/:reference',
+        path: 'projects/:projectName/commitHistory/:reference',
         element: <CommitHistory />,
       },
       {
-        path: '/projects/:projectName/details/*',
+        path: 'projects/:projectName/details/*',
         element: <ProjectDetailPage />,
       },
       {
-        path: '/projects/:projectName/CICDDetail/:cicdId',
+        path: 'projects/:projectName/CICDDetail/:cicdId',
         element: <CICDDetailPage />,
       },
       {
-        path: '/projects/:projectName/CICDList',
+        path: 'projects/:projectName/CICDList',
         element: <CICDListPage />,
       },
       {
-        path: '/projects/:projectName/details/:reference/*',
+        path: 'projects/:projectName/details/:reference/*',
         element: <ProjectDetailPage />,
       },
       {
-        path: '/create',
+        path: 'create',
         element: <Create />,
       },
       {
-        path: '/create/blank',
+        path: 'create/blank',
         element: <CreateBlank />,
       },
       {
-        path: '/create/fromTemplate',
+        path: 'create/fromTemplate',
         element: <CreateTemplate />,
       },
       {
