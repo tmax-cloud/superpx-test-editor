@@ -54,8 +54,8 @@ const ProjectDetailPage: React.FC = () => {
   const [masterModal, setMasterModal] = React.useState(false);
   const [targetIp, setTargetIp] = React.useState('');
   const menus = [
-    { name: 'Details', to: `/projects/${projectName}/details` },
-    { name: 'CI/CD Report', to: `/projects/${projectName}/CICDList` },
+    { name: 'Details', to: `/px/projects/${projectName}/details` },
+    { name: 'CI/CD Report', to: `/px/projects/${projectName}/CICDList` },
     // 'Issues',
     // 'Merge Requests',
     // 'Settings',
@@ -78,7 +78,7 @@ const ProjectDetailPage: React.FC = () => {
     setShowModal(true);
   };
   const handleCreateModal = () => {
-    window.location.hash = `/projects/${projectName}/editor`;
+    window.location.hash = `/px/projects/${projectName}/editor`;
     EditorContentsStore.updateContentAction(inputValue, '');
     setShowModal(false);
     setInputValue('');
@@ -100,11 +100,11 @@ const ProjectDetailPage: React.FC = () => {
   React.useEffect(() => {
     const newPath = reference
       ? location.pathname
-          .replace(`/projects/${projectName}/details/${reference}`, '')
+          .replace(`/px/projects/${projectName}/details/${reference}`, '')
           .split('/')
           .filter((part) => part.length > 0)
       : location.pathname
-          .replace(`/projects/${projectName}/details`, '')
+          .replace(`/px/projects/${projectName}/details`, '')
           .split('/')
           .filter((part) => part.length > 0);
     setCurrentPath(newPath);
@@ -168,7 +168,7 @@ const ProjectDetailPage: React.FC = () => {
           });
           EditorContentsStore.initContentAction();
           navigate(
-            `/projects/${projectName}/details/${reference.name
+            `/px/projects/${projectName}/details/${reference.name
               .replace(/\./g, '-dot-')
               .replace(/\//g, '-slash-')}`,
           );
@@ -225,10 +225,10 @@ const ProjectDetailPage: React.FC = () => {
             </div>
           </div>
           <div className="detail-in-flex">
-            <Link to={`/projects/${projectName}/commitHistory/${reference}`}>
+            <Link to={`/px/projects/${projectName}/commitHistory/${reference}`}>
               <Button variant="outlined">HISTORY</Button>
             </Link>
-            <Link to={`/projects/${projectName}/editor`}>
+            <Link to={`/px/projects/${projectName}/editor`}>
               <Button
                 variant="contained"
                 onClick={() => {

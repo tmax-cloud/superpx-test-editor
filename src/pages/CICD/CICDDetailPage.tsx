@@ -8,8 +8,8 @@ import { sendMessage } from '../../utils/service-utils';
 const CICDDetailPage = () => {
   const { projectName, cicdId } = useParams();
   const menus = [
-    { name: 'Details', to: `/projects/${projectName}/details` },
-    { name: 'CI/CD Report', to: `/projects/${projectName}/CICDList` },
+    { name: 'Details', to: `/px/projects/${projectName}/details` },
+    { name: 'CI/CD Report', to: `/px/projects/${projectName}/CICDList` },
     // 'Issues',
     // 'Merge Requests',
     // 'Settings',
@@ -27,7 +27,7 @@ const CICDDetailPage = () => {
         return 'Failed';
     }
   };
-  const requestCicdDetail = () =>{
+  const requestCicdDetail = () => {
     sendMessage(
       'service',
       'GetHistoryDetail',
@@ -40,11 +40,7 @@ const CICDDetailPage = () => {
 
   React.useEffect(() => {
     requestCicdDetail();
-    const timer = setInterval(
-      () =>
-      requestCicdDetail(),
-      10000,
-    );
+    const timer = setInterval(() => requestCicdDetail(), 10000);
     return () => {
       clearInterval(timer);
     };
@@ -87,9 +83,12 @@ const CICDDetailPage = () => {
               <div>Status: {step(WorkspaceStore.currentCICD.result)}</div>
               <div>
                 Read File From DB{': '}
-                {step(WorkspaceStore.currentCICD.readFileFromDB)}, Build Project{': '}
-                {step(WorkspaceStore.currentCICD.buildProject)}, Read Build File{': '}
-                {step(WorkspaceStore.currentCICD.readBuildFile)}, Deploy App{': '}
+                {step(WorkspaceStore.currentCICD.readFileFromDB)}, Build Project
+                {': '}
+                {step(WorkspaceStore.currentCICD.buildProject)}, Read Build File
+                {': '}
+                {step(WorkspaceStore.currentCICD.readBuildFile)}, Deploy App
+                {': '}
                 {step(WorkspaceStore.currentCICD.deployApp)}
               </div>
             </div>
