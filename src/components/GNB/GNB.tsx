@@ -22,31 +22,31 @@ export const GNB = () => {
 
   const onProjectNameChange = (event) => {
     setSelectProject(event.target.value);
-    navigate(`/px/projects/${event.target.value}`);
+    navigate(`/projects/${event.target.value}`);
   };
 
   return (
     <div className="gnb">
       <div className="logo">
-        <Link to="/px">
+        <Link to="/">
           <HomeIcon className="logo-icon" sx={{ color: '#FF7575' }} />
           <p className="logo-text">SuperPX</p>
         </Link>
-        <Link to={`/px/projects`}>
+        <Link to={`/projects`}>
           <p className="top-menu-text-left">Projects</p>
         </Link>
         {/* <Link to="/groups">
           <p className="top-menu-text">Groups</p>
         </Link> */}
         <Link
-          to={`/px/projects/${projectName}/details`}
+          to={`/projects/${projectName}/details`}
           className={`top-menu-link ${!projectName ? 'disabled' : ''}`}
         >
           <p className="top-menu-text">PX Manager</p>
         </Link>
 
         <Link
-          to={`/px/projects/${projectName}/editor`}
+          to={`/projects/${projectName}/editor`}
           className={`top-menu-link ${!projectName ? 'disabled' : ''}`}
         >
           <p className="top-menu-text">PX Editor</p>

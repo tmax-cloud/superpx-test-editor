@@ -39,16 +39,12 @@ const App = () => {
 
 const router = createBrowserRouter([
   {
-    path: 'px',
+    path: '/',
     element: <App />,
     errorElement: <NotFound />,
     children: [
       {
         path: '',
-        element: <ProjectPage />,
-      },
-      {
-        path: 'index.html',
         element: <ProjectPage />,
       },
       {

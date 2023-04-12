@@ -14,7 +14,7 @@ const GroupPage: React.FC = () => {
         <div>
           <Link
             key={`group-${group.groupName}`}
-            to={`/px/groups/${group.groupName}`}
+            to={`/groups/${group.groupName}`}
           >
             <Button>{group.groupName}</Button>
           </Link>

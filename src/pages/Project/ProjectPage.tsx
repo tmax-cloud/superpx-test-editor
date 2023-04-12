@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 import { Project } from '../../utils/types';
 
 const TableButton = () => (
-  <Button variant="contained" component={Link} to="/px/create">
+  <Button variant="contained" component={Link} to="/create">
     New Project
   </Button>
 );
@@ -22,7 +22,7 @@ const projectClickFuntion = (project: Project) => {
   });
 };
 const InnerComponent = (item: Project) => (
-  <Link to={`/px/projects/${item.name}/details`}>
+  <Link to={`/projects/${item.name}/details`}>
     <Box sx={{ display: 'flex' }}>
       <Box sx={{ p: 2 }}>
         <Avatar

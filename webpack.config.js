@@ -8,15 +8,7 @@ module.exports = (env) => {
     mode: 'development',
     devServer: {
       allowedHosts: 'all',
-      historyApiFallback: {
-        rewrites: [
-          { from: /^\/px/, to: '/px/index.html' },
-          { from: /./, to: '/px/' },
-        ],
-      },
-      open: {
-        target: ['/px'],
-      },
+      historyApiFallback: true,
     },
     entry: {
       app: './src/index.tsx',
@@ -36,7 +28,7 @@ module.exports = (env) => {
         }
       },
       path: path.resolve(__dirname, 'dist'),
-      publicPath: '/px/',
+      publicPath: '/',
     },
     resolve: {
       fallback: {
@@ -78,9 +70,6 @@ module.exports = (env) => {
       new NodePolyfillPlugin(),
       new htmlWebpackPlugin({
         template: './src/index.html',
-        filename: 'index.html',
-        inject: 'body',
-        publicPath: '/px/',
       }),
       new webpack.EnvironmentPlugin({
         WS_URL: env.WS_URL,

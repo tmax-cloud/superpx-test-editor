@@ -87,7 +87,7 @@ export function CICDStandAloneModal(props: CICDStandAloneModalProps) {
               'super-px/com.tmax.buildanddeploy',
             );
             loadingStore.setLoading(true);
-            navigate(`/px/projects/${projectName}/CICDList`);
+            navigate(`/projects/${projectName}/CICDList`);
           }}
         >
           Create
@@ -188,7 +188,7 @@ export function CICDMasterModal(props: CICDMasterModalProps) {
               'super-px/com.tmax.buildanddeploy',
             );
             loadingStore.setLoading(true);
-            navigate(`/px/projects/${projectName}/CICDList`);
+            navigate(`/projects/${projectName}/CICDList`);
           }}
         >
           Create

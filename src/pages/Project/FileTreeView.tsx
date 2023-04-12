@@ -76,7 +76,7 @@ const FileTreeView = ({
               onClick={() =>
                 onClick((event) => {
                   EditorContentsStore.initContentAction();
-                  navigate(`/px/projects/${projectName}/editor`);
+                  navigate(`/projects/${projectName}/editor`);
                   sendMessage('source', 'DetailService', {
                     src_id: srcCodeId,
                     commit_id: WorkspaceStore.currentCommit.commitId,
