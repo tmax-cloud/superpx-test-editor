@@ -29,8 +29,18 @@ const InnerComponent = (item: Commit) => (
 );
 
 const CommitHistory: React.FC = () => {
-  const { projectName } = useParams();
+  const { projectName, reference } = useParams();
   const [commitList, setCommitList] = React.useState([]);
+  React.useEffect(() => {
+    setCommitList(
+      WorkspaceStore.commitList.sort((a, b) => {
+        const dateA = new Date(a.createdTime);
+        const dateB = new Date(b.createdTime);
+        return dateB.getTime() - dateA.getTime();
+      }),
+    );
+  }, []);
+
   React.useEffect(() => {
     setCommitList(
       WorkspaceStore.commitList.sort((a, b) => {
@@ -41,14 +51,14 @@ const CommitHistory: React.FC = () => {
     );
   }, [WorkspaceStore.commitList]);
   React.useEffect(() => {
-    const timer = setInterval(
-      () =>
-        sendMessage('commit', 'ListService', {
-          proj_name: projectName,
-          ref_name: WorkspaceStore.currentReference.name,
-        }),
-      20000,
-    );
+    const sendRequest = () => {
+      sendMessage('commit', 'ListService', {
+        proj_name: projectName,
+        ref_name: reference.replace(/-dot-/g, '.').replace(/-slash-/g, '/'),
+      });
+    };
+    sendRequest();
+    const timer = setInterval(sendRequest, 20000);
     return () => {
       clearInterval(timer);
     };
