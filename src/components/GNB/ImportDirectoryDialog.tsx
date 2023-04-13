@@ -53,7 +53,7 @@ export const ImportDirectoryDialog = ({
       const fileReader = new FileReader();
       fileReader.onload = () => {
         tempSourceCodes.push({
-          srcPath: file.webkitRelativePath,
+          srcPath: `${WorkspaceStore.currentProject.name}/${file.webkitRelativePath}`,
           content: fileReader.result as string,
           newfile: true,
         });
