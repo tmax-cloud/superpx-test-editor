@@ -18,7 +18,7 @@ export const ImportFileDialog = ({
   const [filePath, setFilePath] = React.useState('');
   const [sourceContent, setsourceContent] = React.useState('');
   const onChangeFilePath = (e) => {
-    setFilePath(e.target.value);
+    setFilePath(`${WorkspaceStore.currentProject.name}/${e.target.value}`);
   };
   const onFileChange = (e) => {
     const file = e.target.files[0];
