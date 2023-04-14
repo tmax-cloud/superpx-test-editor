@@ -32,7 +32,7 @@ export default function GNBDialog({
       </DialogContent>
       <DialogActions>
         <Button autoFocus onClick={handleCloseDialog}>
-          Cancle
+          Cancel
         </Button>
         <Button onClick={handleCloseDialog} autoFocus>
           Import

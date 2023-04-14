@@ -1,5 +1,4 @@
 import * as React from 'react';
-import EditorContentsStore from '../../stores/editorContentsStore';
 import WorkspaceStore from '../../stores/workspaceStore';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -29,7 +28,6 @@ export const ImportFileDialog = ({
     fileReader.readAsText(file);
   };
   const handleImportFile = (e) => {
-    EditorContentsStore.updateContentAction(filePath, sourceContent);
     WorkspaceStore.addSourceCodeAction({
       srcPath: filePath,
       content: sourceContent,
@@ -62,7 +60,7 @@ export const ImportFileDialog = ({
 
       <DialogActions>
         <Button autoFocus onClick={handleCloseDialog}>
-          Cancle
+          Cancel
         </Button>
         <Button onClick={handleImportFile} autoFocus>
           Import File

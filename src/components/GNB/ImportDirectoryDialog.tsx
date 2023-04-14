@@ -1,5 +1,4 @@
 import * as React from 'react';
-import EditorContentsStore from '../../stores/editorContentsStore';
 import WorkspaceStore from '../../stores/workspaceStore';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -36,10 +35,6 @@ export const ImportDirectoryDialog = ({
 
   const handleImportDirectory = (e) => {
     sourceCodes.forEach((sourceCode) => {
-      EditorContentsStore.updateContentAction(
-        sourceCode.srcPath,
-        sourceCode.content,
-      );
       WorkspaceStore.addSourceCodeAction(sourceCode);
     });
 
@@ -77,7 +72,7 @@ export const ImportDirectoryDialog = ({
 
       <DialogActions>
         <Button autoFocus onClick={handleCloseDialog}>
-          Cancle
+          Cancel
         </Button>
         <Button onClick={handleImportDirectory} autoFocus>
           Import Directory
