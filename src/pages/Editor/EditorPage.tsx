@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Editors } from '../../components/Editor/Editors';
 import { EditorLNB } from '../../components/LNB/EditorLNB';
-import { Observer } from 'mobx-react';
+import { Observer, observer } from 'mobx-react';
 import EditorContentsStore from '../../stores/editorContentsStore';
 import { useParams } from 'react-router-dom';
 import { sendMessage } from '../../utils/service-utils';
@@ -9,10 +9,10 @@ import WorkspaceStore from '../../stores/workspaceStore';
 import { EditorGNB } from '../../components/GNB/EditorGNB';
 import { EditorStatusBar } from '../../components/Editor/EditorStatusBar';
 
-export default function EditorPage() {
+function EditorPage() {
   const { projectName } = useParams();
   React.useEffect(() => {
-    if (projectName) {
+    if (projectName && WorkspaceStore.projectList.length) {
       WorkspaceStore.updateCurrentProjectAction({ name: projectName });
       sendMessage('reference', 'ListService', {
         proj_name: projectName,
@@ -21,7 +21,10 @@ export default function EditorPage() {
     } else {
       EditorContentsStore.updateShowProjectSelect(true);
     }
-  });
+  }, [WorkspaceStore.projectList, projectName]);
+  React.useEffect(() => {
+    sendMessage('project', 'ListService', {});
+  }, []);
   return (
     <div>
       <EditorGNB />
@@ -43,3 +46,4 @@ export default function EditorPage() {
     </div>
   );
 }
+export default observer(EditorPage);

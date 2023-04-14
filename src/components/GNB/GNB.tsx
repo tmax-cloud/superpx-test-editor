@@ -10,8 +10,9 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import WorkspaceStore from '../../stores/workspaceStore';
+import { observer } from 'mobx-react';
 
-export const GNB = () => {
+const GNB = () => {
   const { projectName } = useParams();
   const navigate = useNavigate();
   const [openSelectProject, setOpenSelectProject] = React.useState(false);
@@ -22,7 +23,11 @@ export const GNB = () => {
 
   const onProjectNameChange = (event) => {
     setSelectProject(event.target.value);
-    navigate(`/projects/${event.target.value}`);
+    const path = window.location.pathname.replace(
+      `/projects/${projectName}`,
+      '',
+    );
+    navigate(`/projects/${event.target.value}${path}`);
   };
 
   return (
@@ -96,3 +101,4 @@ export const GNB = () => {
     </div>
   );
 };
+export default observer(GNB);

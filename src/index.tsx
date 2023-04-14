@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import './style.css';
 import './404.scss';
 import { setupLanguage } from './java/setup';
-import { GNB } from './components/GNB/GNB';
+import GNB from './components/GNB/GNB';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import { BaseAlert } from './components/Alert/Alert';
 import EditorPage from './pages/Editor/EditorPage';
