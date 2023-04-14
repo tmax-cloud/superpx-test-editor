@@ -78,7 +78,7 @@ const ProjectDetailPage: React.FC = () => {
     setShowModal(true);
   };
   const handleCreateModal = () => {
-    window.location.hash = `/projects/${projectName}/editor`;
+    navigate(`/projects/${projectName}/editor`);
     EditorContentsStore.updateContentAction(inputValue, '');
     setShowModal(false);
     setInputValue('');
