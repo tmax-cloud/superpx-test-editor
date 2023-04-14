@@ -126,8 +126,6 @@ const ProjectDetailPage: React.FC = () => {
         commit_id: WorkspaceStore.currentCommit.commitId,
       });
     }
-    WorkspaceStore.currentReference.refId &&
-      setReferenceId(String(WorkspaceStore.currentReference.refId));
   }, [WorkspaceStore.currentCommit.commitId]);
   React.useEffect(() => {
     EditorContentsStore.initContentAction();
