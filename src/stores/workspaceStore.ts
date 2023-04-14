@@ -39,7 +39,9 @@ const WorkspaceStore = observable({
           service(data);
         } else {
           setAlert(`No ${path} Data.`, message, 'error');
-          path === 'CommitListService' && this.updateCommitListAction([]);
+          path === 'CommitListService' &&
+            this.updateCommitListAction([]) &&
+            this.sourceCodeList([]);
         }
       } else {
         setAlert(message, `No Service ${path}.`, 'error');
