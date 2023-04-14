@@ -15,7 +15,8 @@ const FolderTreeStore = observable({
   changeToOpenAction(srcPath: string) {
     const resultJson = this.folderTreeData;
     let node = resultJson;
-    const nodeArray = srcPath.split('/');
+    const originNodeArray = srcPath.split('/');
+    const nodeArray =  originNodeArray.slice(1);
     nodeArray.forEach((nodePath, index) => {
       if (index === nodeArray.length - 1) node.isOpen = true;
       node = node.children.filter((pathList) => pathList.name === nodePath)[0];
@@ -25,17 +26,19 @@ const FolderTreeStore = observable({
   changeToCloseAction(srcPath: string) {
     const resultJson = this.folderTreeData;
     let node = resultJson;
-    const nodeArray = srcPath.split('/');
+    const originNodeArray = srcPath.split('/');
+    const nodeArray =  originNodeArray.slice(1);
     nodeArray.forEach((nodePath, index) => {
       if (index === nodeArray.length - 1) node.isOpen = false;
       node = node.children.filter((pathList) => pathList.name === nodePath)[0];
     });
     this.folderTreeData = resultJson;
   },
-  updatePathToJsonAction(newFilePath) {
+  addNewFileAction(newFilePath) {
     const resultJson = this.folderTreeData;
     let node = resultJson;
-    const nodeArray = newFilePath.split('/');
+    const originNodeArray = newFilePath.split('/');
+    const nodeArray = originNodeArray.slice(1);
     nodeArray.forEach((nodePath, index) => {
       if (!node.children) {
         node.children = [];
@@ -63,7 +66,8 @@ const FolderTreeStore = observable({
   addNewFolderAction(newFolderPath) {
     const resultJson = this.folderTreeData;
     let node = resultJson;
-    const nodeArray = newFolderPath.split('/');
+    const originNodeArray = newFolderPath.split('/');
+    const nodeArray =  originNodeArray.slice(1);
     const nodeTotalPath = newFolderPath+'/';
     nodeArray.forEach((nodePath, index) => {
       if (!node.children) {
@@ -139,7 +143,8 @@ const FolderTreeStore = observable({
   deleteSourceCodeAction(pathValue) {
     const resultJson = this.folderTreeData;
     let node = resultJson;
-    const nodeArray = pathValue.split('/');
+    const originNodeArray = pathValue.split('/');
+    const nodeArray =  originNodeArray.slice(1);
     nodeArray.forEach((nodePath, index) => {
       if (!node.children) {
         node.children = [];
@@ -156,7 +161,8 @@ const FolderTreeStore = observable({
   updateContentAction(SourcePath, content) {
     const resultJson = this.folderTreeData;
     let node = resultJson;
-    const nodeArray = SourcePath.split('/');
+    const originNodeArray = SourcePath.split('/');
+    const nodeArray =  originNodeArray.slice(1);
     nodeArray.forEach((nodePath, index) => {
       if (!node.children) {
         node.children = [];
