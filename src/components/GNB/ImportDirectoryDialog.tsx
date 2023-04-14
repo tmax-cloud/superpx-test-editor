@@ -77,7 +77,7 @@ export const ImportDirectoryDialog = ({
 
       <DialogActions>
         <Button autoFocus onClick={handleCloseDialog}>
-          Cancle
+          Cancel
         </Button>
         <Button onClick={handleImportDirectory} autoFocus>
           Import Directory

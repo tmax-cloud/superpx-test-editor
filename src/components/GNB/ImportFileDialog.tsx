@@ -62,7 +62,7 @@ export const ImportFileDialog = ({
 
       <DialogActions>
         <Button autoFocus onClick={handleCloseDialog}>
-          Cancle
+          Cancel
         </Button>
         <Button onClick={handleImportFile} autoFocus>
           Import File
