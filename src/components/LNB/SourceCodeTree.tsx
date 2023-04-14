@@ -43,7 +43,7 @@ const SourceCodeTree: React.FC = () => {
     }
   };
   const resultJson = {
-    name: WorkspaceStore.currentReference.name,
+    name: WorkspaceStore.currentProject.name,
     children: [],
     isOpen: true,
     nodePath: '',
@@ -52,8 +52,9 @@ const SourceCodeTree: React.FC = () => {
     sourceCodeList.forEach((src) => {
       let node = resultJson;
       const srcId = src.srcId;
-      const nodeArray = src.srcPath.split('/');
-      let nodeTotalPath: string = '';
+      const originalNodeArray = src.srcPath.split('/');
+      const nodeArray = originalNodeArray.slice(1);
+      let nodeTotalPath: string = originalNodeArray[0] + '/';
       nodeArray.forEach((nodePath, index) => {
         if (!node.children) {
           node.children = [];
@@ -74,19 +75,11 @@ const SourceCodeTree: React.FC = () => {
               content: src.content,
               edited: src.edited,
             });
-          else if (index > 0) {
+          else {
             node.children.push({
               name: nodePath,
               nodePath: nodeTotalPath,
               isOpen: false,
-              isFile: false,
-              children: [],
-            });
-          } else {
-            node.children.push({
-              name: nodePath,
-              nodePath: nodeTotalPath,
-              isOpen: true,
               isFile: false,
               children: [],
             });
@@ -275,7 +268,7 @@ const SourceCodeTree: React.FC = () => {
         newfile: true,
       });
       EditorContentsStore.updateContentAction(newNodePath, '');
-      FolderTreeStore.updatePathToJsonAction(newNodePath);
+      FolderTreeStore.addNewFileAction(newNodePath);
     } else {
       FolderTreeStore.addNewFolderAction(newNodePath);
     }
@@ -287,7 +280,8 @@ const SourceCodeTree: React.FC = () => {
     const resultJson = FolderTreeStore.folderTreeData;
     let result = false;
     let node = resultJson;
-    const nodeArray = newNodePath.split('/');
+    const originNodeArray = newNodePath.split('/');
+    const nodeArray = originNodeArray.splice(1);
     nodeArray.forEach((nodePath, index) => {
       if (index === nodeArray.length - 1) {
         if (node.children.filter((c) => c.name === nodePath).length === 1) {
