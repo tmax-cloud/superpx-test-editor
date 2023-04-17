@@ -16,7 +16,7 @@ const FolderTreeStore = observable({
     const resultJson = this.folderTreeData;
     let node = resultJson;
     const originNodeArray = srcPath.split('/');
-    const nodeArray =  originNodeArray.slice(1);
+    const nodeArray = originNodeArray.slice(1);
     nodeArray.forEach((nodePath, index) => {
       if (index === nodeArray.length - 1) node.isOpen = true;
       node = node.children.filter((pathList) => pathList.name === nodePath)[0];
@@ -27,7 +27,7 @@ const FolderTreeStore = observable({
     const resultJson = this.folderTreeData;
     let node = resultJson;
     const originNodeArray = srcPath.split('/');
-    const nodeArray =  originNodeArray.slice(1);
+    const nodeArray = originNodeArray.slice(1);
     nodeArray.forEach((nodePath, index) => {
       if (index === nodeArray.length - 1) node.isOpen = false;
       node = node.children.filter((pathList) => pathList.name === nodePath)[0];
@@ -56,7 +56,7 @@ const FolderTreeStore = observable({
               content: '',
             },
           ];
-        node.children.sort((a, b) => a.name.localeCompare(b.name));
+        node.children.sort((a, b) => a.name?.localeCompare(b.name));
         node.children.sort((a, b) => a.isFile - b.isFile);
       }
       node = node.children.filter((pathList) => pathList.name === nodePath)[0];
@@ -67,8 +67,8 @@ const FolderTreeStore = observable({
     const resultJson = this.folderTreeData;
     let node = resultJson;
     const originNodeArray = newFolderPath.split('/');
-    const nodeArray =  originNodeArray.slice(1);
-    const nodeTotalPath = newFolderPath+'/';
+    const nodeArray = originNodeArray.slice(1);
+    const nodeTotalPath = newFolderPath + '/';
     nodeArray.forEach((nodePath, index) => {
       if (!node.children) {
         node.children = [];
@@ -98,21 +98,19 @@ const FolderTreeStore = observable({
     let node = resultJson;
     const nodeArray = lastSourcePath.split('/');
     nodeArray.forEach((nodePath, index) => {
-        if (index === nodeArray.length - 1)
-          node.children.forEach((n)=>{
-            if(n.name === nodePath){
-              n.name=newSourceName;
-              n.srcPath=newSourcePath;
-              n.edited=true;
-              n.content=content;
-            }
-          })
-        node.children.sort((a, b) => a.name.localeCompare(b.name));
-        node.children.sort((a, b) => a.isFile - b.isFile);
-      
-      node = node.children.filter(
-        (pathList) => pathList.name === nodePath,
-      )[0];
+      if (index === nodeArray.length - 1)
+        node.children.forEach((n) => {
+          if (n.name === nodePath) {
+            n.name = newSourceName;
+            n.srcPath = newSourcePath;
+            n.edited = true;
+            n.content = content;
+          }
+        });
+      node.children.sort((a, b) => a.name.localeCompare(b.name));
+      node.children.sort((a, b) => a.isFile - b.isFile);
+
+      node = node.children.filter((pathList) => pathList.name === nodePath)[0];
     });
     this.folderTreeData = { ...resultJson };
   },
@@ -124,19 +122,17 @@ const FolderTreeStore = observable({
       if (!node.children) {
         node.children = [];
       }
-        if (index === nodeArray.length - 1)
-          node.children.forEach((n)=>{
-            if(n.name === nodePath){
-              n.name=newFolderName;
-              n.nodePath=newFolderPath;
-            }
-          })
-        node.children.sort((a, b) => a.name.localeCompare(b.name));
-        node.children.sort((a, b) => a.isFile - b.isFile);
-      
-      node = node.children.filter(
-        (pathList) => pathList.name === nodePath,
-      )[0];
+      if (index === nodeArray.length - 1)
+        node.children.forEach((n) => {
+          if (n.name === nodePath) {
+            n.name = newFolderName;
+            n.nodePath = newFolderPath;
+          }
+        });
+      node.children.sort((a, b) => a.name.localeCompare(b.name));
+      node.children.sort((a, b) => a.isFile - b.isFile);
+
+      node = node.children.filter((pathList) => pathList.name === nodePath)[0];
     });
     this.folderTreeData = { ...resultJson };
   },
@@ -144,7 +140,7 @@ const FolderTreeStore = observable({
     const resultJson = this.folderTreeData;
     let node = resultJson;
     const originNodeArray = pathValue.split('/');
-    const nodeArray =  originNodeArray.slice(1);
+    const nodeArray = originNodeArray.slice(1);
     nodeArray.forEach((nodePath, index) => {
       if (!node.children) {
         node.children = [];
@@ -162,24 +158,22 @@ const FolderTreeStore = observable({
     const resultJson = this.folderTreeData;
     let node = resultJson;
     const originNodeArray = SourcePath.split('/');
-    const nodeArray =  originNodeArray.slice(1);
+    const nodeArray = originNodeArray.slice(1);
     nodeArray.forEach((nodePath, index) => {
       if (!node.children) {
         node.children = [];
       }
-        if (index === nodeArray.length - 1)
-          node.children.forEach((n)=>{
-            if(n.name === nodePath){
-              n.edited=true;
-              n.content=content;
-            }
-          })
-        node.children.sort((a, b) => a.name.localeCompare(b.name));
-        node.children.sort((a, b) => a.isFile - b.isFile);
-      
-      node = node.children.filter(
-        (pathList) => pathList.name === nodePath,
-      )[0];
+      if (index === nodeArray.length - 1)
+        node.children.forEach((n) => {
+          if (n.name === nodePath) {
+            n.edited = true;
+            n.content = content;
+          }
+        });
+      node.children.sort((a, b) => a.name.localeCompare(b.name));
+      node.children.sort((a, b) => a.isFile - b.isFile);
+
+      node = node.children.filter((pathList) => pathList.name === nodePath)[0];
     });
     this.folderTreeData = { ...resultJson };
   },

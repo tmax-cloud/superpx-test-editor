@@ -51,7 +51,7 @@ const ProjectPage: React.FC = () => {
   }, []);
   React.useEffect(() => {
     setProjectList(
-      WorkspaceStore.projectList.sort((a, b) => a.name.localeCompare(b.name)),
+      WorkspaceStore.projectList.sort((a, b) => a.name?.localeCompare(b.name)),
     );
   }, [WorkspaceStore.projectList]);
   const { t } = useTranslation();
