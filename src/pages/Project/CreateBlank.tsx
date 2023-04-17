@@ -52,6 +52,7 @@ export default function CreateBlank() {
       <div className="create-page-blank-head">
         <h1>{t('CREATENEWPROJECT')}</h1>
         <Button
+          disabled={!!invalidProjectNameHelp}
           variant="contained"
           onClick={() => {
             loadingStore.setLoading(true);

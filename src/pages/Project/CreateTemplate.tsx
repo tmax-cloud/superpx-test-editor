@@ -18,11 +18,10 @@ export default function CreateTemplate() {
   const [group, setGroup] = React.useState('');
   const [version, setVersion] = React.useState('');
   const [jdk, setJdk] = React.useState('');
-  const [isImport, setIsImport] = React.useState(false);
+  const [isImport, setIsImport] = React.useState(true);
   const [projectName, setProjectName] = React.useState('');
   const [invalidProjectNameHelp, setinValidProjectNameHelp] =
     React.useState('');
-
   const handleProjectNameChange = (event) => {
     setProjectName(event.target.value);
   };
@@ -42,15 +41,16 @@ export default function CreateTemplate() {
       <div className="create-page-blank-head">
         <h1>{t('CREATENEWPROJECT')}</h1>
         <Button
+          disabled={!!invalidProjectNameHelp}
           variant="contained"
           onClick={() => {
             sendMessage('project', 'GenerateService', {
               project: {
                 build_system: 'maven',
                 name: projectName,
-                group: group,
-                version: version,
-                jdk: jdk,
+                group: group ? group : 'com.tmax',
+                version: version ? version : 'main',
+                jdk: jdk ? jdk : '11',
                 is_import: isImport,
               },
             });
@@ -97,7 +97,10 @@ export default function CreateTemplate() {
         />
       </div>
       <div className="create-page-blank">
-        <h3>Group *</h3>
+        <div>
+          <h3>Group</h3>
+          <h5>(optional)</h5>
+        </div>
         <TextField
           helperText={'Enter Build Group'}
           id={'demo-helper-text-aligned'}
