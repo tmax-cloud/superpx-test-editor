@@ -76,17 +76,17 @@ const TablePage = (props: TablePageProps) => {
       const newData =
         type === 'project'
           ? rawProjectList.filter((d) =>
-              d.name.toLowerCase().includes(searchInput.toLowerCase()),
+              d.name?.toLowerCase().includes(searchInput?.toLowerCase()),
             )
           : type === 'commit'
           ? rawProjectList.filter((d) =>
-              d.message?.toLowerCase().includes(searchInput.toLowerCase()),
+              d.message?.toLowerCase().includes(searchInput?.toLowerCase()),
             )
           : type === 'CICD'
           ? rawProjectList.filter((d) =>
               String(d.cicdId)
                 ?.toLowerCase()
-                .includes(searchInput.toLowerCase()),
+                .includes(searchInput?.toLowerCase()),
             )
           : [];
       setItemList(newData);

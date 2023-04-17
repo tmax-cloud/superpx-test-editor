@@ -84,7 +84,7 @@ const SourceCodeTree: React.FC = () => {
               children: [],
             });
           }
-          node.children.sort((a, b) => a.name.localeCompare(b.name));
+          node.children.sort((a, b) => a.name?.localeCompare(b.name));
           node.children.sort((a, b) => a.isFile - b.isFile);
         }
         node = node.children.filter(

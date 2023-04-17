@@ -152,7 +152,7 @@ const CICDListPage = () => {
   React.useEffect(() => {
     setCicdList(
       WorkspaceStore.CICDList.sort((a, b) => {
-        return String(a.cicdId).localeCompare(String(b.cicdId));
+        return String(a.cicdId).localeCompare(String(b?.cicdId));
       }),
     );
   }, [WorkspaceStore.CICDList]);
