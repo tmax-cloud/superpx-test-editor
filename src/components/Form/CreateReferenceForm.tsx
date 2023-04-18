@@ -34,7 +34,13 @@ export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
     setOpen(false);
   };
   const [referenceName, setReferenceName] = React.useState('');
-  const [sourceReferenceName, setSourceReferenceName] = React.useState('');
+  const [sourceReferenceName, setSourceReferenceName] = React.useState(
+    WorkspaceStore.referenceList.find((ref) => {
+      return ref.name === 'main';
+    })
+      ? 'main'
+      : '',
+  );
   const [referenceType, setReferenceType] = React.useState(0);
   const onSourceReferenceNameChange = (event) => {
     setSourceReferenceName(event.target.value);
@@ -98,7 +104,12 @@ export const CreateReferenceForm: React.FC<CreateReferenceFormProps> = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={onClickCreate}>Create</Button>
+          <Button
+            onClick={onClickCreate}
+            disabled={!(referenceName && sourceReferenceName)}
+          >
+            Create
+          </Button>
         </DialogActions>
       </Dialog>
     </div>
