@@ -10,6 +10,7 @@ import {
   MenuItem,
   Select,
   TextField,
+  Typography,
 } from '@mui/material';
 import React from 'react';
 import WorkspaceStore from '../../stores/workspaceStore';
@@ -150,19 +151,19 @@ export function CICDMasterModal(props: CICDMasterModalProps) {
               })}
           </Select>
         </FormControl>
-        <DialogContentText>Target Master SAS IP</DialogContentText>
+        <Typography>Target Master SAS IP</Typography>
         <TextField
           autoFocus
           margin="dense"
           id="Target Ip"
-          label="Target Ip"
           type="text"
-          fullWidth
+          placeholder="{Master SAS IP}:{sap PORT}"
           variant="standard"
           value={targetIp}
           onChange={(event) => {
             setTargetIp(event.target.value);
           }}
+          sx={{ m: 1, minWidth: 320 }}
         />
       </DialogContent>
       <DialogActions>
