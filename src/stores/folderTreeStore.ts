@@ -4,6 +4,7 @@ import { FolderTreeData } from '../utils/types';
 const FolderTreeStore = observable({
   // state
   folderTreeData: {} as FolderTreeData,
+  needUpdate: true as boolean,
   // action
   initTreeDataAction(referenceName) {
     this.folderTreeData.name = referenceName;
@@ -11,6 +12,7 @@ const FolderTreeStore = observable({
   },
   updateTreeDataAction(folderTreeData: FolderTreeData) {
     this.folderTreeData = folderTreeData;
+    this.needUpdate = false;
   },
   changeToOpenAction(srcPath: string) {
     const resultJson = this.folderTreeData;

@@ -46,7 +46,7 @@ const SourceCodeTree: React.FC = () => {
     name: WorkspaceStore.currentProject.name,
     children: [],
     isOpen: true,
-    nodePath: '',
+    nodePath: WorkspaceStore.currentProject.name+'/',
   };
   const pathToJson = (sourceCodeList) => {
     sourceCodeList.forEach((src) => {
@@ -212,17 +212,11 @@ const SourceCodeTree: React.FC = () => {
   const [fileName, setFileName] = React.useState('');
   const [content, setContent] = React.useState('');
   const [isFile, setIsFile] = React.useState(false);
-  const [needUpdate, setNeedUpdate] = React.useState(true);
 
-  const updateTreeData = () => {
+  if (FolderTreeStore.needUpdate) {
     FolderTreeStore.updateTreeDataAction(
       pathToJson(WorkspaceStore.sourceCodeList),
     );
-    setNeedUpdate(false);
-  };
-
-  if (needUpdate) {
-    updateTreeData();
   }
 
   const handleOpenModal = (NodePath) => {
@@ -274,7 +268,6 @@ const SourceCodeTree: React.FC = () => {
     }
     setShowModal(false);
     setInputValue('');
-    setNeedUpdate(false);
   };
   const checkDuplicate = (newNodePath) => {
     const resultJson = FolderTreeStore.folderTreeData;
@@ -334,12 +327,10 @@ const SourceCodeTree: React.FC = () => {
       );
       setShowEditModal(false);
       setInputValue('');
-      setNeedUpdate(false);
     } else {
       FolderTreeStore.renameFolderAction(pathValue, newNodePath, newNodeName);
       setShowEditModal(false);
       setInputValue('');
-      setNeedUpdate(false);
     }
   };
   const handleDeleteModal = () => {
@@ -354,7 +345,6 @@ const SourceCodeTree: React.FC = () => {
     }
     setShowDeleteModal(false);
     setInputValue('');
-    setNeedUpdate(false);
   };
   const handleCancelModal = () => {
     setShowModal(false);
