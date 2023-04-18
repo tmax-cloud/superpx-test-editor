@@ -14,6 +14,9 @@ const FolderTreeStore = observable({
     this.folderTreeData = folderTreeData;
     this.needUpdate = false;
   },
+  initNeedUpdateAction(to: boolean) {
+    this.needUpdate = to;
+  },
   changeToOpenAction(srcPath: string) {
     const resultJson = this.folderTreeData;
     let node = resultJson;

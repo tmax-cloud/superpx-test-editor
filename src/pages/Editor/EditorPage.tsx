@@ -6,12 +6,14 @@ import EditorContentsStore from '../../stores/editorContentsStore';
 import { useParams } from 'react-router-dom';
 import { sendMessage } from '../../utils/service-utils';
 import WorkspaceStore from '../../stores/workspaceStore';
+import FolderTreeStore from '../../stores/folderTreeStore';
 import { EditorGNB } from '../../components/GNB/EditorGNB';
 import { EditorStatusBar } from '../../components/Editor/EditorStatusBar';
 
 function EditorPage() {
   const { projectName } = useParams();
   React.useEffect(() => {
+    FolderTreeStore.initNeedUpdateAction(true);
     if (projectName && WorkspaceStore.projectList.length) {
       WorkspaceStore.updateCurrentProjectAction({ name: projectName });
       sendMessage('reference', 'ListService', {
