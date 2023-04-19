@@ -92,7 +92,7 @@ const GNB = () => {
               onChange={onProjectNameChange}
             >
               {WorkspaceStore.projectList.map((project) => {
-                return <MenuItem value={project.name}>{project.name}</MenuItem>;
+                return <MenuItem key={`project-menuitem-${project.name}`} value={project.name}>{project.name}</MenuItem>;
               })}
             </Select>
           </FormControl>
