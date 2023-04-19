@@ -139,10 +139,10 @@ const TablePage = (props: TablePageProps) => {
         </FormControl>
       </div>
       <TableContainer component={Paper}>
-        <TableHead sx={{ width: '100%' }}>
-          <TableRow>{TableHeader && <TableHeader />}</TableRow>
-        </TableHead>
         <Table sx={{ minWidth: 650 }} size="small">
+          <TableHead sx={{ width: '100%' }}>
+            <TableRow>{TableHeader && <TableHeader />}</TableRow>
+          </TableHead>
           <TableBody>
             {itemList
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
