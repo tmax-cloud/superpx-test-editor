@@ -50,9 +50,9 @@ const ProjectPage: React.FC = () => {
     sendMessage('project', 'ListService', {});
   }, []);
   React.useEffect(() => {
-    setProjectList(
-      WorkspaceStore.projectList.sort((a, b) => a.name?.localeCompare(b.name)),
-    );
+    const tempList = [].concat(WorkspaceStore.projectList);
+    tempList.sort((a, b) => a.name?.localeCompare(b.name));
+    setProjectList(tempList);
   }, [WorkspaceStore.projectList]);
   const { t } = useTranslation();
   return (
