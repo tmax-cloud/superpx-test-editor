@@ -11,15 +11,18 @@ import { useTranslation } from 'react-i18next';
 import { sendMessage } from '../../utils/service-utils';
 import { useNavigate } from 'react-router-dom';
 import loadingStore from '../../stores/loadingStore';
+import { DuplicationButton } from './CreateBlank';
+import WorkspaceStore from '../../stores/workspaceStore';
 
 export default function CreateTemplate() {
   const { t } = useTranslation();
   // const [buildSystem, setBuildSystem] = React.useState('');
   const [group, setGroup] = React.useState('');
   const [version, setVersion] = React.useState('');
-  const [jdk, setJdk] = React.useState('');
+  const [jdk, setJdk] = React.useState('1.8');
   const [isImport, setIsImport] = React.useState(true);
   const [projectName, setProjectName] = React.useState('');
+  const [duplicateState, setDuplicateState] = React.useState('ready');
   const [invalidProjectNameHelp, setinValidProjectNameHelp] =
     React.useState('');
   const handleProjectNameChange = (event) => {
@@ -35,7 +38,14 @@ export default function CreateTemplate() {
     }
   }, [projectName]);
   const navigate = useNavigate();
-
+  React.useEffect(() => {
+    if (WorkspaceStore.projectList.length && duplicateState === 'loading') {
+      const isDuplicate = WorkspaceStore.projectList.some(
+        (pj) => pj.name === projectName,
+      );
+      setDuplicateState(isDuplicate ? 'error' : 'success');
+    }
+  }, [WorkspaceStore.projectList, duplicateState]);
   return (
     <div className="project-page-parent">
       <div className="create-page-blank-head">
@@ -79,6 +89,10 @@ export default function CreateTemplate() {
           value={projectName}
           onChange={handleProjectNameChange}
         />
+        <DuplicationButton
+          btnType={duplicateState}
+          setDuplicateState={setDuplicateState}
+        />
       </div>
 
       <div className="create-page-blank">
@@ -104,11 +118,11 @@ export default function CreateTemplate() {
         <TextField
           helperText={'Enter Build Group'}
           id={'demo-helper-text-aligned'}
-          label={'Enter Build Group'}
           value={group}
           onChange={(event) => {
             setGroup(event.target.value);
           }}
+          placeholder="com.tmax"
         />
       </div>
       <div className="create-page-blank">
@@ -131,15 +145,18 @@ export default function CreateTemplate() {
           <h3>JDK</h3>
           <h5>(optional)</h5>
         </div>
-        <TextField
-          helperText={'Enter JDK'}
-          id={'demo-helper-text-aligned'}
-          label={'Enter JDK'}
-          value={jdk}
-          onChange={(event) => {
-            setJdk(event.target.value);
-          }}
-        />
+        <FormControl>
+          <RadioGroup
+            aria-labelledby="demo-radio-buttons-group-label"
+            value={jdk}
+            onChange={(event) => {
+              setJdk(event.target.value);
+            }}
+          >
+            <FormControlLabel value={'1.8'} control={<Radio />} label="1.8" />
+            <FormControlLabel value={'11'} control={<Radio />} label="11" />
+          </RadioGroup>
+        </FormControl>
       </div>
       <div className="create-page-blank">
         <div>

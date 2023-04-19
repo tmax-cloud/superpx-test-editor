@@ -9,6 +9,7 @@ import {
   RadioGroup,
   TextField,
   Tooltip,
+  CircularProgress,
 } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -16,12 +17,50 @@ import HelpIcon from '@mui/icons-material/Help';
 import { sendMessage } from '../../utils/service-utils';
 import { useNavigate } from 'react-router-dom';
 import loadingStore from '../../stores/loadingStore';
+import WorkspaceStore from '../../stores/workspaceStore';
+
+interface DuplicationButtonProps {
+  btnType: string;
+  setDuplicateState: (type: string) => void;
+}
+export const DuplicationButton: React.FC<DuplicationButtonProps> = ({
+  btnType,
+  setDuplicateState,
+}) => {
+  switch (btnType) {
+    case 'ready':
+      return (
+        <Button
+          onClick={() => {
+            setDuplicateState('loading');
+            sendMessage('project', 'ListService', {});
+          }}
+          color="secondary"
+        >
+          duplicate check
+        </Button>
+      );
+    case 'loading':
+      return (
+        <Button color="primary" disabled={true}>
+          <CircularProgress size={24} />
+        </Button>
+      );
+    case 'success':
+      return <Button color="success">Success</Button>;
+    default:
+      return <Button color="error">duplicate discovery</Button>;
+  }
+};
+
 export default function CreateBlank() {
   const { t } = useTranslation();
   const [projectDescription, setProjectDescription] = React.useState('');
   const [projectName, setProjectName] = React.useState('');
   const [visibilityLevel, setVisibilityLevel] = React.useState('Public');
   const [characterCount, setCharacterCount] = React.useState(0);
+  const [duplicateState, setDuplicateState] = React.useState('ready');
+
   const [invalidProjectNameHelp, setinValidProjectNameHelp] =
     React.useState('');
   const handleProjectDescriptionChange = (event) => {
@@ -40,6 +79,16 @@ export default function CreateBlank() {
       setinValidProjectNameHelp('');
     }
   }, [projectName]);
+
+  React.useEffect(() => {
+    if (WorkspaceStore.projectList.length && duplicateState === 'loading') {
+      const isDuplicate = WorkspaceStore.projectList.some(
+        (pj) => pj.name === projectName,
+      );
+      setDuplicateState(isDuplicate ? 'error' : 'success');
+    }
+  }, [WorkspaceStore.projectList, duplicateState]);
+
   const handlevisibilityChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -89,6 +138,10 @@ export default function CreateBlank() {
           error={!!invalidProjectNameHelp}
           value={projectName}
           onChange={handleProjectNameChange}
+        />
+        <DuplicationButton
+          btnType={duplicateState}
+          setDuplicateState={setDuplicateState}
         />
       </div>
 
