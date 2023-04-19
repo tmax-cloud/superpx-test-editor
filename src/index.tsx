@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import * as ReactDOM from 'react-dom/client';
 import './style.css';
 import './404.scss';
 import { setupLanguage } from './java/setup';
@@ -111,9 +111,10 @@ const router = createBrowserRouter([
   },
 ]);
 
-ReactDOM.render(
+const rootNode = document.getElementById('container');
+
+ReactDOM.createRoot(rootNode).render(
   <React.StrictMode>
     <RouterProvider router={router} />
   </React.StrictMode>,
-  document.getElementById('container'),
 );
