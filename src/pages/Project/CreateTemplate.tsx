@@ -27,6 +27,7 @@ export default function CreateTemplate() {
     React.useState('');
   const handleProjectNameChange = (event) => {
     setProjectName(event.target.value);
+    setDuplicateState('ready');
   };
   React.useEffect(() => {
     if (!projectName) {
@@ -92,6 +93,7 @@ export default function CreateTemplate() {
         <DuplicationButton
           btnType={duplicateState}
           setDuplicateState={setDuplicateState}
+          projectName={projectName}
         />
       </div>
 

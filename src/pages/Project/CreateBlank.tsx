@@ -22,17 +22,20 @@ import WorkspaceStore from '../../stores/workspaceStore';
 interface DuplicationButtonProps {
   btnType: string;
   setDuplicateState: (type: string) => void;
+  projectName: string;
 }
+
 export const DuplicationButton: React.FC<DuplicationButtonProps> = ({
   btnType,
   setDuplicateState,
+  projectName,
 }) => {
   switch (btnType) {
     case 'ready':
       return (
         <Button
           onClick={() => {
-            setDuplicateState('loading');
+            projectName && setDuplicateState('loading');
             sendMessage('project', 'ListService', {});
           }}
           color="secondary"
@@ -69,6 +72,7 @@ export default function CreateBlank() {
   };
   const handleProjectNameChange = (event) => {
     setProjectName(event.target.value);
+    setDuplicateState('ready');
   };
   React.useEffect(() => {
     if (!projectName) {
@@ -142,6 +146,7 @@ export default function CreateBlank() {
         <DuplicationButton
           btnType={duplicateState}
           setDuplicateState={setDuplicateState}
+          projectName={projectName}
         />
       </div>
 
