@@ -30,6 +30,7 @@ import FolderTreeStore from '../../stores/folderTreeStore';
 import { ImportFileDialog } from '../GNB/ImportFileDialog';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
+import { Tooltip } from '@mui/material';
 
 const SourceCodeTree: React.FC = () => {
   const onSourceCodeLinkClick = ({ nodeData }) => {
@@ -110,7 +111,7 @@ const SourceCodeTree: React.FC = () => {
     };
 
     // custom Style
-    return <NoteAdd fontSize="small" onClick={handleClick} />;
+    return <Tooltip title="AddFile"><NoteAdd fontSize="small" onClick={handleClick} /></Tooltip>;
   };
 
   const AddFolderIcon = ({
@@ -128,13 +129,14 @@ const SourceCodeTree: React.FC = () => {
 
     // custom Style
     return (
+      <Tooltip title="AddDirectory">
       <CreateNewFolder
         fontSize="small"
         onClick={handleClick}
         onContextMenu={(e) => {
           e.preventDefault();
         }}
-      />
+      /></Tooltip>
     );
   };
 
@@ -159,7 +161,7 @@ const SourceCodeTree: React.FC = () => {
         handleOpenDeleteModal();
       }
     };
-    return <Delete fontSize="small" onClick={handleClick} />;
+    return <Tooltip title="Delete"><Delete fontSize="small" onClick={handleClick} /></Tooltip>;
   };
 
   const EditIcon = ({ onClick: defaultOnClick, nodeData }) => {
@@ -181,7 +183,7 @@ const SourceCodeTree: React.FC = () => {
     // return <Edit fontSize="small" onClick={handleClick} />;
     if (isFile) {
       return <></>;
-    } else return <Add fontSize="small" onClick={handleClick} />;
+    } else return <Tooltip title="ImportFile"><Add fontSize="small" onClick={handleClick} /></Tooltip>;
   };
 
   const FolderIcon = ({ onClick: defaultOnClick }) => {
