@@ -2,38 +2,37 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
+// import useMediaQuery from '@mui/material/useMediaQuery';
+// import { useTheme } from '@mui/material/styles';
 // import GNBDialog from './GNBDialog';
-import { ImportFileDialog } from './ImportFileDialog';
 
 export const EditorGNB = () => {
   const menus = [
-    'file',
+    // 'file',
     // 'edit',
     // 'select',
     // 'view',
     // 'goto',
     // 'debug',
     // 'terminal',
-    // 'help',
+    'help',
   ];
   const menusAction = {
     file: [
-      'New File',
-      'New Folder',
+      // 'New File',
+      // 'New Folder',
       // 'New Window',
       // 'Open',
       // 'Favorites',
       // 'Last updated',
     ],
-    // edit: ['editAction1', 'editAction2'],
-    // select: ['selectAction1', 'selectAction2'],
-    // view: ['viewAction1', 'viewAction2'],
-    // goto: ['gotoAction1', 'gotoAction2'],
-    // debug: ['debugAction1', 'debugAction2'],
-    // terminal: ['terminalAction1', 'terminalAction2'],
-    // help: ['helpAction1', 'helpAction2'],
+    edit: ['editAction1', 'editAction2'],
+    select: ['selectAction1', 'selectAction2'],
+    view: ['viewAction1', 'viewAction2'],
+    goto: ['gotoAction1', 'gotoAction2'],
+    debug: ['debugAction1', 'debugAction2'],
+    terminal: ['terminalAction1', 'terminalAction2'],
+    help: ['helpAction1', 'helpAction2'],
   };
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [openMenu, setOpenMenu] = React.useState({});
@@ -46,34 +45,34 @@ export const EditorGNB = () => {
   };
   const getActions = (action) => {
     // setActionState(action);
-    switch (action) {
-      case 'New File':
-        handleImportFile();
-        break;
-      default:
-        handleClose();
-        break;
-    }
+    // switch (action) {
+    //   case 'New File':
+    //     handleImportFile();
+    //     break;
+    //   default:
+    //     handleClose();
+    //     break;
+    // }
   };
 
-  // const [openDialog, setOpenDialog] = React.useState(false);
-  const [openFileImportDialog, setOpenFileImportDialog] = React.useState(false);
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-  // const handleCloseDialog = () => {
-  //   setOpenDialog(false);
+  // // const [openDialog, setOpenDialog] = React.useState(false);
+  // const [openFileImportDialog, setOpenFileImportDialog] = React.useState(false);
+  // const theme = useTheme();
+  // const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+  // // const handleCloseDialog = () => {
+  // //   setOpenDialog(false);
+  // // };
+
+  // const handleCloseImportFileDialog = () => {
+  //   setOpenFileImportDialog(false);
   // };
 
-  const handleCloseImportFileDialog = () => {
-    setOpenFileImportDialog(false);
-  };
 
-
-  const handleImportFile = () => {
-    setOpenFileImportDialog(true);
-    setOpenMenu({});
-    setAnchorEl(null);
-  };
+  // const handleImportFile = () => {
+  //   setOpenFileImportDialog(true);
+  //   setOpenMenu({});
+  //   setAnchorEl(null);
+  // };
   const handleClose = () => {
     setOpenMenu({});
     setAnchorEl(null);
@@ -128,12 +127,12 @@ export const EditorGNB = () => {
         actionState={actionState}
       /> */}
 
-      <ImportFileDialog
+      {/* <ImportFileDialog
         fullScreen={fullScreen}
         openDialog={openFileImportDialog}
         handleCloseDialog={handleCloseImportFileDialog}
         nodeTotalPath=''
-      />
+      /> */}
     </div>
   );
 };

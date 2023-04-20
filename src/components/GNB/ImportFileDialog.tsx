@@ -8,6 +8,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { ImportDirectoryDialogProps } from './ImportDirectoryDialog';
+import EditorContentsStore from '../../stores/editorContentsStore';
 
 export const ImportFileDialog = ({
   fullScreen,
@@ -27,13 +28,14 @@ export const ImportFileDialog = ({
     const newFilePath = nodeTotalPath + e.target.files[0].name;
     setFilePath(newFilePath);
   };
-  const handleImportFile = (e) => {
+  const handleImportFile = () => {
     WorkspaceStore.addSourceCodeAction({
       srcPath: filePath,
       content: sourceContent,
       newfile: true,
     });
     FolderTreeStore.addNewFileAction(filePath);
+    EditorContentsStore.updateContentAction(filePath, sourceContent);
     handleCloseDialog();
   };
 

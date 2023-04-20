@@ -149,11 +149,14 @@ const SourceCodeTree: React.FC = () => {
     const { srcPath, name, isFile, nodePath } = nodeData;
     const handleClick = () => {
       setIsFile(isFile);
+      setFileName(name);
       if (isFile) {
-        handleOpenDeleteModal(srcPath, name);
+        setDeletePath(srcPath);
+        handleOpenDeleteModal();
       } else {
         const folderPath = nodePath.slice(0, -1);
-        handleOpenDeleteModal(folderPath, name);
+        setDeletePath(folderPath);
+        handleOpenDeleteModal();
       }
     };
     return <Delete fontSize="small" onClick={handleClick} />;
@@ -161,8 +164,8 @@ const SourceCodeTree: React.FC = () => {
 
   const EditIcon = ({ onClick: defaultOnClick, nodeData }) => {
     const { isFile, nodePath } = nodeData;
-    setPathValue(nodePath);
     const handleClick = () => {
+      setPathValue(nodePath);
       handleImportFile();
     };
     // const { srcPath, edited, newfile, content, isFile, nodePath } = nodeData;
@@ -177,8 +180,8 @@ const SourceCodeTree: React.FC = () => {
     // }
     // return <Edit fontSize="small" onClick={handleClick} />;
     if (isFile) {
-      return <Add fontSize="small" onClick={handleClick} />;
-    } else return <></>;
+      return <></>;
+    } else return <Add fontSize="small" onClick={handleClick} />;
   };
 
   const FolderIcon = ({ onClick: defaultOnClick }) => {
@@ -232,6 +235,7 @@ const SourceCodeTree: React.FC = () => {
   const [showDeleteModal, setShowDeleteModal] = React.useState(false);
   const [inputValue, setInputValue] = React.useState('');
   const [pathValue, setPathValue] = React.useState('');
+  const [deletePath, setDeletePath] = React.useState('');
   const [fileName, setFileName] = React.useState('');
   const [content, setContent] = React.useState('');
   const [isFile, setIsFile] = React.useState(false);
@@ -264,10 +268,8 @@ const SourceCodeTree: React.FC = () => {
     }
   };
 
-  const handleOpenDeleteModal = (srcPath, name) => {
+  const handleOpenDeleteModal = () => {
     setShowDeleteModal(true);
-    setPathValue(srcPath);
-    setFileName(name);
   };
 
   const handleCreateModal = () => {
@@ -368,16 +370,15 @@ const SourceCodeTree: React.FC = () => {
   };
   const handleDeleteModal = () => {
     if (isFile) {
-      WorkspaceStore.deleteSourceCodeAction(pathValue);
-      EditorContentsStore.deleteSourceCodeAction(pathValue);
-      FolderTreeStore.deleteSourceCodeAction(pathValue);
+      WorkspaceStore.deleteSourceCodeAction(deletePath);
+      EditorContentsStore.deleteSourceCodeAction(deletePath);
+      FolderTreeStore.deleteSourceCodeAction(deletePath);
     } else {
-      WorkspaceStore.deleteDirectoryAction(pathValue);
-      EditorContentsStore.deleteDirectoryAction(pathValue);
-      FolderTreeStore.deleteSourceCodeAction(pathValue);
+      WorkspaceStore.deleteDirectoryAction(deletePath);
+      EditorContentsStore.deleteDirectoryAction(deletePath);
+      FolderTreeStore.deleteSourceCodeAction(deletePath);
     }
     setShowDeleteModal(false);
-    setInputValue('');
   };
   const handleCancelModal = () => {
     setShowModal(false);

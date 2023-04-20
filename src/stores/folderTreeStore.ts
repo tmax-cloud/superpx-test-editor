@@ -150,7 +150,7 @@ const FolderTreeStore = observable({
       if (!node.children) {
         node.children = [];
       }
-      if (index === nodeArray.length - 1) {
+      if (index === nodeArray.length -1) {
         node.children = node.children.filter((c) => c.name !== nodePath);
       }
       node.children.sort((a, b) => a.name.localeCompare(b.name));

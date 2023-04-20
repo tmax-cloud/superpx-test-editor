@@ -8,6 +8,7 @@ import { sendMessage } from '../../utils/service-utils';
 import WorkspaceStore from '../../stores/workspaceStore';
 import FolderTreeStore from '../../stores/folderTreeStore';
 import { EditorStatusBar } from '../../components/Editor/EditorStatusBar';
+import { EditorGNB } from '../../components/GNB/EditorGNB';
 
 function EditorPage() {
   const { projectName } = useParams();
@@ -28,6 +29,7 @@ function EditorPage() {
   }, []);
   return (
     <div>
+      <EditorGNB />
       <Observer>
         {() => (
           <>
