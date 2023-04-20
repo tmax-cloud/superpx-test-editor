@@ -16,6 +16,7 @@ import {
   FolderOpen,
   KeyboardArrowDown,
   KeyboardArrowRight,
+  Add,
 } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -26,6 +27,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import { getIcon } from 'material-file-icons';
 import FolderTreeStore from '../../stores/folderTreeStore';
+import { ImportFileDialog } from '../GNB/ImportFileDialog';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
 
 const SourceCodeTree: React.FC = () => {
   const onSourceCodeLinkClick = ({ nodeData }) => {
@@ -46,7 +50,7 @@ const SourceCodeTree: React.FC = () => {
     name: WorkspaceStore.currentProject.name,
     children: [],
     isOpen: true,
-    nodePath: WorkspaceStore.currentProject.name+'/',
+    nodePath: WorkspaceStore.currentProject.name + '/',
   };
   const pathToJson = (sourceCodeList) => {
     sourceCodeList.forEach((src) => {
@@ -109,7 +113,11 @@ const SourceCodeTree: React.FC = () => {
     return <NoteAdd fontSize="small" onClick={handleClick} />;
   };
 
-  const AddFolderIcon = ({ onClick: defaultOnClick, nodeData }) => {
+  const AddFolderIcon = ({
+    onClick: defaultOnClick,
+    nodeData,
+    onContextMenu,
+  }) => {
     const { nodePath } = nodeData;
 
     // custom event handler
@@ -119,7 +127,15 @@ const SourceCodeTree: React.FC = () => {
     };
 
     // custom Style
-    return <CreateNewFolder fontSize="small" onClick={handleClick} />;
+    return (
+      <CreateNewFolder
+        fontSize="small"
+        onClick={handleClick}
+        onContextMenu={(e) => {
+          e.preventDefault();
+        }}
+      />
+    );
   };
 
   const CancelIcon = ({ onClick: defaultOnClick }) => {
@@ -143,7 +159,12 @@ const SourceCodeTree: React.FC = () => {
     return <Delete fontSize="small" onClick={handleClick} />;
   };
 
-  const EditIcon = () => {
+  const EditIcon = ({ onClick: defaultOnClick, nodeData }) => {
+    const { isFile, nodePath } = nodeData;
+    setPathValue(nodePath);
+    const handleClick = () => {
+      handleImportFile();
+    };
     // const { srcPath, edited, newfile, content, isFile, nodePath } = nodeData;
     // const handleClick = () =>
     // {
@@ -155,7 +176,9 @@ const SourceCodeTree: React.FC = () => {
     // handleOpenEditModal(srcPath, isFile, nodePath);
     // }
     // return <Edit fontSize="small" onClick={handleClick} />;
-    return <></>;
+    if (isFile) {
+      return <Add fontSize="small" onClick={handleClick} />;
+    } else return <></>;
   };
 
   const FolderIcon = ({ onClick: defaultOnClick }) => {
@@ -212,6 +235,10 @@ const SourceCodeTree: React.FC = () => {
   const [fileName, setFileName] = React.useState('');
   const [content, setContent] = React.useState('');
   const [isFile, setIsFile] = React.useState(false);
+  const [openFileImportDialog, setOpenFileImportDialog] = React.useState(false);
+  // const [actionState, setActionState] = React.useState('');
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   if (FolderTreeStore.needUpdate) {
     FolderTreeStore.updateTreeDataAction(
@@ -284,6 +311,12 @@ const SourceCodeTree: React.FC = () => {
       node = node.children.filter((pathList) => pathList.name === nodePath)[0];
     });
     return result;
+  };
+  const handleCloseImportFileDialog = () => {
+    setOpenFileImportDialog(false);
+  };
+  const handleImportFile = () => {
+    setOpenFileImportDialog(true);
   };
 
   const handleEditModal = () => {
@@ -487,6 +520,12 @@ const SourceCodeTree: React.FC = () => {
                 </div>
               )}
             </Dialog>
+            <ImportFileDialog
+              fullScreen={fullScreen}
+              openDialog={openFileImportDialog}
+              handleCloseDialog={handleCloseImportFileDialog}
+              nodeTotalPath={pathValue}
+            />
           </div>
         </div>
       )}

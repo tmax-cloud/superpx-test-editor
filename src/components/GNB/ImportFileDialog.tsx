@@ -1,24 +1,22 @@
 import * as React from 'react';
 import WorkspaceStore from '../../stores/workspaceStore';
+import FolderTreeStore from '../../stores/folderTreeStore';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import TextField from '@mui/material/TextField';
 import { ImportDirectoryDialogProps } from './ImportDirectoryDialog';
 
 export const ImportFileDialog = ({
   fullScreen,
   openDialog,
   handleCloseDialog,
+  nodeTotalPath,
 }: ImportDirectoryDialogProps) => {
   const [filePath, setFilePath] = React.useState('');
   const [sourceContent, setsourceContent] = React.useState('');
-  const onChangeFilePath = (e) => {
-    setFilePath(`${WorkspaceStore.currentProject.name}/${e.target.value}`);
-  };
   const onFileChange = (e) => {
     const file = e.target.files[0];
     const fileReader = new FileReader();
@@ -26,6 +24,8 @@ export const ImportFileDialog = ({
       setsourceContent(fileReader.result as string);
     };
     fileReader.readAsText(file);
+    const newFilePath = nodeTotalPath + e.target.files[0].name;
+    setFilePath(newFilePath);
   };
   const handleImportFile = (e) => {
     WorkspaceStore.addSourceCodeAction({
@@ -33,6 +33,7 @@ export const ImportFileDialog = ({
       content: sourceContent,
       newfile: true,
     });
+    FolderTreeStore.addNewFileAction(filePath);
     handleCloseDialog();
   };
 
@@ -46,15 +47,6 @@ export const ImportFileDialog = ({
       <DialogTitle id="responsive-dialog-title">File Import</DialogTitle>
       <DialogContent>
         <DialogContentText>File Import</DialogContentText>
-        <TextField
-          margin="dense"
-          id="file path"
-          label="File Path"
-          type="text"
-          fullWidth
-          variant="standard"
-          onChange={onChangeFilePath}
-        />
         <input type="file" onChange={onFileChange} name="file" />
       </DialogContent>
 

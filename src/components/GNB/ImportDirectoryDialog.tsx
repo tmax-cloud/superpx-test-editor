@@ -11,6 +11,7 @@ export interface ImportDirectoryDialogProps {
   fullScreen: any;
   openDialog: any;
   handleCloseDialog: () => void;
+  nodeTotalPath: string;
 }
 
 export const ImportDirectoryDialog = ({
