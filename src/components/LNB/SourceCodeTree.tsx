@@ -16,6 +16,7 @@ import {
   FolderOpen,
   KeyboardArrowDown,
   KeyboardArrowRight,
+  Add,
 } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -26,6 +27,10 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import { getIcon } from 'material-file-icons';
 import FolderTreeStore from '../../stores/folderTreeStore';
+import { ImportFileDialog } from '../GNB/ImportFileDialog';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
+import { Tooltip } from '@mui/material';
 
 const SourceCodeTree: React.FC = () => {
   const onSourceCodeLinkClick = ({ nodeData }) => {
@@ -46,7 +51,7 @@ const SourceCodeTree: React.FC = () => {
     name: WorkspaceStore.currentProject.name,
     children: [],
     isOpen: true,
-    nodePath: WorkspaceStore.currentProject.name+'/',
+    nodePath: WorkspaceStore.currentProject.name + '/',
   };
   const pathToJson = (sourceCodeList) => {
     sourceCodeList.forEach((src) => {
@@ -106,10 +111,14 @@ const SourceCodeTree: React.FC = () => {
     };
 
     // custom Style
-    return <NoteAdd fontSize="small" onClick={handleClick} />;
+    return <Tooltip title="AddFile"><NoteAdd fontSize="small" onClick={handleClick} /></Tooltip>;
   };
 
-  const AddFolderIcon = ({ onClick: defaultOnClick, nodeData }) => {
+  const AddFolderIcon = ({
+    onClick: defaultOnClick,
+    nodeData,
+    onContextMenu,
+  }) => {
     const { nodePath } = nodeData;
 
     // custom event handler
@@ -119,7 +128,16 @@ const SourceCodeTree: React.FC = () => {
     };
 
     // custom Style
-    return <CreateNewFolder fontSize="small" onClick={handleClick} />;
+    return (
+      <Tooltip title="AddDirectory">
+      <CreateNewFolder
+        fontSize="small"
+        onClick={handleClick}
+        onContextMenu={(e) => {
+          e.preventDefault();
+        }}
+      /></Tooltip>
+    );
   };
 
   const CancelIcon = ({ onClick: defaultOnClick }) => {
@@ -133,17 +151,25 @@ const SourceCodeTree: React.FC = () => {
     const { srcPath, name, isFile, nodePath } = nodeData;
     const handleClick = () => {
       setIsFile(isFile);
+      setFileName(name);
       if (isFile) {
-        handleOpenDeleteModal(srcPath, name);
+        setDeletePath(srcPath);
+        handleOpenDeleteModal();
       } else {
         const folderPath = nodePath.slice(0, -1);
-        handleOpenDeleteModal(folderPath, name);
+        setDeletePath(folderPath);
+        handleOpenDeleteModal();
       }
     };
-    return <Delete fontSize="small" onClick={handleClick} />;
+    return <Tooltip title="Delete"><Delete fontSize="small" onClick={handleClick} /></Tooltip>;
   };
 
-  const EditIcon = () => {
+  const EditIcon = ({ onClick: defaultOnClick, nodeData }) => {
+    const { isFile, nodePath } = nodeData;
+    const handleClick = () => {
+      setPathValue(nodePath);
+      handleImportFile();
+    };
     // const { srcPath, edited, newfile, content, isFile, nodePath } = nodeData;
     // const handleClick = () =>
     // {
@@ -155,7 +181,9 @@ const SourceCodeTree: React.FC = () => {
     // handleOpenEditModal(srcPath, isFile, nodePath);
     // }
     // return <Edit fontSize="small" onClick={handleClick} />;
-    return <></>;
+    if (isFile) {
+      return <></>;
+    } else return <Tooltip title="ImportFile"><Add fontSize="small" onClick={handleClick} /></Tooltip>;
   };
 
   const FolderIcon = ({ onClick: defaultOnClick }) => {
@@ -209,9 +237,14 @@ const SourceCodeTree: React.FC = () => {
   const [showDeleteModal, setShowDeleteModal] = React.useState(false);
   const [inputValue, setInputValue] = React.useState('');
   const [pathValue, setPathValue] = React.useState('');
+  const [deletePath, setDeletePath] = React.useState('');
   const [fileName, setFileName] = React.useState('');
   const [content, setContent] = React.useState('');
   const [isFile, setIsFile] = React.useState(false);
+  const [openFileImportDialog, setOpenFileImportDialog] = React.useState(false);
+  // const [actionState, setActionState] = React.useState('');
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   if (FolderTreeStore.needUpdate) {
     FolderTreeStore.updateTreeDataAction(
@@ -237,10 +270,8 @@ const SourceCodeTree: React.FC = () => {
     }
   };
 
-  const handleOpenDeleteModal = (srcPath, name) => {
+  const handleOpenDeleteModal = () => {
     setShowDeleteModal(true);
-    setPathValue(srcPath);
-    setFileName(name);
   };
 
   const handleCreateModal = () => {
@@ -284,6 +315,12 @@ const SourceCodeTree: React.FC = () => {
       node = node.children.filter((pathList) => pathList.name === nodePath)[0];
     });
     return result;
+  };
+  const handleCloseImportFileDialog = () => {
+    setOpenFileImportDialog(false);
+  };
+  const handleImportFile = () => {
+    setOpenFileImportDialog(true);
   };
 
   const handleEditModal = () => {
@@ -335,16 +372,15 @@ const SourceCodeTree: React.FC = () => {
   };
   const handleDeleteModal = () => {
     if (isFile) {
-      WorkspaceStore.deleteSourceCodeAction(pathValue);
-      EditorContentsStore.deleteSourceCodeAction(pathValue);
-      FolderTreeStore.deleteSourceCodeAction(pathValue);
+      WorkspaceStore.deleteSourceCodeAction(deletePath);
+      EditorContentsStore.deleteSourceCodeAction(deletePath);
+      FolderTreeStore.deleteSourceCodeAction(deletePath);
     } else {
-      WorkspaceStore.deleteDirectoryAction(pathValue);
-      EditorContentsStore.deleteDirectoryAction(pathValue);
-      FolderTreeStore.deleteSourceCodeAction(pathValue);
+      WorkspaceStore.deleteDirectoryAction(deletePath);
+      EditorContentsStore.deleteDirectoryAction(deletePath);
+      FolderTreeStore.deleteSourceCodeAction(deletePath);
     }
     setShowDeleteModal(false);
-    setInputValue('');
   };
   const handleCancelModal = () => {
     setShowModal(false);
@@ -487,6 +523,12 @@ const SourceCodeTree: React.FC = () => {
                 </div>
               )}
             </Dialog>
+            <ImportFileDialog
+              fullScreen={fullScreen}
+              openDialog={openFileImportDialog}
+              handleCloseDialog={handleCloseImportFileDialog}
+              nodeTotalPath={pathValue}
+            />
           </div>
         </div>
       )}

@@ -86,7 +86,7 @@ const WorkspaceStore = observable({
     this.sourceCodeList = sourceCodeList;
   },
   addSourceCodeAction(sourceCode: SourceCode) {
-    this.sourceCodeList.push(sourceCode);
+    this.sourceCodeList = [...this.sourceCodeList,sourceCode];
   },
   addNewSourceCodeAction(sourceCode: SourceCode) {
     this.sourceCodeList.push(sourceCode);
@@ -131,12 +131,9 @@ const WorkspaceStore = observable({
     });
   },
   getContentAction(srcPath: string) {
-    const content = this.sourceCodeList.map((s) => {
-      if (s.srcPath === srcPath) {
-        return s.content;
-      }
-    })[0];
-    return content;
+    const source = this.sourceCodeList.filter((s) => s.srcPath === srcPath
+      )[0];
+    return source.content;
   },
   updateCICDListAction(CICDList: CICD[]) {
     this.CICDList = [...CICDList];
